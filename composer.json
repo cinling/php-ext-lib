@@ -1,13 +1,13 @@
 {
-    "name": "cinling/personal-lib",
-    "license": "Apache-2.0",
+    "name": "cinling/ext-lib",
+    "license": "MIT",
     "authors": [
         {
             "name": "cinling",
             "email": "1105412681@qq.com"
         }
     ],
-    "version": "1.1.3",
+    "version": "2.0.0",
     "require": {
         "php": ">=5.6",
         "ext-ftp": "*",
