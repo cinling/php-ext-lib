@@ -1,11 +1,11 @@
 <?php
 require_once "../../vendor/autoload.php";
 
-use cin\personalLib\services\CronService;
-use cin\personalLib\utils\ConsoleUtil;
-use cin\personalLib\utils\TimeUtil;
-use cin\personalLib\vos\corn\CronConfigVo;
-use cin\personalLib\vos\corn\TaskVo;
+use cin\extLib\services\CronService;
+use cin\extLib\utils\ConsoleUtil;
+use cin\extLib\utils\TimeUtil;
+use cin\extLib\vos\corn\CronConfigVo;
+use cin\extLib\vos\corn\TaskVo;
 
 date_default_timezone_set('Asia/Shanghai');
 

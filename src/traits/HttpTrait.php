@@ -1,12 +1,12 @@
 <?php
 
 
-namespace cin\personalLib\traits;
+namespace cin\extLib\traits;
 
 
 /**
  * Trait HttpTrait http插件
- * @package cin\personalLib\traits
+ * @package cin\extLib\traits
  */
 trait HttpTrait {
     /**

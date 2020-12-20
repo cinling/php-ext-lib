@@ -1,12 +1,12 @@
 <?php
 
 
-namespace cin\personalLib\utils;
+namespace cin\extLib\utils;
 
 
 /**
  * Class FileUtil 文件工具
- * @package cin\personalLib\utils
+ * @package cin\extLib\utils
  */
 class FileUtil {
 

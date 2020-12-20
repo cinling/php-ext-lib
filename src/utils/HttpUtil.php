@@ -1,13 +1,13 @@
 <?php
 
 
-namespace cin\personalLib\utils;
+namespace cin\extLib\utils;
 
-use cin\personalLib\traits\HttpTrait;
+use cin\extLib\traits\HttpTrait;
 
 /**
  * Class HttpUtil http 工具
- * @package cin\personalLib\utils
+ * @package cin\extLib\utils
  */
 class HttpUtil {
     use HttpTrait;

@@ -1,14 +1,14 @@
 <?php
 
 
-namespace cin\personalLib\utils;
+namespace cin\extLib\utils;
 
 
 use Closure;
 
 /**
  * Class DevelUtil 开发工具
- * @package cin\personalLib\utils
+ * @package cin\extLib\utils
  */
 class DevelUtil {
     /**

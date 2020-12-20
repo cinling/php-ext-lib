@@ -1,14 +1,14 @@
 <?php
 
 
-namespace cin\personalLib\vos;
+namespace cin\extLib\vos;
 
 
-use cin\personalLib\services\FileCacheService;
+use cin\extLib\services\FileCacheService;
 
 /**
  * Class FileCacheConfigVo 文件服务配置
- * @package cin\personalLib\vos
+ * @package cin\extLib\vos
  * @see FileCacheService
  */
 class FileCacheConfigVo extends BaseVo {

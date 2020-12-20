@@ -1,7 +1,7 @@
 <?php
 
 
-namespace cin\personalLib\traits;
+namespace cin\extLib\traits;
 
 
 trait StringTrait {

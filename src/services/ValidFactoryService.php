@@ -1,16 +1,16 @@
 <?php
 
 
-namespace cin\personalLib\services;
+namespace cin\extLib\services;
 
 
-use cin\personalLib\interfaces\Errorable;
-use cin\personalLib\traits\SingleTrait;
+use cin\extLib\interfaces\Errorable;
+use cin\extLib\traits\SingleTrait;
 use Closure;
 
 /**
  * Class ValidFactoryService 验证工厂服务。提供验证定义好的验证方法
- * @package cin\personalLib\services
+ * @package cin\extLib\services
  */
 class ValidFactoryService{
     use SingleTrait;

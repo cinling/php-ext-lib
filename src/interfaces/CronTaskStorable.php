@@ -1,16 +1,16 @@
 <?php
 
 
-namespace cin\personalLib\interfaces;
+namespace cin\extLib\interfaces;
 
 
-use cin\personalLib\exceptions\CronException;
-use cin\personalLib\vos\corn\TaskRecordVo;
-use cin\personalLib\vos\corn\TaskVo;
+use cin\extLib\exceptions\CronException;
+use cin\extLib\vos\corn\TaskRecordVo;
+use cin\extLib\vos\corn\TaskVo;
 
 /**
  * Class CronTaskStorable 定时任务存取接口
- * @package cin\personalLib\interfaces
+ * @package cin\extLib\interfaces
  */
 interface CronTaskStorable {
     /**

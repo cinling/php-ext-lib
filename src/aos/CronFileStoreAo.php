@@ -1,18 +1,18 @@
 <?php
 
 
-namespace cin\personalLib\aos;
+namespace cin\extLib\aos;
 
 
-use cin\personalLib\interfaces\CronTaskStorable;
-use cin\personalLib\services\FileCacheService;
-use cin\personalLib\vos\BaseVo;
-use cin\personalLib\vos\corn\TaskRecordVo;
-use cin\personalLib\vos\corn\TaskVo;
+use cin\extLib\interfaces\CronTaskStorable;
+use cin\extLib\services\FileCacheService;
+use cin\extLib\vos\BaseVo;
+use cin\extLib\vos\corn\TaskRecordVo;
+use cin\extLib\vos\corn\TaskVo;
 
 /**
  * Class CronFileStoreAo 定时任务 文件存取 实现
- * @package cin\personalLib\aos
+ * @package cin\extLib\aos
  */
 class CronFileStoreAo extends BaseVo implements CronTaskStorable {
     /**

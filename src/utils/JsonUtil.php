@@ -1,13 +1,13 @@
 <?php
 
 
-namespace cin\personalLib\utils;
+namespace cin\extLib\utils;
 
-use cin\personalLib\traits\JsonTrait;
+use cin\extLib\traits\JsonTrait;
 
 /**
  * Class JsonUtil
- * @package cin\personalLib\utils
+ * @package cin\extLib\utils
  */
 class JsonUtil {
     use JsonTrait;

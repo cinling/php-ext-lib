@@ -1,11 +1,11 @@
 <?php
 
 
-namespace cin\personalLib\exceptions;
+namespace cin\extLib\exceptions;
 
 /**
  * Class CronException 定时任务异常
- * @package cin\personalLib\exceptions
+ * @package cin\extLib\exceptions
  */
 class CronException extends CinException {
 

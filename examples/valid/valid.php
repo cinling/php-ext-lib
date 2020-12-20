@@ -1,11 +1,11 @@
 <?php
 require_once "../../vendor/autoload.php";
 
-use cin\personalLib\services\ValidFactoryService;
-use cin\personalLib\utils\ConsoleUtil;
-use cin\personalLib\utils\DevelUtil;
-use cin\personalLib\vos\BaseVo;
-use cin\personalLib\vos\RuleVo;
+use cin\extLib\services\ValidFactoryService;
+use cin\extLib\utils\ConsoleUtil;
+use cin\extLib\utils\DevelUtil;
+use cin\extLib\vos\BaseVo;
+use cin\extLib\vos\RuleVo;
 
 class ValidTestVo extends BaseVo {
     /**

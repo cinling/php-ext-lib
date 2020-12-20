@@ -1,7 +1,7 @@
 <?php
 
 
-namespace cin\personalLib\exceptions;
+namespace cin\extLib\exceptions;
 
 
 use Exception;

@@ -1,11 +1,11 @@
 <?php
 
 
-namespace cin\personalLib\exceptions;
+namespace cin\extLib\exceptions;
 
 /**
  * Class FtpException ftp 异常
- * @package cin\personalLib\exceptions
+ * @package cin\extLib\exceptions
  */
 class FtpException extends CinException {
 

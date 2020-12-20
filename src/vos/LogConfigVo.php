@@ -1,12 +1,12 @@
 <?php
 
 
-namespace cin\personalLib\vos;
+namespace cin\extLib\vos;
 
 
 /**
  * Class LogConfigVo 日志服务配置参数
- * @package cin\personalLib\vos
+ * @package cin\extLib\vos
  */
 class LogConfigVo extends BaseVo {
     /**

@@ -1,19 +1,19 @@
 <?php
 
 
-namespace cin\personalLib\services;
+namespace cin\extLib\services;
 
 
-use cin\personalLib\traits\SingleTrait;
-use cin\personalLib\utils\EncryptUtil;
-use cin\personalLib\utils\FileUtil;
-use cin\personalLib\utils\TimeUtil;
-use cin\personalLib\vos\FileCacheConfigVo;
-use cin\personalLib\vos\FileCacheContentVo;
+use cin\extLib\traits\SingleTrait;
+use cin\extLib\utils\EncryptUtil;
+use cin\extLib\utils\FileUtil;
+use cin\extLib\utils\TimeUtil;
+use cin\extLib\vos\FileCacheConfigVo;
+use cin\extLib\vos\FileCacheContentVo;
 
 /**
  * Class FileCacheService 文件缓存服务。可以保存一些数据
- * @package cin\personalLib\services
+ * @package cin\extLib\services
  */
 class FileCacheService {
     use SingleTrait;

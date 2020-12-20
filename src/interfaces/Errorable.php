@@ -1,11 +1,11 @@
 <?php
 
 
-namespace cin\personalLib\interfaces;
+namespace cin\extLib\interfaces;
 
 /**
  * Interface Errorable 错误管理接口
- * @package cin\personalLib\interfaces
+ * @package cin\extLib\interfaces
  */
 interface Errorable {
     /**

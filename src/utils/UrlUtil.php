@@ -1,14 +1,14 @@
 <?php
 
 
-namespace cin\personalLib\utils;
+namespace cin\extLib\utils;
 
 
-use cin\personalLib\traits\UrlTrait;
+use cin\extLib\traits\UrlTrait;
 
 /**
  * Class UrlUtil
- * @package cin\personalLib\utils
+ * @package cin\extLib\utils
  */
 class UrlUtil {
     use UrlTrait;

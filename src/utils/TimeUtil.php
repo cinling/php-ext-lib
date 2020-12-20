@@ -1,13 +1,13 @@
 <?php
 
-namespace cin\personalLib\utils;
+namespace cin\extLib\utils;
 
 
 use Closure;
 
 /**
  * Class TimeUtil 时间工具
- * @package cin\personalLib\utils
+ * @package cin\extLib\utils
  *
  * 标准时间格式： 2006-01-02 15:04:05
  */

@@ -1,15 +1,15 @@
 <?php
 
 
-namespace cin\personalLib\vos;
+namespace cin\extLib\vos;
 
 
-use cin\personalLib\services\ValidFactoryService;
+use cin\extLib\services\ValidFactoryService;
 use Closure;
 
 /**
  * Class RuleVo 规则vo
- * @package cin\personalLib\vos
+ * @package cin\extLib\vos
  */
 class RuleVo extends BaseVo {
     /**

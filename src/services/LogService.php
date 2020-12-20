@@ -1,12 +1,12 @@
 <?php
 
 
-namespace cin\personalLib\services;
+namespace cin\extLib\services;
 
 
-use cin\personalLib\traits\SingleTrait;
-use cin\personalLib\utils\TimeUtil;
-use cin\personalLib\vos\LogConfigVo;
+use cin\extLib\traits\SingleTrait;
+use cin\extLib\utils\TimeUtil;
+use cin\extLib\vos\LogConfigVo;
 
 /**
  * 日志服务

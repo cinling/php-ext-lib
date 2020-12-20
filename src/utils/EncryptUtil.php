@@ -1,11 +1,11 @@
 <?php
 
 
-namespace cin\personalLib\utils;
+namespace cin\extLib\utils;
 
 /**
  * Class EncryptUtil 加密工具
- * @package cin\personalLib\utils
+ * @package cin\extLib\utils
  */
 class EncryptUtil {
     /**

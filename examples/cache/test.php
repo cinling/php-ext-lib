@@ -1,8 +1,8 @@
 <?php
 require_once "../../vendor/autoload.php";
 
-use cin\personalLib\services\FileCacheService;
-use cin\personalLib\services\FtpService;
+use cin\extLib\services\FileCacheService;
+use cin\extLib\services\FtpService;
 
 
 $fileCacheSrv = FileCacheService::getIns();

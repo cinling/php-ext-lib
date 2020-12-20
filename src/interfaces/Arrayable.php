@@ -1,11 +1,11 @@
 <?php
 
 
-namespace cin\personalLib\interfaces;
+namespace cin\extLib\interfaces;
 
 /**
  * Interface Arrayable 可转为数组
- * @package cin\personalLib\vos
+ * @package cin\extLib\vos
  */
 interface Arrayable
 {

@@ -1,16 +1,16 @@
 <?php
 
 
-namespace cin\personalLib\vos\corn;
+namespace cin\extLib\vos\corn;
 
 
-use cin\personalLib\aos\CronFileStoreAo;
-use cin\personalLib\interfaces\CronTaskStorable;
-use cin\personalLib\vos\BaseVo;
+use cin\extLib\aos\CronFileStoreAo;
+use cin\extLib\interfaces\CronTaskStorable;
+use cin\extLib\vos\BaseVo;
 
 /**
  * Class CronConfigVo 服务配置
- * @package cin\personalLib\vos\corn
+ * @package cin\extLib\vos\corn
  */
 class CronConfigVo extends BaseVo {
     /**

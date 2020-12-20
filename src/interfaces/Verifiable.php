@@ -1,14 +1,14 @@
 <?php
 
 
-namespace cin\personalLib\interfaces;
+namespace cin\extLib\interfaces;
 
-use cin\personalLib\traits\ErrorTrait;
-use cin\personalLib\vos\RuleVo;
+use cin\extLib\traits\ErrorTrait;
+use cin\extLib\vos\RuleVo;
 
 /**
  * Class Verifiable 可验证接口
- * @package cin\personalLib\interfaces
+ * @package cin\extLib\interfaces
  */
 interface Verifiable {
     /**

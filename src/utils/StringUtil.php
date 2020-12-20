@@ -1,14 +1,14 @@
 <?php
 
 
-namespace cin\personalLib\utils;
+namespace cin\extLib\utils;
 
 
-use cin\personalLib\traits\StringTrait;
+use cin\extLib\traits\StringTrait;
 
 /**
  * Class StringUtil 字符串工具
- * @package cin\personalLib\utils
+ * @package cin\extLib\utils
  */
 class StringUtil
 {

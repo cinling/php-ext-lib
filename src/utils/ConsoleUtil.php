@@ -1,7 +1,7 @@
 <?php
 
 
-namespace cin\personalLib\utils;
+namespace cin\extLib\utils;
 
 
 use const STDOUT;

@@ -1,15 +1,15 @@
 <?php
 
 
-namespace cin\personalLib\services;
+namespace cin\extLib\services;
 
 
-use cin\personalLib\traits\SingleTrait;
+use cin\extLib\traits\SingleTrait;
 use Exception;
 
 /**
  * Class FtpService FTP 服务
- * @package cin\personalLib\services
+ * @package cin\extLib\services
  */
 class FtpService
 {

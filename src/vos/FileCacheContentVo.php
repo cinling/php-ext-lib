@@ -1,12 +1,12 @@
 <?php
 
 
-namespace cin\personalLib\vos;
+namespace cin\extLib\vos;
 
 
 /**
  * Class FileCacheContentVo 文件缓存的数据记录
- * @package cin\personalLib\vos
+ * @package cin\extLib\vos
  */
 class FileCacheContentVo extends BaseVo {
     /**

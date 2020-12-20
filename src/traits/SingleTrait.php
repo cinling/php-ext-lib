@@ -1,11 +1,11 @@
 <?php
 
 
-namespace cin\personalLib\traits;
+namespace cin\extLib\traits;
 
 /**
  * Trait SingleTrait 单例插件
- * @package cin\personalLib\traits
+ * @package cin\extLib\traits
  */
 trait SingleTrait {
     /**

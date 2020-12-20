@@ -1,12 +1,12 @@
 <?php
 
 
-namespace cin\personalLib\vos;
+namespace cin\extLib\vos;
 
 
 /**
  * Class BaseForm 基础表单模型
- * @package cin\personalLib\vos
+ * @package cin\extLib\vos
  */
 class BaseForm extends BaseVo {
 

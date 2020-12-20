@@ -1,20 +1,20 @@
 <?php
 
 
-namespace cin\personalLib\services;
+namespace cin\extLib\services;
 
 
-use cin\personalLib\exceptions\CronException;
-use cin\personalLib\traits\SingleTrait;
-use cin\personalLib\utils\CronParseUtil;
-use cin\personalLib\utils\TimeUtil;
-use cin\personalLib\vos\corn\CronConfigVo;
-use cin\personalLib\vos\corn\TaskRecordVo;
-use cin\personalLib\vos\corn\TaskVo;
+use cin\extLib\exceptions\CronException;
+use cin\extLib\traits\SingleTrait;
+use cin\extLib\utils\CronParseUtil;
+use cin\extLib\utils\TimeUtil;
+use cin\extLib\vos\corn\CronConfigVo;
+use cin\extLib\vos\corn\TaskRecordVo;
+use cin\extLib\vos\corn\TaskVo;
 
 /**
  * Class CronService 定时任务服务
- * @package cin\personalLib\services
+ * @package cin\extLib\services
  */
 class CronService {
     use SingleTrait;

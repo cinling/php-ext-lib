@@ -1,14 +1,14 @@
 <?php
 
 
-namespace cin\personalLib\traits;
+namespace cin\extLib\traits;
 
 
-use cin\personalLib\utils\StringUtil;
+use cin\extLib\utils\StringUtil;
 
 /**
  * Class UrlTrait url路径的特性
- * @package cin\personalLib\traits
+ * @package cin\extLib\traits
  */
 trait UrlTrait {
     /**

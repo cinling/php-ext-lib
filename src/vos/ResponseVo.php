@@ -1,11 +1,11 @@
 <?php
 
 
-namespace cin\personalLib\vos;
+namespace cin\extLib\vos;
 
 /**
  * Class ResponseVo
- * @package cin\personalLib\vos
+ * @package cin\extLib\vos
  */
 class ResponseVo extends BaseVo {
     /**

@@ -1,7 +1,7 @@
 <?php
-namespace cin\personalLib\utils;
+namespace cin\extLib\utils;
 
-use cin\personalLib\exceptions\CronException;
+use cin\extLib\exceptions\CronException;
 
 /**
  * Class CronParser cron time parse utils

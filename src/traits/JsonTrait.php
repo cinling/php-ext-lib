@@ -1,11 +1,11 @@
 <?php
 
 
-namespace cin\personalLib\traits;
+namespace cin\extLib\traits;
 
 /**
  * Trait JsonTrait
- * @package cin\personalLib\traits
+ * @package cin\extLib\traits
  */
 trait JsonTrait {
 

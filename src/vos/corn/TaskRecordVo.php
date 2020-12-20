@@ -1,15 +1,15 @@
 <?php
 
 
-namespace cin\personalLib\vos\corn;
+namespace cin\extLib\vos\corn;
 
 
-use cin\personalLib\utils\TimeUtil;
-use cin\personalLib\vos\BaseVo;
+use cin\extLib\utils\TimeUtil;
+use cin\extLib\vos\BaseVo;
 
 /**
  * Class TaskRecordVo
- * @package cin\personalLib\vos\corn
+ * @package cin\extLib\vos\corn
  */
 class TaskRecordVo extends BaseVo {
     /**

@@ -1,14 +1,14 @@
 <?php
 
 
-namespace cin\personalLib\vos\corn;
+namespace cin\extLib\vos\corn;
 
 
-use cin\personalLib\vos\BaseVo;
+use cin\extLib\vos\BaseVo;
 
 /**
  * Class TaskVo 任务列表
- * @package cin\personalLib\vos\corn
+ * @package cin\extLib\vos\corn
  */
 class TaskVo extends BaseVo {
     /**

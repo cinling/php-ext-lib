@@ -1,12 +1,12 @@
 <?php
 
 
-namespace cin\personalLib\exceptions;
+namespace cin\extLib\exceptions;
 
 
 /**
  * Class HideException 不希望用户看到的异常
- * @package cin\personalLib\exceptions
+ * @package cin\extLib\exceptions
  */
 class HideException extends CinException
 {

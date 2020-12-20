@@ -1,13 +1,13 @@
 <?php
 
 
-namespace cin\personalLib\utils;
+namespace cin\extLib\utils;
 
-use cin\personalLib\interfaces\Arrayable;
+use cin\extLib\interfaces\Arrayable;
 
 /**
  * Class ArrayUtil 数组工具
- * @package cin\personalLib\utils
+ * @package cin\extLib\utils
  */
 class ArrayUtil
 {

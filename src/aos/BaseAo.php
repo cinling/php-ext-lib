@@ -1,14 +1,14 @@
 <?php
 
 
-namespace cin\personalLib\aos;
+namespace cin\extLib\aos;
 
 
-use cin\personalLib\vos\BaseVo;
+use cin\extLib\vos\BaseVo;
 
 /**
  * Class BaseAo 应用对象。有一定逻辑处理的修啊ing
- * @package cin\personalLib\aos
+ * @package cin\extLib\aos
  */
 class BaseAo extends BaseVo {
 
