@@ -14,6 +14,7 @@
         "ext-json": "*",
         "ext-curl": "*",
         "ext-mbstring": "*",
+        "ext-simplexml": "*",
         "phpoffice/phpspreadsheet": "^1.8"
     },
     "autoload": {
@@ -22,5 +23,8 @@
             "src/"
         ]
     },
-    "prefer-stable": true
+    "prefer-stable": true,
+    "require-dev": {
+        "phpunit/phpunit": "5.7.27"
+    }
 }

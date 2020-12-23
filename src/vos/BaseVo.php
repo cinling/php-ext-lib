@@ -6,6 +6,7 @@ namespace cin\extLib\vos;
 use cin\extLib\interfaces\Arrayable;
 use cin\extLib\interfaces\Errorable;
 use cin\extLib\interfaces\Verifiable;
+use cin\extLib\traits\ArraySortTrait;
 use cin\extLib\traits\ErrorTrait;
 use cin\extLib\traits\LabelTrait;
 use cin\extLib\utils\ArrayUtil;
@@ -23,6 +24,7 @@ class BaseVo implements Arrayable, Verifiable, Errorable
 {
     use ErrorTrait;
     use LabelTrait;
+    use ArraySortTrait;
 
     /**
      * @var array 配置
@@ -54,8 +56,18 @@ class BaseVo implements Arrayable, Verifiable, Errorable
     }
 
     /**
+     * @param $xml
+     * @return BaseVo|static
+     */
+    public static function initByXml($xml) {
+        $vo = new static();
+        $vo->loadByXml($xml);
+        return $vo;
+    }
+
+    /**
      * 导出为excel数据
-     * @param string $excelFilename 导出文件名（不包含后缀）
+     * @param string $excelFilename 导出文件名（不包含后缀）。建议不包含特殊的字符，如："[]{},'\"等
      * @param static[] $vos 导出数据
      * @param string $sheetTitle 表格标签的名字（只有一个标签）
      * @param bool $autoSetWidth 自动设置宽度
@@ -259,6 +271,20 @@ class BaseVo implements Arrayable, Verifiable, Errorable
     }
 
     /**
+     * 使用 xml 加载数据
+     * @param $xml
+     */
+    public function loadByXml($xml) {
+        $obj = simplexml_load_string($xml);
+        $arr = ArrayUtil::toArray($obj);
+        foreach ($arr as $prop => $value) {
+            if ($this->hasProp($prop)) {
+                $this->$prop = $value;
+            }
+        }
+    }
+
+    /**
      * 转换为数组
      * @return array
      */
@@ -271,7 +297,9 @@ class BaseVo implements Arrayable, Verifiable, Errorable
                 unset($attrs[$prop]);
             }
         }
-        return ArrayUtil::toArray($attrs);
+        $arr = ArrayUtil::toArray($attrs);
+        $this->sortArray($arr);
+        return $arr;
     }
 
     /**
