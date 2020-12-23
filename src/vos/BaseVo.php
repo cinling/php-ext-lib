@@ -6,7 +6,7 @@ namespace cin\extLib\vos;
 use cin\extLib\interfaces\Arrayable;
 use cin\extLib\interfaces\Errorable;
 use cin\extLib\interfaces\Verifiable;
-use cin\extLib\traits\ArraySortTrait;
+use cin\extLib\traits\PropSortTrait;
 use cin\extLib\traits\ErrorTrait;
 use cin\extLib\traits\LabelTrait;
 use cin\extLib\utils\ArrayUtil;
@@ -24,7 +24,7 @@ class BaseVo implements Arrayable, Verifiable, Errorable
 {
     use ErrorTrait;
     use LabelTrait;
-    use ArraySortTrait;
+    use PropSortTrait;
 
     /**
      * @var array 配置
@@ -147,7 +147,7 @@ class BaseVo implements Arrayable, Verifiable, Errorable
     /**
      * 到處為 excel 數據。可以帶圖片
      * TODO 未完成的方法
-     * @deprecated 咱不可用
+     * @deprecated 暂不可用
      * @param string $excelFilename excel 文件名（導出文件的名字）
      * @param static[] $vos
      * @param string $sheetTitle 默認工作表名字
@@ -297,9 +297,9 @@ class BaseVo implements Arrayable, Verifiable, Errorable
                 unset($attrs[$prop]);
             }
         }
-        $arr = ArrayUtil::toArray($attrs);
-        $this->sortArray($arr);
-        return $arr;
+        $array = ArrayUtil::toArray($attrs);
+        $this->arrayPropSort($array);
+        return $array;
     }
 
     /**

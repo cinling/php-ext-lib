@@ -14,7 +14,7 @@ class VoTest extends TestCase {
      */
     public function sort() {
         $vo = new SortTestVo();
-        $this->assertEquals(["a" => 1, "b" => 2], $vo->toArray());
+        $this->assertEquals(["a" => 1, "b" => 2, "c" => 3], $vo->toArray());
     }
 }
 
@@ -22,6 +22,7 @@ class VoTest extends TestCase {
  * Class SortTestVo
  */
 class SortTestVo extends BaseVo {
+    public $c = 3;
     public $b = 2;
     public $a = 1;
 
