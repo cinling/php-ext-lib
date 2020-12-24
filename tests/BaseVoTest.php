@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Class VoTest 模型对象测试
  */
-class VoTest extends TestCase {
+class BaseVoTest extends TestCase {
 
     /**
      * @test
