@@ -4,7 +4,7 @@
 namespace cin\extLib\vos\api\sqb;
 
 
-use cin\extLib\vos\BaseVo;
+use cin\extLib\vos\api\BaseRequest;
 
 /**
  * Class SqbPayRequest 收钱吧支付接口请求参数
@@ -12,7 +12,7 @@ use cin\extLib\vos\BaseVo;
  *
  * @see https://doc.shouqianba.com/zh-cn/api/interface/pay.html 文档链接
  */
-class SqbPayRequest extends BaseVo {
+class SqbPayRequest extends BaseRequest {
 
     /**
      * @var string 收钱吧终端ID

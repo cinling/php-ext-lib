@@ -3,9 +3,12 @@
 
 namespace cin\extLib\services;
 
+use cin\extLib\consts\Wechat;
+use cin\extLib\traits\ApiTractLogTrait;
 use cin\extLib\traits\SingleTrait;
 use cin\extLib\utils\HttpUtil;
 use cin\extLib\utils\JsonUtil;
+use cin\extLib\vos\api\wechat\WechatAccessTokenRequest;
 use cin\extLib\vos\api\wechat\WxJsSdkAccessTokenResponse;
 use cin\extLib\vos\config\WechatConfVo;
 
@@ -15,55 +18,29 @@ use cin\extLib\vos\config\WechatConfVo;
  */
 class WechatService {
     use SingleTrait;
-
-    /**
-     * 获取 access_token 的请求地址
-     */
-    const UrlAccessToken = "https://api.weixin.qq.com/cgi-bin/token";
-    /**
-     * 获取 js-sdk access_token 的请求地址
-     *  https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=APPID&grant_type=refresh_token&refresh_token=REFRESH_TOKEN
-     */
-    const UrlJsSdkAccessToken = "https://api.weixin.qq.com/sns/oauth2/access_token";
-    /**
-     * 刷新 access_token 的请求地址
-     *  https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=APPID&grant_type=refresh_token&refresh_token=REFRESH_TOKEN
-     */
-    const UrlRefreshToken = "https://api.weixin.qq.com/sns/oauth2/refresh_token";
-    /**
-     * 获取用户信息请求地址（只接受 GET 请求）
-     *  https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
-     */
-    const UrlUserinfo = "https://api.weixin.qq.com/sns/userinfo";
-    /**
-     * 获取 jsapi_token
-     *  GET https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi
-     */
-    const UrlGetTicket = "https://api.weixin.qq.com/cgi-bin/ticket/getticket";
-    /**
-     * 获取媒体接口
-     */
-    const UrlMediaGet = "https://api.weixin.qq.com/cgi-bin/media/get";
+    use ApiTractLogTrait;
 
     /**
      * @var WechatConfVo 微信公众号配置
      */
-    protected $conf;
+    private $conf;
 
     /**
-     * @param WechatConfVo $confVo 设置微信公众号配置
+     * WechatService constructor.
      */
-    protected function setAppConf(WechatConfVo $confVo) {
-        $this->conf = $confVo;
+    protected function __construct() {
+        $this->conf = new WechatConfVo();
+        $this->setBaseApiConfVo($this->conf);
     }
 
     /**
      * 请求获取 js-sdk 的 access_token 的接口（这里的 access_token 和 公众号的 access_token 不同）
+     * @see https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Wechat_webpage_authorization.html#1
      * @param string $code 客户端 jscode
      * @return WxJsSdkAccessTokenResponse
      */
-    private function requestSns_oauth2_accessToken($code) {
-        $url = self::UrlJsSdkAccessToken;
+    protected function requestSns_oauth2_accessToken() {
+        $url = Wechat::UrlJsSdkAccessToken;
         $params = [
             "appid" => $this->conf->appId,
             "secret" => $this->conf->appSecret,
@@ -86,7 +63,7 @@ class WechatService {
 //     * @return WxRefreshTokenResponse
 //     */
 //    private function requestSns_oauth2_refreshToken($refreshToken) {
-//        $url = self::UrlRefreshToken;
+//        $url = Wechat::UrlRefreshToken;
 //        $params = [
 //            "appid" => $this->config->appid,
 //            "grant_type" => "refresh_token",
@@ -109,7 +86,7 @@ class WechatService {
 //     * @return WxUserinfoResponse
 //     */
 //    private function requestSns_userinfo($accessToken, $openid, $lang = "zh_CN") {
-//        $url = self::UrlUserinfo . "?access_token=" . $accessToken . "&openid=" . $openid . "&lang=" . $lang;
+//        $url = Wechat::UrlUserinfo . "?access_token=" . $accessToken . "&openid=" . $openid . "&lang=" . $lang;
 //        $json = HttpUtil::get($url);
 //        LogService::getIns()->trace(JsonUtil::encode([
 //            "url" => $url,
@@ -124,7 +101,7 @@ class WechatService {
 //     * @return WxGetTicketResponse
 //     */
 //    private function requestCgiBin_ticket_getTicket($accessToken) {
-//        $url = self::UrlGetTicket . "?access_token=" . $accessToken . "&type=jsapi";
+//        $url = Wechat::UrlGetTicket . "?access_token=" . $accessToken . "&type=jsapi";
 //        $json = HttpUtil::get($url);
 //        LogService::getIns()->trace(JsonUtil::encode([
 //            "url" => $url,
@@ -137,7 +114,7 @@ class WechatService {
 //     * 获取 access_token
 //     */
 //    private function requestCgiBin_token() {
-//        $url = self::UrlAccessToken . "?grant_type=client_credential&appid=" . $this->config->appid . "&secret=" . $this->config->appsecret;
+//        $url = Wechat::UrlAccessToken . "?grant_type=client_credential&appid=" . $this->config->appid . "&secret=" . $this->config->appsecret;
 //        $json = HttpUtil::get($url);
 //        LogService::getIns()->trace(JsonUtil::encode([
 //            "url" => $url,
@@ -153,7 +130,7 @@ class WechatService {
 //     * @return WxMediaGetResponse
 //     */
 //    private function requestCgiBin_media_get($accessToken, $mediaId) {
-//        $url = self::UrlMediaGet . "?access_token=" . $accessToken . "&media_id=" . $mediaId;
+//        $url = Wechat::UrlMediaGet . "?access_token=" . $accessToken . "&media_id=" . $mediaId;
 //        $res = HttpUtil::get($url);
 //
 //

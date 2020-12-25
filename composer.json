@@ -25,6 +25,8 @@
     },
     "prefer-stable": true,
     "require-dev": {
-        "phpunit/phpunit": "5.7.27"
+        "phpunit/phpunit": "5.7.27",
+        "symfony/yaml": "v3.4.47",
+        "doctrine/instantiator": "1.0.5"
     }
 }

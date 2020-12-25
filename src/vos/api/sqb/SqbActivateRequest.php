@@ -4,13 +4,13 @@
 namespace cin\extLib\vos\api\sqb;
 
 
-use cin\extLib\vos\BaseVo;
+use cin\extLib\vos\api\BaseRequest;
 
 /**
  * Class SqbActivateRequest
  * @package cin\extLib\vos\api\sqb
  */
-class SqbActivateRequest extends BaseVo {
+class SqbActivateRequest extends BaseRequest {
 
     /**
      * @var string app_id，从开发者平台获取

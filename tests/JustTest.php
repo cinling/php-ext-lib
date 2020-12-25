@@ -8,10 +8,10 @@ use PHPUnit\Framework\TestCase;
  */
 class JustTest extends TestCase {
 
-
     /**
+     * 临时测试代码
      */
-    public function run1() {
-        echo \cin\extLib\utils\HttpUtil::get("http://crm.local/mini/ApiConnect/getCollPromFulLVo", ["prom_id" => 1]);
+    public function test() {
+        $this->assertEquals(1, 2);
     }
 }

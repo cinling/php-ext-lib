@@ -7,6 +7,7 @@ namespace cin\extLib\services;
 use cin\extLib\consts\FileCacheKey;
 use cin\extLib\consts\Sqb;
 use cin\extLib\exceptions\ApiException;
+use cin\extLib\traits\ApiTractLogTrait;
 use cin\extLib\traits\SingleTrait;
 use cin\extLib\utils\HttpUtil;
 use cin\extLib\utils\JsonUtil;
@@ -28,34 +29,20 @@ use cin\extLib\vos\config\SqbConfVo;
  */
 class SqbService {
     use SingleTrait;
+    use ApiTractLogTrait;
 
 
     /**
      * @var SqbConfVo
      */
-    protected $confVo;
+    protected $conf;
 
     /**
      * SqbService constructor.
      */
     protected function __construct() {
-        $this->confVo = new SqbConfVo();
-    }
-
-    /**
-     * @param $title
-     * @param $url
-     * @param $params
-     * @param $response
-     */
-    protected function log($title, $url, $params, $response) {
-        if ($this->confVo->isLogTrace) {
-            LogService::getIns()->trace(JsonUtil::encode([
-                "url" => $url,
-                "params" => $params,
-                "response" => $response,
-            ]), $title);
-        }
+        $this->conf = new SqbConfVo();
+        $this->setBaseApiConfVo($this->conf);
     }
 
     /**
@@ -70,46 +57,74 @@ class SqbService {
 
     /**
      * 请求激活接口
-     * @param SqbActivateRequest $request
      * @return SqbActivateResponse
      * @throws ApiException
      */
-    protected function requestTerminal_activate(SqbActivateRequest $request) {
-        $url = $this->confVo->apiDomain . Sqb::UrlActivate;
+    protected function requestTerminal_activate() {
+        $url = $this->conf->apiDomain . Sqb::UrlActivate;
+        $request = new SqbActivateRequest();
+        $request->app_id = $this->conf->appId;
+        $request->code = $this->conf->code;
+        $request->device_id = $this->conf->deviceId;
         $params = $request->toArray();
         $authorization = $this->getAuthorizationHeaderItem(JsonUtil::encode($params));
         $json = HttpUtil::post($url, $params, [$authorization, "Content-type:application/json"]);
-        $this->log("请求：收钱吧-激活", $url, $params, $json);
+        $this->apiTractLog("请求：收钱吧-激活", $url, $params, $json);
         return SqbActivateResponse::initByJson($json);
     }
 
     /**
      * 请求签到接口
-     * @param SqbCheckinRequest $request
      * @return SqbCheckinResponse
      * @throws ApiException
      */
-    protected function requestTerminal_checkin(SqbCheckinRequest $request) {
-        $url = $this->confVo->apiDomain . Sqb::UrlCheckin;
+    protected function requestTerminal_checkin() {
+        $url = $this->conf->apiDomain . Sqb::UrlCheckin;
+        $request = new SqbCheckinRequest();
+        $request->terminal_sn = $this->getTerminalSn();
+        $request->device_id = $this->conf->deviceId;
         $params = $request->toArray();
         $authorization = $this->getAuthorizationHeaderItem(JsonUtil::encode($params));
         $json = HttpUtil::post($url, $params, [$authorization, "Content-type:application/json"]);
-        $this->log("请求：收钱吧-签到", $url, $params, $json);
+        $this->apiTractLog("请求：收钱吧-签到", $url, $params, $json);
         return SqbCheckinResponse::initByJson($json);
     }
 
     /**
      * 请求支付接口
-     * @param SqbPayRequest $request
+     * @param $sn
+     * @param $totalAmount
+     * @param $subject
+     * @param $dynamicId
+     * @param null $payway
+     * @param array $goodsDetails
+     * @param string $operator
+     * @param array $extParams
      * @return SqbPayResponse
      * @throws ApiException
      */
-    protected function requestUpay_v2_pay(SqbPayRequest $request) {
-        $url = $this->confVo->apiDomain . Sqb::UrlPay;
+    protected function requestUpay_v2_pay($sn, $totalAmount, $subject, $dynamicId, $payway = null, array $goodsDetails = [], $operator = "", $extParams = []) {
+        if (empty($operator)) {
+            $operator = $this->conf->defaultOperator;
+        }
+
+        $request = new SqbPayREquest();
+        $request->terminal_sn = $this->getTerminalSn();
+        $request->client_sn = $sn;
+        $request->total_amount = $totalAmount;
+        $request->subject = $subject;
+        $request->dynamic_id = $dynamicId;
+        $request->payway = $payway;
+        $request->goods_details = $goodsDetails;
+        $request->operator = $operator;
+        $request->notify_url = $this->conf->notifyUrl;
+        $request->setExtParams($extParams);
+
+        $url = $this->conf->apiDomain . Sqb::UrlPay;
         $params = $request->toArray();
         $authorization = $this->getAuthorizationHeaderItem(JsonUtil::encode($params));
         $json = HttpUtil::post($url, $params, [$authorization, "Content-type:application/json"]);
-        $this->log("请求：收钱吧-支付", $url, $params, $json);
+        $this->apiTractLog("请求：收钱吧-支付", $url, $params, $json);
         return SqbPayResponse::initByJson($json);
     }
 
@@ -123,11 +138,7 @@ class SqbService {
 
         $terminalSn = $fileCacheSrv->get(FileCacheKey::SqbTerminalSn);
         if (empty($terminalSn)) {
-            $request = new SqbActivateRequest();
-            $request->app_id = $this->confVo->appId;
-            $request->code = $this->confVo->code;
-            $request->device_id = $this->confVo->deviceId;
-            $response = $this->requestTerminal_activate($request);
+            $response = $this->requestTerminal_activate();
             if ($response->hasError()) {
                 throw new ApiException($response->result_code);
             }
@@ -151,10 +162,7 @@ class SqbService {
 
         $terminalKey = $fileCacheSrv->get(FileCacheKey::SqbTerminalKey);
         if (empty($terminalKey)) {
-            $request = new SqbCheckinRequest();
-            $request->terminal_sn = $this->getTerminalSn();
-            $request->device_id = $this->confVo->deviceId;
-            $response = $this->requestTerminal_checkin($request);
+            $response = $this->requestTerminal_checkin();
             if ($response->hasError()) {
                 throw new ApiException($response->result_code);
             }
@@ -163,41 +171,5 @@ class SqbService {
             $fileCacheSrv->set(FileCacheKey::SqbTerminalKey, $terminalKey, $duration);
         }
         return $terminalKey;
-    }
-
-    /**
-     * 调用支付
-     * @param string $sn 订单编号
-     * @param string $totalAmount 总金额
-     * @param string $subject 交易简要概述（如购买了什么商品、服务）
-     * @param string $dynamicId 条码内容
-     * @param string $payway 支付方式
-     * @param SqbPayGoodsDetailVo[] $goodsDetails 商品详情
-     * @param string $operator 操作员
-     * @return SqbPayResponse
-     * @throws ApiException
-     */
-    public function pay($sn, $totalAmount, $subject, $dynamicId, $payway = null, array $goodsDetails = [], $operator = "") {
-        if (empty($operator)) {
-            $operator = $this->confVo->defaultOperator;
-        }
-
-        $request = new SqbPayREquest();
-        $request->terminal_sn = $this->getTerminalSn();
-        $request->client_sn = $sn;
-        $request->total_amount = $totalAmount;
-        $request->subject = $subject;
-        $request->dynamic_id = $dynamicId;
-        $request->payway = $payway;
-        $request->goods_details = $goodsDetails;
-        $request->operator = $operator;
-        $request->notify_url = $this->confVo->notifyUrl;
-
-        $response = $this->requestUpay_v2_pay($request);
-        if ($request->hasError()) {
-            throw new ApiException($response->error_message);
-        }
-
-        return $response;
     }
 }

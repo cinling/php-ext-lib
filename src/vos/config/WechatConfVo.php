@@ -10,7 +10,7 @@ use cin\extLib\vos\BaseVo;
  * Class WechatConfVo
  * @package cin\extLib\vos\config
  */
-class WechatConfVo extends BaseVo {
+class WechatConfVo extends BaseApiConfVo {
     /**
      * @var string 公众号 appid
      */

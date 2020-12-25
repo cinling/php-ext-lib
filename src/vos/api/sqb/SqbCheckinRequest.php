@@ -4,13 +4,13 @@
 namespace cin\extLib\vos\api\sqb;
 
 
-use cin\extLib\vos\BaseVo;
+use cin\extLib\vos\api\BaseRequest;
 
 /**
  * Class SqbCheckinRequest
  * @package cin\extLib\vos\api\sqb
  */
-class SqbCheckinRequest extends BaseVo {
+class SqbCheckinRequest extends BaseRequest {
 
     /**
      * @var string 终端id
