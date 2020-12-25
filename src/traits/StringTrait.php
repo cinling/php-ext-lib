@@ -59,4 +59,14 @@ trait StringTrait {
     public static function isBase64($str) {
         return $str == base64_encode(base64_decode($str));
     }
+
+    /**
+     * 判断字符串冲是否又某字符
+     * @param string $origin 源字符串
+     * @param string $search 搜索的字符串
+     * @return bool
+     */
+    public static function has($origin, $search) {
+        return strpos($origin, $search) !== false;
+    }
 }

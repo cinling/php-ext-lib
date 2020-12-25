@@ -135,7 +135,10 @@ class TimeUtil
      * @param int $stamp
      * @return int
      */
-    public static function getDateStart($stamp) {
+    public static function getDateStart($stamp = null) {
+        if ($stamp === null) {
+            $stamp = time();
+        }
         $date = self::toDate($stamp);
         return strtotime($date);
     }
@@ -145,7 +148,10 @@ class TimeUtil
      * @param $stamp
      * @return int
      */
-    public static function getDatEnd($stamp) {
+    public static function getDatEnd($stamp = null) {
+        if ($stamp === null) {
+            $stamp = time();
+        }
         $stamp = self::nextDateStamp($stamp, 1, true);
         return $stamp - 1;
     }
