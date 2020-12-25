@@ -17,4 +17,21 @@ class FileCacheKey {
      * 收钱吧-终端密钥
      */
     const SqbTerminalKey = "CinSqbTerminalKey";
+
+    /**
+     * 微信公众号（js-sdk）-access_token
+     */
+    const WechatAccessToken = "CinWechatAccessToken";
+    /**
+     * 微信公众号（js-sdk）-jsapi 的 access_token
+     */
+    const WechatOpenidJsSdkAccessToken = "CinWechatOpenidJsSdkAccessToken";
+    /**
+     * 微信公众号（js-sdk）-jsapi 的 refresh_token
+     */
+    const WechatOpenidJsSdkRefreshToken = "CinWechatOpenidJsSdkRefreshToken";
+    /**
+     * 微信公众号（js-sdk）-jsapi_ticket
+     */
+    const OpenidJsapiTicket = "CinOpenidJsapiTicket";
 }

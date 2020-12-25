@@ -69,4 +69,19 @@ trait StringTrait {
     public static function has($origin, $search) {
         return strpos($origin, $search) !== false;
     }
+
+    /**
+     * 获取随机字符串
+     * @param $length
+     * @param string $charts
+     * @return string
+     */
+    public static function randStr($length, $charts = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLOMNOPQRSTUVWXYZ") {
+        $chartsMaxIndex = strlen($charts) - 1;
+        $str = "";
+        for ($i = 0; $i < $length; $i++) {
+            $str .= $charts[rand(0, $chartsMaxIndex)];    //生成php随机数
+        }
+        return $str;
+    }
 }

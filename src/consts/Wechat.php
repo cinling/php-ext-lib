@@ -36,4 +36,16 @@ class Wechat {
      * 获取媒体接口
      */
     const UrlMediaGet = "https://api.weixin.qq.com/cgi-bin/media/get";
+
+
+    const ErrorCodeOK = 0;
+    const ErrorCodeIllegalAesKey = -41001;
+    const ErrorCodeIllegalIv = -41002;
+    const ErrorCodeIllegalBuffer = -41003;
+    const ErrorCodeDecodeBase64Error = -41004;
+
+    /**
+     * 微信接口错误码：AccessToken 超时
+     */
+    const ErrorCodeAccessTokenExpired = 42001;
 }

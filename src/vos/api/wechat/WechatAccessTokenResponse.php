@@ -17,7 +17,7 @@ namespace cin\extLib\vos\api\wechat;
  *
  * @package cin\extLib\vos\api\wechat
  */
-class WxJsSdkAccessTokenResponse extends BaseWxResponse {
+class WechatAccessTokenResponse extends BaseWechatResponse {
     /**
      * @var string 网页授权接口调用凭证,注意：此access_token与基础支持的access_token不同
      */

@@ -231,6 +231,9 @@ class BaseVo implements Arrayable, Verifiable, Errorable
      */
     public static function initByJson($json) {
         $row = JsonUtil::decode($json);
+        if (!is_array($row)) {
+            $row = [];
+        }
         return static::init($row);
     }
 

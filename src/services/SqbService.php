@@ -46,47 +46,53 @@ class SqbService {
     }
 
     /**
-     * 获取签名 Header 内容
+     * 生成签名 Header 内容
      * @param string $paramsJson 请求参数的json字符串
+     * @param string $sn 服务商序号 或 终端序号
+     * @param string $key 服务商密钥 或 终端key
      * @return string
-     * @throws ApiException
      */
-    protected function getAuthorizationHeaderItem($paramsJson) {
-        return "Authorization:sn " . md5($paramsJson . $this->getTerminalSn());
+    protected function genAuthorizationHeaderItem($paramsJson, $sn, $key) {
+        return "Authorization:" . $sn . " " . md5( $paramsJson . $key);
     }
 
     /**
      * 请求激活接口
+     * @param array $extParams 额外的请求参数
      * @return SqbActivateResponse
-     * @throws ApiException
      */
-    protected function requestTerminal_activate() {
+    protected function requestTerminal_activate($extParams = []) {
         $url = $this->conf->apiDomain . Sqb::UrlActivate;
         $request = new SqbActivateRequest();
         $request->app_id = $this->conf->appId;
         $request->code = $this->conf->code;
         $request->device_id = $this->conf->deviceId;
+        $request->setExtParams($extParams);
         $params = $request->toArray();
-        $authorization = $this->getAuthorizationHeaderItem(JsonUtil::encode($params));
+        $authorization = $this->genAuthorizationHeaderItem(JsonUtil::encode($params), $this->conf->vendorSn, $this->conf->vendorKey);
         $json = HttpUtil::post($url, $params, [$authorization, "Content-type:application/json"]);
-        $this->apiTractLog("请求：收钱吧-激活", $url, $params, $json);
+        $this->apiTractLog("收钱吧-激活", $url, $params, $json);
         return SqbActivateResponse::initByJson($json);
     }
 
     /**
      * 请求签到接口
+     * @param array $extParams 额外的请求参数
      * @return SqbCheckinResponse
      * @throws ApiException
      */
-    protected function requestTerminal_checkin() {
+    protected function requestTerminal_checkin($extParams = []) {
+        $terminalSn = $this->getTerminalSn();
+
         $url = $this->conf->apiDomain . Sqb::UrlCheckin;
         $request = new SqbCheckinRequest();
-        $request->terminal_sn = $this->getTerminalSn();
+        $request->terminal_sn = $terminalSn;
         $request->device_id = $this->conf->deviceId;
+        $request->setExtParams($extParams);
         $params = $request->toArray();
-        $authorization = $this->getAuthorizationHeaderItem(JsonUtil::encode($params));
+        $authorization = $this->genAuthorizationHeaderItem(JsonUtil::encode($params), $terminalSn, $this->getTerminalKey());
         $json = HttpUtil::post($url, $params, [$authorization, "Content-type:application/json"]);
-        $this->apiTractLog("请求：收钱吧-签到", $url, $params, $json);
+        $this->apiTractLog("收钱吧-签到", $url, $params, $json);
         return SqbCheckinResponse::initByJson($json);
     }
 
@@ -99,7 +105,7 @@ class SqbService {
      * @param null $payway
      * @param array $goodsDetails
      * @param string $operator
-     * @param array $extParams
+     * @param array $extParams 额外的请求参数
      * @return SqbPayResponse
      * @throws ApiException
      */
@@ -122,9 +128,9 @@ class SqbService {
 
         $url = $this->conf->apiDomain . Sqb::UrlPay;
         $params = $request->toArray();
-        $authorization = $this->getAuthorizationHeaderItem(JsonUtil::encode($params));
+        $authorization = $this->genAuthorizationHeaderItem(JsonUtil::encode($params), $this->getTerminalSn(), $this->getTerminalKey());
         $json = HttpUtil::post($url, $params, [$authorization, "Content-type:application/json"]);
-        $this->apiTractLog("请求：收钱吧-支付", $url, $params, $json);
+        $this->apiTractLog("收钱吧-支付", $url, $params, $json);
         return SqbPayResponse::initByJson($json);
     }
 
@@ -162,7 +168,7 @@ class SqbService {
 
         $terminalKey = $fileCacheSrv->get(FileCacheKey::SqbTerminalKey);
         if (empty($terminalKey)) {
-            $response = $this->requestTerminal_checkin();
+            $response = $this->requestTerminal_checkin($this->getTerminalSn());
             if ($response->hasError()) {
                 throw new ApiException($response->result_code);
             }

@@ -21,6 +21,14 @@ class SqbConfVo extends BaseApiConfVo {
      */
     public $appId;
     /**
+     * @var string 服务商序列号
+     */
+    public $vendorSn;
+    /**
+     * @var string 服务商密钥
+     */
+    public $vendorKey;
+    /**
      * @var string 激活码内容
      */
     public $code;

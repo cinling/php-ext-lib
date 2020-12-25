@@ -33,4 +33,12 @@ class BaseRequest extends BaseVo {
         $attrs = ArrayUtil::merge($attrs, $this->__extParams);
         return $attrs;
     }
+
+    /**
+     * 转换为get参数
+     * @return string
+     */
+    public function toGetParams() {
+        return http_build_query($this->toArray());
+    }
 }
