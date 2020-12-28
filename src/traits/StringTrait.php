@@ -4,23 +4,55 @@
 namespace cin\extLib\traits;
 
 
+/**
+ * Trait StringTrait 字符串工具插件
+ * @package cin\extLib\traits
+ */
 trait StringTrait {
+
     /**
+     * 字符串是否以某串开始
+     * @param string $origin 原字符串
+     * @param string $start 字符串开头的部分
+     * @return bool
+     */
+    public static function startWith($origin, $start) {
+        return strpos($origin, $start) === 0;
+
+    }
+
+    /**
+     * 字符串是否以某串结束
+     * @param string $origin 原字符串
+     * @param $end $start 字符串结尾的部分
+     * @return bool
+     */
+    public static function endWith($origin, $end) {
+        $originLen = mb_strlen($origin);
+        $endLen = mb_strlen($end);
+        return substr($origin, $originLen - $endLen) === $end;
+    }
+
+    /**
+     * @deprecated 命名错误。将在 v3.0.0 后移除
+     * @see StringTrait::endWith() 替代方法
+     *
      * @param string $origin 原字符串
      * @param string $start 字符串开头的部分
      * @return bool
      */
     public static function startWidth($origin, $start) {
-        return strpos($origin, $start) === 0;
+        return static::startWith($origin, $start);
     }
 
     /**
+     * @deprecated 命名错误。将在 v3.0.0 后移除
      * @param string $origin 原字符串
      * @param $end $start 字符串结尾的部分
      * @return bool
      */
     public static function endWidth($origin, $end) {
-        return substr($origin, strpos($origin, $end)) === $end;
+        return static::endWith($origin, $end);
     }
 
     /**
@@ -83,5 +115,39 @@ trait StringTrait {
             $str .= $charts[rand(0, $chartsMaxIndex)];    //生成php随机数
         }
         return $str;
+    }
+
+    /**
+     * 去除左侧的字符
+     * @param string $string
+     * @param string $trim
+     * @param bool $recursive
+     * @return string
+     */
+    public static function trimLeft($string, $trim = " ", $recursive = true) {
+        if (static::startWith($string, $trim)) {
+            $string = mb_substr($string, mb_strlen($trim));
+            if ($recursive) {
+                $string = static::trimLeft($string, $trim, $recursive);
+            }
+        }
+        return $string;
+    }
+
+    /**
+     * 去除右侧的字符
+     * @param string $string
+     * @param string $trim
+     * @param bool $recursive
+     * @return string
+     */
+    public static function trimRight($string, $trim = " ", $recursive = true) {
+        if (static::endWith($string, $trim)) {
+            $string = mb_substr($string, 0, mb_strlen($string) - mb_strlen($trim));
+            if ($recursive) {
+                $string = static::trimRight($string, $trim, $recursive);
+            }
+        }
+        return $string;
     }
 }
