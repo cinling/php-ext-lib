@@ -28,4 +28,15 @@ class ConsoleUtil {
     {
         return fwrite(STDOUT, $string);
     }
+
+    public static function process() {
+        $count = 100;
+        for ($i = 1; $i <= 100; $i++) {
+            usleep(50000);
+            //str_repeat 函数的作用是重复这个符号多少次
+            $equalStr = str_repeat("=", $i);
+            $space    = str_repeat(" ", $count - $i);
+            echo("\r [$equalStr>$space]($i/$count%)");
+        }
+    }
 }

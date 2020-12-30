@@ -21,7 +21,6 @@ class JustTest extends TestCase {
     }
 
     public function test2() {
-        echo Child1::class;
     }
 }
 
