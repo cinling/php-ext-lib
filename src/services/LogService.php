@@ -70,13 +70,13 @@ class LogService {
      * @param string $content
      */
     protected function base($level, $title, $content) {
-        $filePath = $this->confVo->path . "/cin-LogService.log";
+        $filePath = $this->confVo->path . "/cin.log";
         if (file_exists($filePath) && filesize($filePath) > $this->confVo->fileMaxSize) {
-            $bakFilePath = $this->confVo->path . "/cin-LogService-" . TimeUtil::stamp() . ".log";
+            $bakFilePath = $this->confVo->path . "/cin_" . date("Ymd_His") . ".log";
             rename($filePath, $bakFilePath);
         }
 
-        $writeContent = "[" . TimeUtil::datetime() . " " . $level . " " . $title . "] " . $content . PHP_EOL;
+        $writeContent = "[" . TimeUtil::toDatetime() . " " . $level . " " . $title . "] " . $content . PHP_EOL;
         file_put_contents($filePath, $writeContent, FILE_APPEND | LOCK_EX);
     }
 

@@ -5,6 +5,7 @@ namespace cin\extLib\traits;
 
 use cin\extLib\interfaces\IBaseApiConfVo;
 use cin\extLib\services\LogService;
+use cin\extLib\utils\ArrayUtil;
 use cin\extLib\utils\JsonUtil;
 
 /**
@@ -30,14 +31,15 @@ trait ApiTractLogTrait {
      * @param string $url
      * @param mixed $params
      * @param string $response
+     * @param array $ext 额外的记录数据
      */
-    protected function apiTractLog($title, $url, $params, $response) {
+    protected function apiTractLog($title, $url, $params, $response, $ext = []) {
         if ($this->baseApiConfVo->isLogTrace()) {
-            LogService::getIns()->trace(JsonUtil::encode([
+            LogService::getIns()->trace(JsonUtil::encode(ArrayUtil::merge([
                 "url" => $url,
                 "params" => $params,
-                "response" => $response,
-            ]), "API：" . $title);
+                "response" => $response
+            ], $ext)), "API：" . $title);
         }
     }
 }

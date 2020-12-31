@@ -17,6 +17,10 @@ class SqbActivateResponse extends BaseVo {
      */
     public $result_code;
     /**
+     * @var string 错误代码
+     */
+    public $error_code;
+    /**
      * @var SqbBizResponse
      */
     public $biz_response;

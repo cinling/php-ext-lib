@@ -24,8 +24,6 @@ use cin\extLib\vos\config\SqbConfVo;
 /**
  * Class SqbService 收钱吧接口服务
  * @package cin\extLib\services
- *
- * @deprecated 暂未测试
  */
 class SqbService {
     use SingleTrait;
@@ -128,6 +126,9 @@ class SqbService {
 
         $url = $this->conf->apiDomain . Sqb::UrlPay;
         $params = $request->toArray();
+        foreach ($params as $key => $value) {
+            unset($params[$key]);
+        }
         $authorization = $this->genAuthorizationHeaderItem(JsonUtil::encode($params), $this->getTerminalSn(), $this->getTerminalKey());
         $json = HttpUtil::post($url, $params, [$authorization, "Content-type:application/json"]);
         $this->apiTractLog("收钱吧-支付", $url, $params, $json);
@@ -146,7 +147,7 @@ class SqbService {
         if (empty($terminalSn)) {
             $response = $this->requestTerminal_activate();
             if ($response->hasError()) {
-                throw new ApiException($response->result_code);
+                throw new ApiException($response->error_code);
             }
             $terminalSn = $response->biz_response->terminal_sn;
             $terminalKey = $response->biz_response->terminal_key;
