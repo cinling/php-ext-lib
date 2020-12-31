@@ -126,9 +126,6 @@ class SqbService {
 
         $url = $this->conf->apiDomain . Sqb::UrlPay;
         $params = $request->toArray();
-        foreach ($params as $key => $value) {
-            unset($params[$key]);
-        }
         $authorization = $this->genAuthorizationHeaderItem($params, $this->getTerminalSn(), $this->getTerminalKey());
         $json = HttpUtil::post($url, $params, [$authorization, "Content-type:application/json"]);
         $this->apiTractLog("收钱吧-支付", $url, $params, $json);
