@@ -4,7 +4,6 @@
 namespace cin\extLib\traits;
 
 
-use cin\extLib\utils\TimeUtil;
 use Closure;
 
 /**
@@ -207,7 +206,7 @@ trait TimeTrait {
      * @param $stamp
      * @return int
      */
-    public static function getDatEnd($stamp = null) {
+    public static function getDateEnd($stamp = null) {
         $stamp = static::parseStamp($stamp);
         $stamp = self::nextDay($stamp, 1);
         $stamp = static::getDateStart($stamp);

@@ -9,6 +9,6 @@
         </testsuite>
     </testsuites>
     <logging>
-        <log type="testdox-text" target="tmp/log.txt" />
+        <log type="testdox-text" target="tests.log" />
     </logging>
 </phpunit>

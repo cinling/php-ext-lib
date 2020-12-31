@@ -152,7 +152,7 @@ class SqbService {
             $terminalKey = $response->biz_response->terminal_key;
             // 缓存信息
             $fileCacheSrv->set(FileCacheKey::SqbTerminalSn, $terminalSn);
-            $duration = TimeUtil::getDatEnd() - time(); // 有效时间是今天的 23:59:59
+            $duration = TimeUtil::getDateEnd() - time(); // 有效时间是今天的 23:59:59
             $fileCacheSrv->set(FileCacheKey::SqbTerminalKey, $terminalKey, $duration);
         }
         return $terminalSn;
@@ -172,7 +172,7 @@ class SqbService {
             if ($response->hasError()) {
                 throw new ApiException($response->result_code);
             }
-            $duration = TimeUtil::getDatEnd() - time(); // 有效时间是今天的 23:59:59
+            $duration = TimeUtil::getDateEnd() - time(); // 有效时间是今天的 23:59:59
             $terminalKey = $response->biz_response->terminal_key;
             $fileCacheSrv->set(FileCacheKey::SqbTerminalKey, $terminalKey, $duration);
         }

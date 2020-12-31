@@ -115,7 +115,7 @@ class TimeTraitTest extends TestCase {
      * @test
      */
     public function getDateEnd() {
-        $this->assertEquals("2020-12-12 23:59:59", TimeTrait::toDatetime(TimeTrait::getDatEnd("2020-12-12 12:11:22")));
+        $this->assertEquals("2020-12-12 23:59:59", TimeTrait::toDatetime(TimeTrait::getDateEnd("2020-12-12 12:11:22")));
     }
 
 }
