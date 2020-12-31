@@ -95,8 +95,8 @@ class SqbService {
     }
 
     /**
-     * 请求支付接口
-     * @param $sn
+     * 支付接口。需要客户提供付款二维码（条形码）
+     * @param $clientSn
      * @param $totalAmount
      * @param $subject
      * @param $dynamicId
@@ -107,14 +107,14 @@ class SqbService {
      * @return SqbPayResponse
      * @throws ApiException
      */
-    protected function requestUpay_v2_pay($sn, $totalAmount, $subject, $dynamicId, $payway = null, array $goodsDetails = [], $operator = "", $extParams = []) {
+    protected function requestUpay_v2_pay($clientSn, $totalAmount, $subject, $dynamicId, $payway = null, array $goodsDetails = [], $operator = "", $extParams = []) {
         if (empty($operator)) {
             $operator = $this->conf->defaultOperator;
         }
 
         $request = new SqbPayREquest();
         $request->terminal_sn = $this->getTerminalSn();
-        $request->client_sn = $sn;
+        $request->client_sn = $clientSn;
         $request->total_amount = $totalAmount;
         $request->subject = $subject;
         $request->dynamic_id = $dynamicId;
@@ -130,6 +130,25 @@ class SqbService {
         $json = HttpUtil::post($url, $params, [$authorization, "Content-type:application/json"]);
         $this->apiTractLog("收钱吧-支付", $url, $params, $json);
         return SqbPayResponse::initByJson($json);
+    }
+
+    /**
+     * 预付款
+     * @deprecated TODO 未处理
+     * @see https://doc.shouqianba.com/zh-cn/api/interface/precreate.html 文档地址
+     * @param $clientSn
+     * @param $totalAmount
+     * @param $subject
+     * @param $payway
+     * @param string $subPayway
+     * @param array $goodsDetail
+     * @param string $operator
+     * @param array $extParams
+     */
+    protected function requestUpay_v2_precreate($clientSn, $totalAmount, $subject, $payway, $subPayway = Sqb::PreCreateSubPayWayWap, array $goodsDetail = [], $operator = "", $extParams = []) {
+        if (empty($operator)) {
+            $operator = $this->conf->defaultOperator;
+        }
     }
 
     /**
