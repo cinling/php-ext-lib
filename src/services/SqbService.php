@@ -45,13 +45,13 @@ class SqbService {
 
     /**
      * 生成签名 Header 内容
-     * @param string $paramsJson 请求参数的json字符串
+     * @param array $params 请求参数
      * @param string $sn 服务商序号 或 终端序号
      * @param string $key 服务商密钥 或 终端key
      * @return string
      */
-    protected function genAuthorizationHeaderItem($paramsJson, $sn, $key) {
-        return "Authorization:" . $sn . " " . md5( $paramsJson . $key);
+    protected function genAuthorizationHeaderItem(array $params, $sn, $key) {
+        return "Authorization:" . $sn . " " . md5( json_encode($params) . $key);
     }
 
     /**
@@ -67,7 +67,7 @@ class SqbService {
         $request->device_id = $this->conf->deviceId;
         $request->setExtParams($extParams);
         $params = $request->toArray();
-        $authorization = $this->genAuthorizationHeaderItem(JsonUtil::encode($params), $this->conf->vendorSn, $this->conf->vendorKey);
+        $authorization = $this->genAuthorizationHeaderItem($params, $this->conf->vendorSn, $this->conf->vendorKey);
         $json = HttpUtil::post($url, $params, [$authorization, "Content-type:application/json"]);
         $this->apiTractLog("收钱吧-激活", $url, $params, $json);
         return SqbActivateResponse::initByJson($json);
@@ -88,7 +88,7 @@ class SqbService {
         $request->device_id = $this->conf->deviceId;
         $request->setExtParams($extParams);
         $params = $request->toArray();
-        $authorization = $this->genAuthorizationHeaderItem(JsonUtil::encode($params), $terminalSn, $this->getTerminalKey());
+        $authorization = $this->genAuthorizationHeaderItem($params, $terminalSn, $this->getTerminalKey());
         $json = HttpUtil::post($url, $params, [$authorization, "Content-type:application/json"]);
         $this->apiTractLog("收钱吧-签到", $url, $params, $json);
         return SqbCheckinResponse::initByJson($json);
@@ -129,7 +129,7 @@ class SqbService {
         foreach ($params as $key => $value) {
             unset($params[$key]);
         }
-        $authorization = $this->genAuthorizationHeaderItem(JsonUtil::encode($params), $this->getTerminalSn(), $this->getTerminalKey());
+        $authorization = $this->genAuthorizationHeaderItem($params, $this->getTerminalSn(), $this->getTerminalKey());
         $json = HttpUtil::post($url, $params, [$authorization, "Content-type:application/json"]);
         $this->apiTractLog("收钱吧-支付", $url, $params, $json);
         return SqbPayResponse::initByJson($json);
