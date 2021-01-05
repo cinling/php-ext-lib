@@ -209,7 +209,7 @@ class SqbService {
 
         $terminalKey = $fileCacheSrv->get(FileCacheKey::SqbTerminalKey);
         if (empty($terminalKey)) {
-            $response = $this->requestTerminal_checkin($this->getTerminalSn());
+            $response = $this->requestTerminal_checkin();
             if ($response->hasError()) {
                 throw new ApiException($response->result_code);
             }
