@@ -156,7 +156,10 @@ class SqbService {
         if (empty($operator)) {
             $operator = $this->conf->defaultOperator;
         }
+        $terminalSn = $this->getTerminalSn();
+
         $request = new SqbPreCreateRequest();
+        $request->terminal_sn = $terminalSn;
         $request->client_sn = $clientSn;
         $request->total_amount = $totalAmount;
         $request->notify_url = $notifyUrl;
@@ -169,7 +172,7 @@ class SqbService {
 
         $url = $this->conf->apiDomain . Sqb::UrlPreCreate;
         $params = $request->toArray();
-        $authorization = $this->genAuthorizationHeaderItem($params, $this->getTerminalSn(), $this->getTerminalKey());
+        $authorization = $this->genAuthorizationHeaderItem($params, $terminalSn, $this->getTerminalKey());
         $json = HttpUtil::post($url, $params, [$authorization, "Content-type:application/json"]);
         $this->apiTractLog("收钱吧-预付款", $url, $params, $json);
         return SqbPreCreateResponse::initByJson($json);
