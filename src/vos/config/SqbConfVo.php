@@ -35,7 +35,7 @@ class SqbConfVo extends BaseApiConfVo {
     /**
      * @var string 设备id
      */
-    public $deviceId = "一站式管家-锋火后台";
+    public $deviceId;
     /**
      * @var string 默认操作员名字
      */

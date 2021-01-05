@@ -40,12 +40,10 @@ class SqbService {
 
     /**
      * SqbService constructor.
-     * @throws ApiException
      */
     protected function __construct() {
         $this->conf = new SqbConfVo();
         $this->setBaseApiConfVo($this->conf);
-        $this->autoReCheckin();
     }
 
     /**
@@ -71,15 +69,16 @@ class SqbService {
 
     /**
      * 处理重新签到
+     * @param $terminalSn
      * @throws ApiException
      */
-    protected function autoReCheckin() {
+    protected function autoReCheckin($terminalSn) {
         $fileCacheSrv = FileCacheService::getIns();
 
         // 判断是否需要重签
         $flag = $fileCacheSrv->get(FileCacheKey::SqbCheckinFlag);
         if (empty($flag)) {
-            $response = $this->requestTerminal_checkin();
+            $response = $this->requestTerminal_checkin($terminalSn);
             if ($response->hasError()) {
                 throw new ApiException($response->result_code);
             }
@@ -115,13 +114,13 @@ class SqbService {
             $fileCacheSrv->set(FileCacheKey::SqbTerminalKey, $terminalKey);
             $fileCacheSrv->set(FileCacheKey::SqbCheckinFlag, time(), $this->conf->checkinDuration);
         }
+        $this->autoReCheckin($terminalSn);
         return $terminalSn;
     }
 
     /**
      * 获取终端密钥
      * @return string
-     * @throws ApiException
      */
     protected function getTerminalKey() {
         $fileCacheSrv = FileCacheService::getIns();
@@ -150,13 +149,11 @@ class SqbService {
 
     /**
      * 请求签到接口
+     * @param $terminalSn
      * @param array $extParams 额外的请求参数
      * @return SqbCheckinResponse
-     * @throws ApiException
      */
-    protected function requestTerminal_checkin($extParams = []) {
-        $terminalSn = $this->getTerminalSn();
-
+    protected function requestTerminal_checkin($terminalSn, $extParams = []) {
         $request = new SqbCheckinRequest();
         $request->terminal_sn = $terminalSn;
         $request->device_id = $this->conf->deviceId;
