@@ -26,20 +26,32 @@ class Sqb {
     const UrlPreCreate = "/upay/v2/precreate";
 
     /**
-     * 预下单支付方式：支付宝
+     * 支付方式：支付宝
      */
-    const PreCreatePayWayAli = "2";
+    const PayWayAli = "2";
     /**
-     * 预下单支付方式：微信
+     * 支付方式：微信
      */
-    const PreCreatePayWayWechat = "3";
+    const PayWayWechat = "3";
 
     /**
-     * 预付款二级支付方式：WAP
+     * 二级支付方式：二维码支付
      */
-    const PreCreateSubPayWayWap = "3";
+    const SubPayWay = "2";
     /**
-     * 预付款二级支付方式：小程序
+     * 二级支付方式：WAP
      */
-    const PreCreateSubPayWayMini = "4";
+    const SubPayWayWap = "3";
+    /**
+     * 二级支付方式：小程序
+     */
+    const SubPayWayMini = "4";
+    /**
+     * 二级支付方式：APP支付
+     */
+    const SubPayWayApp = "5";
+    /**
+     * 二级支付方式：H5支付
+     */
+    const SubPayWayH5 = 6;
 }

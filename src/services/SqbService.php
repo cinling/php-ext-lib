@@ -203,7 +203,7 @@ class SqbService {
     }
 
     /**
-     * 预付款
+     * 预付款。（包括 二维码收款、直接微信/支付宝 调起付款）
      * @param string $clientSn 订单编号
      * @param string|int $totalAmount 总价。单位：分
      * @param string $notifyUrl 支付成功后的回調地址
@@ -217,7 +217,7 @@ class SqbService {
      * @throws ApiException
      * @see https://doc.shouqianba.com/zh-cn/api/interface/precreate.html 文档地址
      */
-    protected function requestUpay_v2_precreate($clientSn, $totalAmount, $notifyUrl, $subject, $payway, $subPayway = Sqb::PreCreateSubPayWayWap, array $goodsDetail = [], $operator = "", $extParams = []) {
+    protected function requestUpay_v2_precreate($clientSn, $totalAmount, $notifyUrl, $subject, $payway, $subPayway = Sqb::SubPayWayWap, array $goodsDetail = [], $operator = "", $extParams = []) {
         if (empty($operator)) {
             $operator = $this->conf->defaultOperator;
         }
