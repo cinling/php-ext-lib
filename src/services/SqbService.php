@@ -19,11 +19,14 @@ use cin\extLib\vos\api\sqb\SqbCheckinResponse;
 use cin\extLib\vos\api\sqb\SqbPayGoodsDetailVo;
 use cin\extLib\vos\api\sqb\SqbPayRequest;
 use cin\extLib\vos\api\sqb\SqbPayResponse;
+use cin\extLib\vos\api\sqb\SqbPreCreateRequest;
+use cin\extLib\vos\api\sqb\SqbPreCreateResponse;
 use cin\extLib\vos\config\SqbConfVo;
 
 /**
  * Class SqbService 收钱吧接口服务
  * @package cin\extLib\services
+ * @see https://doc.shouqianba.com/zh-cn/api/apiflow.html 文檔地址
  */
 class SqbService {
     use SingleTrait;
@@ -60,12 +63,13 @@ class SqbService {
      * @return SqbActivateResponse
      */
     protected function requestTerminal_activate($extParams = []) {
-        $url = $this->conf->apiDomain . Sqb::UrlActivate;
         $request = new SqbActivateRequest();
         $request->app_id = $this->conf->appId;
         $request->code = $this->conf->code;
         $request->device_id = $this->conf->deviceId;
         $request->setExtParams($extParams);
+
+        $url = $this->conf->apiDomain . Sqb::UrlActivate;
         $params = $request->toArray();
         $authorization = $this->genAuthorizationHeaderItem($params, $this->conf->vendorSn, $this->conf->vendorKey);
         $json = HttpUtil::post($url, $params, [$authorization, "Content-type:application/json"]);
@@ -82,11 +86,12 @@ class SqbService {
     protected function requestTerminal_checkin($extParams = []) {
         $terminalSn = $this->getTerminalSn();
 
-        $url = $this->conf->apiDomain . Sqb::UrlCheckin;
         $request = new SqbCheckinRequest();
         $request->terminal_sn = $terminalSn;
         $request->device_id = $this->conf->deviceId;
         $request->setExtParams($extParams);
+
+        $url = $this->conf->apiDomain . Sqb::UrlCheckin;
         $params = $request->toArray();
         $authorization = $this->genAuthorizationHeaderItem($params, $terminalSn, $this->getTerminalKey());
         $json = HttpUtil::post($url, $params, [$authorization, "Content-type:application/json"]);
@@ -134,21 +139,40 @@ class SqbService {
 
     /**
      * 预付款
-     * @deprecated TODO 未处理
-     * @see https://doc.shouqianba.com/zh-cn/api/interface/precreate.html 文档地址
-     * @param $clientSn
-     * @param $totalAmount
-     * @param $subject
+     * @param string $clientSn 订单编号
+     * @param string|float $totalAmount
+     * @param string $notifyUrl 支付成功后的回調地址
+     * @param string $subject
      * @param $payway
      * @param string $subPayway
      * @param array $goodsDetail
      * @param string $operator
      * @param array $extParams
+     * @return SqbPreCreateResponse
+     * @throws ApiException
+     * @see https://doc.shouqianba.com/zh-cn/api/interface/precreate.html 文档地址
      */
-    protected function requestUpay_v2_precreate($clientSn, $totalAmount, $subject, $payway, $subPayway = Sqb::PreCreateSubPayWayWap, array $goodsDetail = [], $operator = "", $extParams = []) {
+    protected function requestUpay_v2_precreate($clientSn, $totalAmount, $notifyUrl, $subject, $payway, $subPayway = Sqb::PreCreateSubPayWayWap, array $goodsDetail = [], $operator = "", $extParams = []) {
         if (empty($operator)) {
             $operator = $this->conf->defaultOperator;
         }
+        $request = new SqbPreCreateRequest();
+        $request->client_sn = $clientSn;
+        $request->total_amount = $totalAmount;
+        $request->notify_url = $notifyUrl;
+        $request->subject = $subject;
+        $request->payway = $payway;
+        $request->sub_payway = $subPayway;
+        $request->goods_details = $goodsDetail;
+        $request->operator = $operator;
+        $request->setExtParams($extParams);
+
+        $url = $this->conf->apiDomain . Sqb::UrlPreCreate;
+        $params = $request->toArray();
+        $authorization = $this->genAuthorizationHeaderItem($params, $this->getTerminalSn(), $this->getTerminalKey());
+        $json = HttpUtil::post($url, $params, [$authorization, "Content-type:application/json"]);
+        $this->apiTractLog("收钱吧-预付款", $url, $params, $json);
+        return SqbPreCreateResponse::initByJson($json);
     }
 
     /**
