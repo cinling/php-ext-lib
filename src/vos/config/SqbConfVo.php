@@ -40,4 +40,8 @@ class SqbConfVo extends BaseApiConfVo {
      * @var string 默认操作员名字
      */
     public $defaultOperator = "系统";
+    /**
+     * @var int 签到有效时长
+     */
+    public $checkinDuration = 86400;
 }

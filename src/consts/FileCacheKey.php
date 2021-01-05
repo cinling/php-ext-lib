@@ -17,6 +17,10 @@ class FileCacheKey {
      * 收钱吧-终端密钥
      */
     const SqbTerminalKey = "CinSqbTerminalKey";
+    /**
+     * 收钱吧-签到标识
+     */
+    const SqbCheckinFlag = "CinSqbCheckinFlag";
 
     /**
      * 微信公众号（js-sdk）-access_token

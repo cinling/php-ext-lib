@@ -40,10 +40,22 @@ class SqbService {
 
     /**
      * SqbService constructor.
+     * @throws ApiException
      */
     protected function __construct() {
         $this->conf = new SqbConfVo();
         $this->setBaseApiConfVo($this->conf);
+        $this->autoReCheckin();
+    }
+
+    /**
+     * 重置终端（清理所有缓存数据，重新进行激活）
+     */
+    public function restore() {
+        $fileCacheSrv = FileCacheService::getIns();
+        $fileCacheSrv->del(FileCacheKey::SqbTerminalSn);
+        $fileCacheSrv->del(FileCacheKey::SqbTerminalKey);
+        $fileCacheSrv->del(FileCacheKey::SqbCheckinFlag);
     }
 
     /**
@@ -55,6 +67,65 @@ class SqbService {
      */
     protected function genAuthorizationHeaderItem(array $params, $sn, $key) {
         return "Authorization:" . $sn . " " . md5( json_encode($params) . $key);
+    }
+
+    /**
+     * 处理重新签到
+     * @throws ApiException
+     */
+    protected function autoReCheckin() {
+        $fileCacheSrv = FileCacheService::getIns();
+
+        // 判断是否需要重签
+        $flag = $fileCacheSrv->get(FileCacheKey::SqbCheckinFlag);
+        if (empty($flag)) {
+            $response = $this->requestTerminal_checkin();
+            if ($response->hasError()) {
+                throw new ApiException($response->result_code);
+            }
+
+            $terminalSn = $response->biz_response->terminal_sn;
+            $terminalKey = $response->biz_response->terminal_key;
+            // 更新缓存信息
+            $fileCacheSrv->set(FileCacheKey::SqbTerminalSn, $terminalSn);
+            $fileCacheSrv->set(FileCacheKey::SqbTerminalKey, $terminalKey);
+            $fileCacheSrv->set(FileCacheKey::SqbCheckinFlag, time(), $this->conf->checkinDuration);
+        }
+    }
+
+    /**
+     * 获取终端编号
+     * @return string
+     * @throws ApiException
+     */
+    protected function getTerminalSn() {
+        $fileCacheSrv = FileCacheService::getIns();
+
+        $terminalSn = $fileCacheSrv->get(FileCacheKey::SqbTerminalSn);
+        if (empty($terminalSn)) {
+            $response = $this->requestTerminal_activate();
+            if ($response->hasError()) {
+                throw new ApiException($response->error_code);
+            }
+
+            $terminalSn = $response->biz_response->terminal_sn;
+            $terminalKey = $response->biz_response->terminal_key;
+            // 缓存信息
+            $fileCacheSrv->set(FileCacheKey::SqbTerminalSn, $terminalSn);
+            $fileCacheSrv->set(FileCacheKey::SqbTerminalKey, $terminalKey);
+            $fileCacheSrv->set(FileCacheKey::SqbCheckinFlag, time(), $this->conf->checkinDuration);
+        }
+        return $terminalSn;
+    }
+
+    /**
+     * 获取终端密钥
+     * @return string
+     * @throws ApiException
+     */
+    protected function getTerminalKey() {
+        $fileCacheSrv = FileCacheService::getIns();
+        return $fileCacheSrv->get(FileCacheKey::SqbTerminalKey);
     }
 
     /**
@@ -176,50 +247,5 @@ class SqbService {
         $json = HttpUtil::post($url, $params, [$authorization, "Content-type:application/json"]);
         $this->apiTractLog("收钱吧-预付款", $url, $params, $json);
         return SqbPreCreateResponse::initByJson($json);
-    }
-
-    /**
-     * 获取终端编号
-     * @return string
-     * @throws ApiException
-     */
-    protected function getTerminalSn() {
-        $fileCacheSrv = FileCacheService::getIns();
-
-        $terminalSn = $fileCacheSrv->get(FileCacheKey::SqbTerminalSn);
-        if (empty($terminalSn)) {
-            $response = $this->requestTerminal_activate();
-            if ($response->hasError()) {
-                throw new ApiException($response->error_code);
-            }
-            $terminalSn = $response->biz_response->terminal_sn;
-            $terminalKey = $response->biz_response->terminal_key;
-            // 缓存信息
-            $fileCacheSrv->set(FileCacheKey::SqbTerminalSn, $terminalSn);
-            $duration = TimeUtil::getDateEnd() - time(); // 有效时间是今天的 23:59:59
-            $fileCacheSrv->set(FileCacheKey::SqbTerminalKey, $terminalKey, $duration);
-        }
-        return $terminalSn;
-    }
-
-    /**
-     * 获取终端密钥
-     * @return string
-     * @throws ApiException
-     */
-    protected function getTerminalKey() {
-        $fileCacheSrv = FileCacheService::getIns();
-
-        $terminalKey = $fileCacheSrv->get(FileCacheKey::SqbTerminalKey);
-        if (empty($terminalKey)) {
-            $response = $this->requestTerminal_checkin();
-            if ($response->hasError()) {
-                throw new ApiException($response->result_code);
-            }
-            $duration = TimeUtil::getDateEnd() - time(); // 有效时间是今天的 23:59:59
-            $terminalKey = $response->biz_response->terminal_key;
-            $fileCacheSrv->set(FileCacheKey::SqbTerminalKey, $terminalKey, $duration);
-        }
-        return $terminalKey;
     }
 }
