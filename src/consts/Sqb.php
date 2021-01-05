@@ -37,7 +37,7 @@ class Sqb {
     /**
      * 二级支付方式：二维码支付
      */
-    const SubPayWay = "2";
+    const SubPayWayQrCode = "2";
     /**
      * 二级支付方式：WAP
      */
