@@ -10,18 +10,10 @@ use cin\extLib\vos\BaseVo;
  * Class SqbActiveResponse
  * @package cin\extLib\vos\api\sqb
  */
-class SqbActivateResponse extends BaseVo {
+class SqbActivateResponse extends BaseSqbResponse {
 
     /**
-     * @var string 返回结果
-     */
-    public $result_code;
-    /**
-     * @var string 错误代码
-     */
-    public $error_code;
-    /**
-     * @var SqbBizResponse
+     * @var SqbCheckinBiz
      */
     public $biz_response;
 
@@ -30,13 +22,6 @@ class SqbActivateResponse extends BaseVo {
      */
     public function setAttrs($attrs) {
         parent::setAttrs($attrs);
-        $this->biz_response = is_array($this->biz_response) ? SqbBizResponse::init($this->biz_response) : new SqbBizResponse();
-    }
-
-    public function hasError() {
-        if ($this->result_code != "200") {
-            $this->addError("请求失败");
-        }
-        return parent::hasError();
+        $this->biz_response = is_array($this->biz_response) ? SqbActivateBiz::init($this->biz_response) : new SqbActivateBiz();
     }
 }

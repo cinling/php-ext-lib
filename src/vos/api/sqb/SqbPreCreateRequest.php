@@ -22,7 +22,7 @@ class SqbPreCreateRequest extends BaseRequest {
      */
     public $client_sn;
     /**
-     * @var string 交易总金额
+     * @var string 交易总金额。单位：分
      */
     public $total_amount;
     /**

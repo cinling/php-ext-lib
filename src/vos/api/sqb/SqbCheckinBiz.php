@@ -7,10 +7,10 @@ namespace cin\extLib\vos\api\sqb;
 use cin\extLib\vos\BaseVo;
 
 /**
- * Class SqbActivateBizResponse
+ * Class SqbCheckinBiz
  * @package cin\extLib\vos\api\sqb
  */
-class SqbBizResponse extends BaseVo {
+class SqbCheckinBiz extends BaseVo {
 
     /**
      * @var string 终端编号

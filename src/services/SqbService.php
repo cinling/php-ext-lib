@@ -10,13 +10,10 @@ use cin\extLib\exceptions\ApiException;
 use cin\extLib\traits\ApiTractLogTrait;
 use cin\extLib\traits\SingleTrait;
 use cin\extLib\utils\HttpUtil;
-use cin\extLib\utils\JsonUtil;
-use cin\extLib\utils\TimeUtil;
 use cin\extLib\vos\api\sqb\SqbActivateRequest;
 use cin\extLib\vos\api\sqb\SqbActivateResponse;
 use cin\extLib\vos\api\sqb\SqbCheckinRequest;
 use cin\extLib\vos\api\sqb\SqbCheckinResponse;
-use cin\extLib\vos\api\sqb\SqbPayGoodsDetailVo;
 use cin\extLib\vos\api\sqb\SqbPayRequest;
 use cin\extLib\vos\api\sqb\SqbPayResponse;
 use cin\extLib\vos\api\sqb\SqbPreCreateRequest;
@@ -208,7 +205,7 @@ class SqbService {
     /**
      * 预付款
      * @param string $clientSn 订单编号
-     * @param string|float $totalAmount
+     * @param string|int $totalAmount 总价。单位：分
      * @param string $notifyUrl 支付成功后的回調地址
      * @param string $subject
      * @param $payway

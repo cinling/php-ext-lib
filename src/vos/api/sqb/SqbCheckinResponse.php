@@ -17,7 +17,7 @@ class SqbCheckinResponse extends BaseVo {
      */
     public $result_code;
     /**
-     * @var SqbBizResponse
+     * @var SqbCheckinBiz
      */
     public $biz_response;
 
@@ -26,7 +26,7 @@ class SqbCheckinResponse extends BaseVo {
      */
     public function setAttrs($attrs) {
         parent::setAttrs($attrs);
-        $this->biz_response = is_array($this->biz_response) ? SqbBizResponse::init($this->biz_response) : new SqbBizResponse();
+        $this->biz_response = is_array($this->biz_response) ? SqbCheckinBiz::init($this->biz_response) : new SqbCheckinBiz();
     }
 
     public function hasError() {
