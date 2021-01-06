@@ -14,7 +14,7 @@ class BaseNotifyRequest extends BaseVo {
 
     /**
      * 使用 php://input 的数据初始化对象
-     * @return BaseNotifyRequest
+     * @return static
      */
     public static function initByPhpInputJson() {
         $content = file_get_contents("php://input");

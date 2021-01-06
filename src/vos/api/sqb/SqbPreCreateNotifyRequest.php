@@ -7,10 +7,8 @@ namespace cin\extLib\vos\api\sqb;
 use cin\extLib\vos\api\BaseNotifyRequest;
 
 /**
- * Class SqbPreCreateNotifyRequest 预付款接口的回调参数
+ * Class SqbPreCreateNotifyRequest 预付款接口的回调参数。【注意：根据不同的请求，返回参数会有所不同，这里仅列举官方文档中的返回参数】
  * @package cin\extLib\vos\api\sqb
- *
- * 原始回调参数参考：{"sn":"7895208834374741","client_sn":"SN202101051840164850","client_tsn":"SN202101051840164850","ctime":"1609843241976","status":"ERROR_RECOVERY","payway":"3","payway_name":"微信","sub_payway":"3","order_status":"PAY_ERROR","total_amount":"2","net_amount":"2","finish_time":"1609843487437","subject":"一站式管家服务","store_id":"5c68576d-f710-e107-41b7-2dd837a1335b","terminal_id":"28a58246-5d75-4c44-a31d-a0db914f5c4c","operator":"系统","payment_list":[]}
  */
 class SqbPreCreateNotifyRequest extends BaseNotifyRequest {
 
@@ -59,11 +57,11 @@ class SqbPreCreateNotifyRequest extends BaseNotifyRequest {
      */
     public $payer_login;
     /**
-     * @var string 交易总额
+     * @var string 交易总额。单位：分
      */
     public $total_amount;
     /**
-     * @var string 实收金额
+     * @var string 实收金额。单位：分
      */
     public $net_amount;
     /**
@@ -87,7 +85,7 @@ class SqbPreCreateNotifyRequest extends BaseNotifyRequest {
      */
     public $reflect;
     /**
-     * @var string 活动优惠
+     * @var mixed 活动优惠
      */
     public $payment_list;
 }

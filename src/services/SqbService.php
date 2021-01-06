@@ -16,6 +16,7 @@ use cin\extLib\vos\api\sqb\SqbCheckinRequest;
 use cin\extLib\vos\api\sqb\SqbCheckinResponse;
 use cin\extLib\vos\api\sqb\SqbPayRequest;
 use cin\extLib\vos\api\sqb\SqbPayResponse;
+use cin\extLib\vos\api\sqb\SqbPreCreateNotifyRequest;
 use cin\extLib\vos\api\sqb\SqbPreCreateRequest;
 use cin\extLib\vos\api\sqb\SqbPreCreateResponse;
 use cin\extLib\vos\config\SqbConfVo;
@@ -241,5 +242,13 @@ class SqbService {
         $json = HttpUtil::post($url, $params, [$authorization, "Content-type:application/json"]);
         $this->apiTractLog("收钱吧-预付款", $url, $params, $json);
         return SqbPreCreateResponse::initByJson($json);
+    }
+
+    /**
+     * 加载预付款回调的参数
+     * @return SqbPreCreateNotifyRequest
+     */
+    public function loadPreCreateNotifyRequest() {
+       return SqbPreCreateNotifyRequest::initByPhpInputJson();
     }
 }
