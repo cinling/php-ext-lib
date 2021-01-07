@@ -61,7 +61,7 @@ class WechatService {
         $request->code = $code;
         $request->setExtParams($extParams);
         $params = $request->toArray();
-        $json = HttpUtil::post($url, $params);
+        $json = HttpUtil::get($url, $params);
         $this->apiTractLog("微信-获取 js-sdk access_token", $url, $params, $json);
         return WechatAccessTokenResponse::initByJson($json);
     }

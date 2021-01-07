@@ -306,6 +306,13 @@ class BaseVo implements Arrayable, Verifiable, Errorable
     }
 
     /**
+     * @return string
+     */
+    public function toJson() {
+        return JsonUtil::encode($this->toArray());
+    }
+
+    /**
      * 判断对象中有无该属性
      * @param $prop
      * @return bool

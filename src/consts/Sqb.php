@@ -53,5 +53,5 @@ class Sqb {
     /**
      * 二级支付方式：H5支付
      */
-    const SubPayWayH5 = 6;
+    const SubPayWayH5 = "6";
 }
