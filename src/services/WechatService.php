@@ -170,7 +170,6 @@ class WechatService {
         return $response;
     }
 
-
     /**
      * 获取 accessToken
      * @return string
