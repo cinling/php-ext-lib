@@ -8,7 +8,7 @@ namespace cin\extLib\cos;
  * Class WechatPayCo
  * @package cin\extLib\cos
  */
-class WechatPayCo extends BaseCo {
+class WechatPayCo extends BaseApiCo {
 
     /**
      * @var string 商户号

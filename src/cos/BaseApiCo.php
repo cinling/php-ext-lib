@@ -1,18 +1,16 @@
 <?php
 
 
-namespace cin\extLib\vos\config;
+namespace cin\extLib\cos;
 
 
 use cin\extLib\interfaces\IBaseApiConfVo;
-use cin\extLib\vos\BaseVo;
 
 /**
- * Class BaseApiConfVo api服务相关配置的基础配置
- * @deprecated 
- * @package cin\extLib\vos\config
+ * Class BaseApiCo
+ * @package cin\extLib\cos
  */
-class BaseApiConfVo extends BaseVo implements IBaseApiConfVo {
+class BaseApiCo extends BaseCo implements IBaseApiConfVo {
     /**
      * @var string 支付成功后的回调地址
      */
