@@ -38,7 +38,11 @@ class BaseRequest extends BaseVo {
      * 转换为get参数
      * @return string
      */
-    public function toGetParams() {
-        return http_build_query($this->toArray());
+    public function toGetParams($ksort = false) {
+        $params = $this->toArray();
+        if ($ksort) {
+            ksort($params);
+        }
+        return http_build_query($params);
     }
 }

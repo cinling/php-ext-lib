@@ -13,6 +13,7 @@ use cin\extLib\utils\ArrayUtil;
 use cin\extLib\utils\ExcelUtil;
 use cin\extLib\utils\JsonUtil;
 use cin\extLib\utils\StringUtil;
+use cin\extLib\utils\XmlUtil;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -310,6 +311,13 @@ class BaseVo implements Arrayable, Verifiable, Errorable
      */
     public function toJson() {
         return JsonUtil::encode($this->toArray());
+    }
+
+    /**
+     * @return string
+     */
+    public function toXml() {
+        return XmlUtil::toXml($this->toArray());
     }
 
     /**

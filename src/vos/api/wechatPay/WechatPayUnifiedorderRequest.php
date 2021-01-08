@@ -101,7 +101,7 @@ class WechatPayUnifiedorderRequest extends BaseRequest {
      */
     public $profit_sharing;
     /**
-     * @var string  场景信息
+     * @var mixed 场景信息
      */
     public $scene_info;
 }

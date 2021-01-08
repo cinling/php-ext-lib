@@ -4,6 +4,7 @@
 namespace cin\extLib\traits;
 
 
+use cin\extLib\exceptions\HideException;
 use cin\extLib\utils\StringUtil;
 
 /**
@@ -50,6 +51,25 @@ trait HttpTrait {
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         $output = curl_exec($curl);
+        curl_close($curl);
+        return $output;
+    }
+
+    /**
+     * 以xml格式提交数据
+     */
+    public static function postXml($url, $xml, $headers = ["Content-type; text/xml"]) {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $xml);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($curl);
+        if ($error = curl_errno($curl)) {
+            throw new HideException($error);
+        }
         curl_close($curl);
         return $output;
     }

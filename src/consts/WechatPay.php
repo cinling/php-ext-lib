@@ -25,4 +25,31 @@ class WechatPay {
      * 货币类型：人民币 CNY
      */
     const CurrencyCny = "CNY";
+
+    /**
+     * 返回码：成功
+     */
+    const ResponseCodeSuccess = "SUCCESS";
+    /**
+     * 返回码：失败
+     */
+    const ResponseCodeFail = "FAIL";
+
+    /**
+     * 业务返回码：成功
+     */
+    const ResultCodeSuccess = "SUCCESS";
+    /**
+     * 业务返回码：失败
+     */
+    const ResultCodeFail = "FAIL";
+
+    /**
+     * 业务返回码：成功
+     */
+    const ReturnCodeSuccess = "SUCCESS";
+    /**
+     * 业务返回码：失败
+     */
+    const ReturnCodeFail = "FAIL";
 }
