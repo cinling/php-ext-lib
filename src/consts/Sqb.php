@@ -26,6 +26,11 @@ class Sqb {
     const UrlPreCreate = "/upay/v2/precreate";
 
     /**
+     * 订单状态：订单支付成功
+     */
+    const OrderStatusPaid = "PAID";
+
+    /**
      * 支付方式：支付宝
      */
     const PayWayAli = "2";

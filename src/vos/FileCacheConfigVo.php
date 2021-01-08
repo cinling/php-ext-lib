@@ -10,6 +10,7 @@ use cin\extLib\services\FileCacheService;
  * Class FileCacheConfigVo 文件服务配置
  * @package cin\extLib\vos
  * @see FileCacheService
+ * @deprecated 即将使用 cos 包代替
  */
 class FileCacheConfigVo extends BaseVo {
     /**

@@ -9,6 +9,7 @@ use cin\extLib\vos\BaseVo;
 /**
  * Class JsSdkConfigVo
  * @package cin\extLib\vos\config
+ * @deprecated 即将使用 cos 包代替
  */
 class JsSdkConfigVo extends BaseVo {
     /**

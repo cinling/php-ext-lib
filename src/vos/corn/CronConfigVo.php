@@ -11,6 +11,7 @@ use cin\extLib\vos\BaseVo;
 /**
  * Class CronConfigVo 服务配置
  * @package cin\extLib\vos\corn
+ * @deprecated 即将使用 cos 包代替
  */
 class CronConfigVo extends BaseVo {
     /**

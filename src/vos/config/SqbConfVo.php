@@ -9,6 +9,7 @@ use cin\extLib\vos\BaseVo;
 /**
  * Class SqbConfVo 收钱吧配置对象
  * @package cin\extLib\vos\config
+ * @deprecated 即将使用 cos 包代替
  */
 class SqbConfVo extends BaseApiConfVo {
     /**

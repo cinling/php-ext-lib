@@ -17,10 +17,12 @@ use cin\extLib\vos\corn\TaskVo;
 class CronFileStoreAo extends BaseVo implements CronTaskStorable {
     /**
      * 文件缓存的key
+     * @deprecated 将使用 FileCacheKey 中的常量代替
      */
     const CacheTaskVoList = "CronFileStore_CacheTaskVoList";
     /**
      * 运行记录保存的数据
+     * @deprecated 将使用 FileCacheKey 中的常量代替
      */
     const CacheTaskRecordVoList = "CronFileStore_CacheTaskRecordVoList";
 
