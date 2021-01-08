@@ -8,6 +8,7 @@ use cin\extLib\cos\FtpCo;
 use cin\extLib\exceptions\FtpException;
 use cin\extLib\traits\SingleTrait;
 use cin\extLib\utils\StringUtil;
+use ErrorException;
 
 /**
  * Class FtpService FTP 服务
@@ -93,7 +94,11 @@ class FtpService
     public function upload($localFile, $removeFile) {
         $this->autoReconnect();
         $this->autoMakeRemoteDir(dirname($removeFile));
-        if (!ftp_put($this->conn, $removeFile, $localFile, FTP_BINARY)) {
+        try {
+            if (!ftp_put($this->conn, $removeFile, $localFile, FTP_BINARY)) {
+                throw new FtpException("FtpService.conn(): upload file failed: [localFile: " . $localFile . ", removeFile: " . $removeFile . "]");
+            }
+        } catch (ErrorException $e) {
             throw new FtpException("FtpService.conn(): upload file failed: [localFile: " . $localFile . ", removeFile: " . $removeFile . "]");
         }
     }
