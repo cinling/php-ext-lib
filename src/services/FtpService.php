@@ -4,6 +4,7 @@
 namespace cin\extLib\services;
 
 
+use cin\extLib\cos\FtpCo;
 use cin\extLib\traits\SingleTrait;
 use Exception;
 
@@ -14,6 +15,11 @@ use Exception;
 class FtpService
 {
     use SingleTrait;
+
+    /**
+     * @var FtpCo
+     */
+    protected $co;
 
     /**
      * @var mixed ftp链接
@@ -29,6 +35,32 @@ class FtpService
      * FtpService constructor.
      */
     protected function __construct() {
+        $this->co = new FtpCo();
+    }
+
+    /**
+     * 设置 ftp 链接信息
+     * @param FtpCo $co
+     */
+    public function setCo(FtpCo $co) {
+        $this->co = $co;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function reconnect() {
+        $this->conn($this->co->host, $this->co->username, $this->co->password, $this->co->port);
+    }
+
+    /**
+     * 自动重连
+     * @throws Exception
+     */
+    protected function autoReconnect() {
+        if (!$this->conn) {
+            $this->reconnect();;
+        }
     }
 
     /**
@@ -58,6 +90,7 @@ class FtpService
      * @throws Exception
      */
     public function upload($localFile, $removeFile) {
+        $this->autoReconnect();
         $this->autoMakeRemoteDir(dirname($removeFile));
         if (!ftp_put($this->conn, $removeFile, $localFile, FTP_BINARY)) {
             throw new Exception("FtpService.conn(): upload file failed: [localFile: " . $localFile . ", removeFile: " . $removeFile . "]");
@@ -71,6 +104,7 @@ class FtpService
      * @throws Exception
      */
     public function download($removeFile, $localFile) {
+        $this->autoReconnect();
         if (ftp_get($this->conn, $localFile, $removeFile, FTP_BINARY)) {
             throw new Exception("FtpService.conn(): download file failed: [localFile: " . $localFile . ", removeFile: " . $removeFile . "]");
         }
