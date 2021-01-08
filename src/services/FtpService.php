@@ -5,8 +5,8 @@ namespace cin\extLib\services;
 
 
 use cin\extLib\cos\FtpCo;
+use cin\extLib\exceptions\FtpException;
 use cin\extLib\traits\SingleTrait;
-use Exception;
 
 /**
  * Class FtpService FTP 服务
@@ -47,7 +47,7 @@ class FtpService
     }
 
     /**
-     * @throws Exception
+     * @throws FtpException
      */
     public function reconnect() {
         $this->conn($this->co->host, $this->co->username, $this->co->password, $this->co->port);
@@ -55,7 +55,7 @@ class FtpService
 
     /**
      * 自动重连
-     * @throws Exception
+     * @throws FtpException
      */
     protected function autoReconnect() {
         if (!$this->conn) {
@@ -69,17 +69,17 @@ class FtpService
      * @param string $username
      * @param string $password
      * @param string|int $port
-     * @throws Exception
+     * @throws FtpException
      */
     public function conn($host, $username, $password, $port = 21) {
 
         /** @var resource conn */
         $this->conn = ftp_connect($host, $port);
         if (!$this->conn) {
-            throw new Exception("FtpService.conn(): Cannot connect to ftp server");
+            throw new FtpException("FtpService.conn(): Cannot connect to ftp server");
         }
         if (!ftp_login($this->conn, $username, $password)) {
-            throw new Exception("FtpService.conn(): Login failed");
+            throw new FtpException("FtpService.conn(): Login failed");
         }
     }
 
@@ -87,13 +87,13 @@ class FtpService
      * 上传文件
      * @param string $localFile
      * @param string $removeFile
-     * @throws Exception
+     * @throws FtpException
      */
     public function upload($localFile, $removeFile) {
         $this->autoReconnect();
         $this->autoMakeRemoteDir(dirname($removeFile));
         if (!ftp_put($this->conn, $removeFile, $localFile, FTP_BINARY)) {
-            throw new Exception("FtpService.conn(): upload file failed: [localFile: " . $localFile . ", removeFile: " . $removeFile . "]");
+            throw new FtpException("FtpService.conn(): upload file failed: [localFile: " . $localFile . ", removeFile: " . $removeFile . "]");
         }
     }
 
@@ -101,12 +101,12 @@ class FtpService
      * 下载文件
      * @param string $removeFile
      * @param string $localFile
-     * @throws Exception
+     * @throws FtpException
      */
     public function download($removeFile, $localFile) {
         $this->autoReconnect();
         if (ftp_get($this->conn, $localFile, $removeFile, FTP_BINARY)) {
-            throw new Exception("FtpService.conn(): download file failed: [localFile: " . $localFile . ", removeFile: " . $removeFile . "]");
+            throw new FtpException("FtpService.conn(): download file failed: [localFile: " . $localFile . ", removeFile: " . $removeFile . "]");
         }
     }
 
