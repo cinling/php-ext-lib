@@ -7,6 +7,7 @@ namespace cin\extLib\services;
 use cin\extLib\cos\FtpCo;
 use cin\extLib\exceptions\FtpException;
 use cin\extLib\traits\SingleTrait;
+use cin\extLib\utils\StringUtil;
 
 /**
  * Class FtpService FTP 服务
@@ -123,17 +124,20 @@ class FtpService
      * @return array
      */
     public function remoteLs($dir) {
-        $lines = ftp_rawlist($this->conn, $dir);
+        $excludeDirKeyDict = [
+            "." => "",
+            ".." => ""
+        ];
+
+        $rows = ftp_rawlist($this->conn, $dir);
         $dirs = [];
-        foreach ($lines as $line) {
-            $matchArr = [];
-            // $line 的样例： drwxr-xr-x    3 1000       www              4096 Aug 25 17:53 .well-known
-            if (preg_match("/[drwx-]+\s+[a-zA-Z0-9]+\s+[a-zA-Z0-9]+\s+[a-zA-Z0-9]+\s+[0-9]+\s+[a-zA-Z]+\s+[0-9]+\s+[0-9]{2}:[0-9]{2}\s+([.|a-zA-Z0-9_-]+)/", $line, $matchArr)) {
-                $name = $matchArr[1];
-                if (in_array($name, [".", ".."])) {
+        if (is_array($rows)) {
+            foreach ($rows as $row) {
+                $row = StringUtil::trimLeft($row, "/");
+                if (isset($excludeDirKeyDict[$row])) {
                     continue;
                 }
-                $dirs[] = $name;
+                $dirs[] = $row;
             }
         }
         return $dirs;
@@ -149,8 +153,7 @@ class FtpService
         }
         if (!$this->isRemoteDirExists($dir)) {
             $this->autoMakeRemoteDir(dirname($dir));
-            // 忽略创建的错误
-            @ftp_mkdir($this->conn, $dir);
+            ftp_mkdir($this->conn, $dir);
         }
         $this->addRemoteDirTree($dir);
     }
