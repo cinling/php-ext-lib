@@ -6,9 +6,9 @@ namespace cin\extLib\services;
 
 use cin\extLib\cos\FtpCo;
 use cin\extLib\exceptions\FtpException;
+use cin\extLib\traits\FtpTrait;
 use cin\extLib\traits\SingleTrait;
 use cin\extLib\utils\StringUtil;
-use ErrorException;
 
 /**
  * Class FtpService FTP 服务
@@ -17,6 +17,7 @@ use ErrorException;
 class FtpService
 {
     use SingleTrait;
+    use FtpTrait;
 
     /**
      * @var FtpCo
@@ -49,10 +50,18 @@ class FtpService
     }
 
     /**
+     * @return FtpCo
+     */
+    public function getCo() {
+        return $this->co;
+    }
+
+    /**
      * @throws FtpException
      */
     public function reconnect() {
-        $this->conn($this->co->host, $this->co->username, $this->co->password, $this->co->port);
+        $this->close();
+        $this->conn($this->co->host, $this->co->username, $this->co->password, $this->co->port, $this->co->timeout);
     }
 
     /**
@@ -71,16 +80,16 @@ class FtpService
      * @param string $username
      * @param string $password
      * @param string|int $port
+     * @param int $timeout
      * @throws FtpException
      */
-    public function conn($host, $username, $password, $port = 21) {
-
-        /** @var resource conn */
-        $this->conn = ftp_connect($host, $port);
+    public function conn($host, $username, $password, $port = 21, $timeout = 90) {
+        $this->conn = static::_connect($host, $port, $timeout);
         if (!$this->conn) {
             throw new FtpException("FtpService.conn(): Cannot connect to ftp server");
         }
-        if (!ftp_login($this->conn, $username, $password)) {
+        static::_setOption($this->conn, FTP_TIMEOUT_SEC, $timeout);
+        if (!static::_login($this->conn, $username, $password)) {
             throw new FtpException("FtpService.conn(): Login failed");
         }
     }
@@ -94,11 +103,7 @@ class FtpService
     public function upload($localFile, $removeFile) {
         $this->autoReconnect();
         $this->autoMakeRemoteDir(dirname($removeFile));
-        try {
-            if (!ftp_put($this->conn, $removeFile, $localFile, FTP_BINARY)) {
-                throw new FtpException("FtpService.conn(): upload file failed: [localFile: " . $localFile . ", removeFile: " . $removeFile . "]");
-            }
-        } catch (ErrorException $e) {
+        if (!static::_put($this->conn, $removeFile, $localFile)) {
             throw new FtpException("FtpService.conn(): upload file failed: [localFile: " . $localFile . ", removeFile: " . $removeFile . "]");
         }
     }
@@ -111,7 +116,7 @@ class FtpService
      */
     public function download($removeFile, $localFile) {
         $this->autoReconnect();
-        if (ftp_get($this->conn, $localFile, $removeFile, FTP_BINARY)) {
+        if (static::_get($this->conn, $localFile, $removeFile)) {
             throw new FtpException("FtpService.conn(): download file failed: [localFile: " . $localFile . ", removeFile: " . $removeFile . "]");
         }
     }
@@ -119,14 +124,16 @@ class FtpService
     /**
      * 远端创建目录
      * @param $dir
+     * @throws FtpException
      */
     public function remoteMkdir($dir) {
-        ftp_mkdir($this->conn, $dir);
+        static::_mkdir($this->conn, $dir);
     }
 
     /**
      * @param $dir
      * @return array
+     * @throws FtpException
      */
     public function remoteLs($dir) {
         $excludeDirKeyDict = [
@@ -134,7 +141,7 @@ class FtpService
             ".." => ""
         ];
 
-        $rows = ftp_rawlist($this->conn, $dir);
+        $rows = static::_rawList($this->conn, $dir);
         $dirs = [];
         if (is_array($rows)) {
             foreach ($rows as $row) {
@@ -151,6 +158,7 @@ class FtpService
     /**
      * 自动创建远端路径
      * @param $dir
+     * @throws FtpException
      */
     public function autoMakeRemoteDir($dir) {
         if (empty($dir) || $dir === "/") {
@@ -158,7 +166,7 @@ class FtpService
         }
         if (!$this->isRemoteDirExists($dir)) {
             $this->autoMakeRemoteDir(dirname($dir));
-            ftp_mkdir($this->conn, $dir);
+            static::_mkdir($this->conn, $dir);
         }
         $this->addRemoteDirTree($dir);
     }
@@ -167,6 +175,7 @@ class FtpService
      * 判断远端路径是否存在
      * @param string $dir
      * @return bool
+     * @throws FtpException
      */
     private function isRemoteDirExists($dir) {
         $exists = $this->isRemoteDirExistsInTree(explode("/", $dir), $this->remoteDirTree);
@@ -226,16 +235,13 @@ class FtpService
         return $node;
     }
 
-    public function test() {
-        $this->autoMakeRemoteDir("test1/test2/test3");
-        $this->autoMakeRemoteDir("test1/test2/test4");
-        print_r($this->remoteDirTree);
-    }
-
     /**
      * 关闭FTP服务器
+     * @throws FtpException
      */
     public function close() {
-        ftp_close($this->conn);
+        if ($this->conn) {
+            static::_close($this->conn);
+        }
     }
 }

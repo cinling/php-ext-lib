@@ -25,4 +25,8 @@ class FtpCo extends BaseCo {
      * @var string 登录密码
      */
     public $password;
+    /**
+     * @var int 超时
+     */
+    public $timeout = 90;
 }
