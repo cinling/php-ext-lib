@@ -161,7 +161,7 @@ class FtpClientService
      * @throws FtpException
      */
     public function autoMakeRemoteDir($dir) {
-        if (empty($dir) || $dir === "/") {
+        if (empty($dir) || $dir === "/" || $dir == "\\") {
             return;
         }
         if (!$this->isRemoteDirExists($dir)) {
