@@ -9,17 +9,21 @@ namespace cin\extLib\consts;
  */
 class WechatPay {
     /**
-     * 平台证书申请
+     * 请求地址： 平台证书申请(V3)
      */
     const UrlCert = "https://api.mch.weixin.qq.com/v3/certificates";
     /**
-     * jsapi 统一下单
+     * 请求地址：jsapi 统一下单（V3）
      */
     const UrlPayJsapi = "https://api.mch.weixin.qq.com/v3/pay/transactions/jsapi";
     /**
-     * jsapi 统一下单接口
+     * 请求地址：jsapi 统一下单接口
      */
     const UrlJsapiUnifiedorder = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+    /**
+     * 企请求地址：业转账至个人。提现功能
+     */
+    const UrlTransfers = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
 
     /**
      * 货币类型：人民币 CNY
@@ -52,4 +56,13 @@ class WechatPay {
      * 业务返回码：失败
      */
     const ReturnCodeFail = "FAIL";
+
+    /**
+     * 校验用户姓名选项：不校验真实姓名
+     */
+    const CheckNameNo = "NO_CHECK";
+    /**
+     * 校验用户姓名选项：强校验真实姓名
+     */
+    const CheckNameForce = "FORCE_CHECK";
 }
