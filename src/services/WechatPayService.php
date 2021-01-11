@@ -75,7 +75,7 @@ class WechatPayService {
         curl_setopt($curl, CURLOPT_SSLCERTTYPE, 'PEM');//证书类型
         curl_setopt($curl, CURLOPT_SSLCERT, $this->co->pemCert);//证书
         curl_setopt($curl, CURLOPT_SSLKEYTYPE, 'PEM');
-        curl_setopt($curl, CURLOPT_SSLKEY, $this->co->pemCert);//密钥
+        curl_setopt($curl, CURLOPT_SSLKEY, $this->co->pemKey);//密钥
         $output = curl_exec($curl);
         if ($error = curl_errno($curl)) {
             throw new HideException($error);
