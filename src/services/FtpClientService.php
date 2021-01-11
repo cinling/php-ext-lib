@@ -4,26 +4,23 @@
 namespace cin\extLib\services;
 
 
-use cin\extLib\cos\FtpCo;
+use cin\extLib\cos\FtpClientCo;
 use cin\extLib\exceptions\FtpException;
 use cin\extLib\traits\FtpTrait;
 use cin\extLib\traits\SingleTrait;
 use cin\extLib\utils\StringUtil;
 
 /**
- * @deprecated 在 3.0.0 后删除
- * 已重名未 FtpClientService
- *
- * Class FtpService FTP 服务
+ * Class FtpClientService FTP 服务
  * @package cin\extLib\services
  */
-class FtpService
+class FtpClientService
 {
     use SingleTrait;
     use FtpTrait;
 
     /**
-     * @var FtpCo
+     * @var FtpClientCo
      */
     protected $co;
 
@@ -41,19 +38,19 @@ class FtpService
      * FtpService constructor.
      */
     protected function __construct() {
-        $this->co = new FtpCo();
+        $this->co = new FtpClientCo();
     }
 
     /**
      * 设置 ftp 链接信息
-     * @param FtpCo $co
+     * @param FtpClientCo $co
      */
-    public function setCo(FtpCo $co) {
+    public function setCo(FtpClientCo $co) {
         $this->co = $co;
     }
 
     /**
-     * @return FtpCo
+     * @return FtpClientCo
      */
     public function getCo() {
         return $this->co;
