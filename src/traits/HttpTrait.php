@@ -57,6 +57,11 @@ trait HttpTrait {
 
     /**
      * 以xml格式提交数据
+     * @param $url
+     * @param $xml
+     * @param string[] $headers
+     * @return bool|string
+     * @throws HideException
      */
     public static function postXml($url, $xml, $headers = ["Content-type; text/xml"]) {
         $curl = curl_init();

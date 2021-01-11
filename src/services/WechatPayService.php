@@ -41,6 +41,8 @@ class WechatPayService {
 
     /**
      * 根据请求参数
+     * @param $params
+     * @return string
      */
     protected function getSign($params) {
         ksort($params);
@@ -56,8 +58,47 @@ class WechatPayService {
     }
 
     /**
+     * 使用证书提交微信数据
+     * @param string $url 请求地址
+     * @param string $xml 请求xml参数
+     * @return bool|string
+     * @throws HideException
+     */
+    protected function postXmlWithCert($url, $xml) {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $xml);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, ["Content-type; text/xml"]);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_SSLCERTTYPE, 'PEM');//证书类型
+        curl_setopt($curl, CURLOPT_SSLCERT, $this->co->pemCert);//证书
+        curl_setopt($curl, CURLOPT_SSLKEYTYPE, 'PEM');
+        curl_setopt($curl, CURLOPT_SSLKEY, $this->co->pemCert);//密钥
+        $output = curl_exec($curl);
+        if ($error = curl_errno($curl)) {
+            throw new HideException($error);
+        }
+        curl_close($curl);
+        return $output;
+    }
+
+    /**
      * jsapi 统一下单接口
      * @see https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_1
+     * @param $appid
+     * @param $nonceStr
+     * @param $body
+     * @param $outTradeNo
+     * @param $totalFee
+     * @param $openid
+     * @param string $notifyUrl
+     * @param string $tradeType
+     * @param string $spbillCreateIp
+     * @param array $extParams
+     * @return WechatPayUnifiedorderResponse
+     * @throws HideException
      */
     protected function requestPay_unifiedorder($appid, $nonceStr, $body, $outTradeNo, $totalFee, $openid, $notifyUrl = "", $tradeType = "JSAPI", $spbillCreateIp = "", $extParams = []) {
         if (empty($spbillCreateIp)) {
@@ -123,7 +164,7 @@ class WechatPayService {
         $params = $request->toArray();
         $request->sign = $this->getSign($params);
         $requestXml = $request->toXml();
-        $xml =  HttpUtil::postXml($url, $requestXml);
+        $xml =  $this->postXmlWithCert($url, $requestXml);
         $this->apiTractLog("微信支付-企业付款", $url, $requestXml, $xml);
 
         $attrs = XmlUtil::xmlToArray($xml);
@@ -131,15 +172,13 @@ class WechatPayService {
     }
 
     /**
-     * @param bool $checkSign 是否验证微信的签名
      * @return WechatPayUnifiedorderNotify
      */
-    public function recvPayUnifiedorderNotify($checkSign = true) {
+    public function recvPayUnifiedorderNotify() {
         $content = file_get_contents("php://input");
         $requestUrl = UrlUtil::withoutDomain($_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']);
         $this->apiTractLog("微信支付回调", $requestUrl, "", $content);
         $attrs = XmlUtil::xmlToArray($content);
-        $notify = WechatPayUnifiedorderNotify::init($attrs);
-        return $notify;
+        return WechatPayUnifiedorderNotify::init($attrs);
     }
 }

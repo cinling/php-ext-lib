@@ -19,11 +19,11 @@ class WechatPayCo extends BaseApiCo {
      */
     public $secret;
     /**
-     * @var string 支付证书
+     * @var string 支付证书（文件绝对路径）
      */
     public $pemCert;
     /**
-     * @var string 支付证书密钥
+     * @var string 支付证书密钥（文件绝对路径）
      */
     public $pemKey;
 }
