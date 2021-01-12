@@ -205,6 +205,7 @@ class SqbService {
 
     /**
      * 预付款。（包括 二维码收款、直接微信/支付宝 调起付款）
+     * 注意：该接口可能不能直接用于小程序或公众号收款。因为商户号需要绑定小程序或公众号后才能调起微信支付。具体问题，请自行联系收钱吧客户协商解决
      * @param string $clientSn 订单编号
      * @param string|int $totalAmount 总价。单位：分
      * @param string $notifyUrl 支付成功后的回調地址
