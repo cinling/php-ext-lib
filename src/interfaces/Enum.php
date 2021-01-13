@@ -4,6 +4,8 @@
 namespace cin\extLib\interfaces;
 
 
+use cin\extLib\aos\ReflectConstAo;
+use cin\extLib\utils\EnvUtil;
 use cin\extLib\utils\ValueUtil;
 use ReflectionClass;
 use ReflectionException;
@@ -11,8 +13,6 @@ use ReflectionException;
 /**
  * Class Enum 枚举基类
  * @package cin\extLib\interfaces
- *
- * @deprecated 未完成 TODO
  */
 abstract class Enum {
     /**
@@ -26,26 +26,45 @@ abstract class Enum {
      * @throws ReflectionException
      */
     public static function labels() {
-//        $labels = ValueUtil::getValue(self::$enumLabels, static::class, null);
-//        if ($labels === null) { // 通过反射加载
-//            $labels = [];
-//            $rClass = new ReflectionClass(static::class);
-//            $constants = ;
-//            print_r($constants);
-////            foreach ($constants as $prop => $value) {
-////                $rConstant = $rClass->getProperty($prop);
-////                $doc = $rConstant->getDocComment();
-////                $label = static::getLabelByDoc($doc);
-////                if ($label === "") {
-////                    $label = $rConstant->getName();
-////                }
-////                $labels[$rConstant->getValue()] = $label;
-////            }
-////
-////            self::$enumLabels[static::class] = $labels;
-//
-//        }
-//        return $labels;
+        $labels = ValueUtil::getValue(self::$enumLabels, static::class, null);
+        if ($labels === null) {
+            $labels = static::getLabelsByRef();
+        }
+        self::$enumLabels[static::class] = $labels;
+        return $labels;
+    }
+
+    /**
+     * 通过反射获取标签
+     * @return string[]
+     */
+    protected static function getLabelsByRef() {
+        $labels = [];
+        if (EnvUtil::isGtePhp71()) { // php 7.1 及以上版本使用原生反射
+            $rClass = new ReflectionClass(static::class);
+            $rConstants = $rClass->getReflectionConstants();
+            foreach ($rConstants as $rConstant) {
+                $doc = $rConstant->getDocComment();
+                $label = static::getLabelByDoc($doc);
+                if ($label === "") {
+                    $label = $rConstant->getName();
+                }
+                $labels[$rConstant->getValue()] = $label;
+            }
+        } else { // php 7.0 及 php 5.6 版本 。使用自定义的反射对象辅助反射出文档内容
+            $rAo = new ReflectConstAo(static::class);
+            $rClass = new ReflectionClass(static::class);
+            $constants = $rClass->getConstants();
+            foreach ($constants as $name => $value) {
+                $doc = $rAo->getDocComment($name);
+                $label = static::getLabelByDoc($doc);
+                if ($label === "") {
+                    $label = $name;
+                }
+                $labels[$value] = $label;
+            }
+        }
+        return $labels;
     }
 
     /**
@@ -55,7 +74,7 @@ abstract class Enum {
      */
     protected static function getLabelByDoc($doc) {
         $matches = [];
-        preg_match("/@label\s+(.+)\s+/", $doc, $matches);
+        preg_match("/@label\s+(.+)\s*/", $doc, $matches);
         if (count($matches) > 1) {
             return $matches[1];
         }
