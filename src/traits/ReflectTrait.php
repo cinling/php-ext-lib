@@ -9,6 +9,8 @@ use ReflectionClass;
 /**
  * Trait ReflectTrait 反射帮助类
  * @package cin\extLib\traits
+ *
+ * @see https://www.coder.work/article/898745 代码来源
  */
 trait ReflectTrait {
     /**

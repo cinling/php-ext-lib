@@ -13,32 +13,32 @@ use cin\extLib\interfaces\Arrayable;
 trait ArrayTrait {
     /**
      * 将数据转为 数组
-     * @param mixed $object 需要转为数组的对象（可以是任何类型）
+     * @param mixed $attrs 需要转为数组的对象（可以是任何类型）
      * @return array
      */
-    public static function toArray($object) {
-        if (is_array($object)) {
-            foreach ($object as &$value) {
+    public static function toArray($attrs) {
+        if (is_array($attrs)) {
+            foreach ($attrs as &$value) {
                 if (is_object($value) || is_array($value))  {
                     $value = static::toArray($value);
                 }
             }
-            return $object;
-        } else if (is_object($object)) {
-            if ($object instanceof Arrayable) {
-                $object = $object->toArray();
+            return $attrs;
+        } else if (is_object($attrs)) {
+            if ($attrs instanceof Arrayable) {
+                $attrs = $attrs->toArray();
             } else {
-                $object = get_object_vars($object);
+                $attrs = get_object_vars($attrs);
             }
-            foreach ($object as &$value) {
+            foreach ($attrs as &$value) {
                 if (is_object($value) || is_array($value))  {
                     $value = static::toArray($value);
                 }
             }
-            return $object;
+            return $attrs;
         }
 
-        return [$object];
+        return [$attrs];
     }
 
     /**

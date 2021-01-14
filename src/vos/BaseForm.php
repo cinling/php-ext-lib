@@ -7,6 +7,8 @@ namespace cin\extLib\vos;
 /**
  * Class BaseForm 基础表单模型
  * @package cin\extLib\vos
+ *
+ * @deprecated 在 v3.0.0 后删除
  */
 class BaseForm extends BaseVo {
 
