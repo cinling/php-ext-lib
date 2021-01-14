@@ -5,6 +5,7 @@ namespace cin\extLib\interfaces;
 
 
 use cin\extLib\aos\ReflectConstAo;
+use cin\extLib\exceptions\EnumException;
 use cin\extLib\utils\EnvUtil;
 use cin\extLib\utils\ValueUtil;
 use ReflectionClass;
@@ -24,6 +25,7 @@ abstract class Enum {
      * 在常量文档上添加 "@label 标签内容" 即可标记常量的标签内容
      * @return string[]
      * @throws ReflectionException
+     * @throws EnumException
      */
     public static function labels() {
         $labels = ValueUtil::getValue(self::$enumLabels, static::class, null);
@@ -37,6 +39,7 @@ abstract class Enum {
     /**
      * 通过反射获取标签
      * @return string[]
+     * @throws EnumException
      */
     protected static function getLabelsByRef() {
         $labels = [];
@@ -45,11 +48,14 @@ abstract class Enum {
             $rConstants = $rClass->getReflectionConstants();
             foreach ($rConstants as $rConstant) {
                 $doc = $rConstant->getDocComment();
+                $value = $rConstant->getValue();
                 $label = static::getLabelByDoc($doc);
+                $name = $rConstant->getName();
                 if ($label === "") {
-                    $label = $rConstant->getName();
+                    $label = $name;
                 }
-                $labels[$rConstant->getValue()] = $label;
+                static::uniqueCheck($labels, $value, $name);
+                $labels[$value] = $label;
             }
         } else { // php 7.0 及 php 5.6 版本 。使用自定义的反射对象辅助反射出文档内容
             $rAo = new ReflectConstAo(static::class);
@@ -61,9 +67,13 @@ abstract class Enum {
                 if ($label === "") {
                     $label = $name;
                 }
+                static::uniqueCheck($labels, $value, $name);
                 $labels[$value] = $label;
             }
         }
+
+        // 唯一性检测
+
         return $labels;
     }
 
@@ -79,6 +89,18 @@ abstract class Enum {
             return $matches[1];
         }
         return "";
+    }
+
+    /**
+     * @param string[] $labels
+     * @param string|int|float $value
+     * @param string $name
+     * @throws EnumException
+     */
+    protected static function uniqueCheck($labels, $value, $name) {
+        if (isset($labels, $value)) {
+            throw new EnumException("存在相同的值。[" . $name . ":" . $value . "]");
+        }
     }
 
     /**
