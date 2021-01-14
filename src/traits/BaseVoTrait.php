@@ -4,6 +4,7 @@
 namespace cin\extLib\traits;
 
 
+use cin\extLib\aos\RuleAo;
 use cin\extLib\services\ValidFactoryService;
 use cin\extLib\utils\ArrayUtil;
 use cin\extLib\utils\ExcelUtil;
@@ -11,8 +12,9 @@ use cin\extLib\utils\JsonUtil;
 use cin\extLib\utils\StringUtil;
 use cin\extLib\utils\XmlUtil;
 use cin\extLib\vos\BaseVo;
-use cin\extLib\vos\RuleVo;
+use PhpOffice\PhpSpreadsheet\Exception as PhpSpreadsheetException;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Exception as PhpSpreadsheetWriterException;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 /**
@@ -69,8 +71,8 @@ trait BaseVoTrait {
      * @param static[] $vos 导出数据
      * @param string $sheetTitle 表格标签的名字（只有一个标签）
      * @param bool $autoSetWidth 自动设置宽度
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     * @throws PhpSpreadsheetException
+     * @throws PhpSpreadsheetWriterException
      */
     public static function export($excelFilename, $vos = [], $sheetTitle = "sheet1", $autoSetWidth = true) {
         if (count($vos) === 0) {
@@ -145,14 +147,14 @@ trait BaseVoTrait {
     /**
      * 到處為 excel 數據。可以帶圖片
      * TODO 未完成的方法
-     * @deprecated 暂不可用
      * @param string $excelFilename excel 文件名（導出文件的名字）
      * @param static[] $vos
      * @param string $sheetTitle 默認工作表名字
      * @param array $imageFields
      * @param int $imageWidth 圖片寬度和高度。所有圖片都相同
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     * @throws PhpSpreadsheetException
+     * @throws PhpSpreadsheetWriterException
+     *@deprecated 暂不可用
      */
     public static function exportWithImage($excelFilename, $vos = [], $sheetTitle = "sheet1", $imageFields = [], $imageWidth = 80) {
         // 增大可用内存
@@ -357,7 +359,7 @@ trait BaseVoTrait {
     }
 
     /**
-     * @return RuleVo[]
+     * @return RuleAo[]
      */
     public function rules() {
         return [];

@@ -1,21 +1,15 @@
 <?php
 
 
-namespace cin\extLib\vos;
+namespace cin\extLib\aos;
 
-
-use cin\extLib\aos\RuleAo;
-use cin\extLib\services\ValidFactoryService;
 use Closure;
 
 /**
- * Class RuleVo 规则vo
- * @package cin\extLib\vos
- *
- * @deprecated 3.0.0 后删除。已重命名为 RuleAo
- * @see RuleAo
+ * Class RuleAo 规则对象
+ * @package cin\extLib\aos
  */
-class RuleVo extends BaseVo {
+class RuleAo extends BaseAo {
     /**
      * @var string[]
      */
@@ -28,11 +22,11 @@ class RuleVo extends BaseVo {
     /**
      * @param string[] $props 需要验证的字段
      * @param Closure[] $handles 验证方法。可以通过 验证工厂服务 获取
-     * @return RuleVo
+     * @return RuleAo
      * @see ValidFactoryService 验证工厂服务。可以通过这个工厂获取验证方法
      */
     public static function initBase(array $props, array $handles) {
-        $vo = new RuleVo();
+        $vo = new RuleAo();
         $vo->props = $props;
         $vo->handles = $handles;
         return $vo;
