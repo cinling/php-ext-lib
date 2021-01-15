@@ -82,6 +82,9 @@ abstract class Enum {
      */
     protected static function getLabelByDoc($doc) {
         $matches = [];
+        if (empty($doc)) {
+            return "";
+        }
         preg_match("/@label\s+(.+)\s*/", $doc, $matches);
         if (count($matches) > 1) {
             return $matches[1];
@@ -96,7 +99,7 @@ abstract class Enum {
      * @throws EnumException
      */
     protected static function uniqueCheck($labels, $value, $name) {
-        if (isset($labels, $value)) {
+        if (isset($labels[$value])) {
             throw new EnumException("存在相同的值。[" . $name . ":" . $value . "]");
         }
     }

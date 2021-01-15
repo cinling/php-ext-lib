@@ -117,7 +117,7 @@ trait ReflectTrait {
         }
 
         $result = null;
-        $lines = preg_split('/\R/', $doc);
+        $lines = preg_split('/[\n|\r]]/', $doc);
         foreach($lines as $line)
         {
             $line = trim($line, "/* \t\x0B\0");
@@ -130,6 +130,7 @@ trait ReflectTrait {
             {
                 $result .= ' ';
             }
+            $line = trim($line, "\n\r");
             $result .= $line;
         }
         return $result;
