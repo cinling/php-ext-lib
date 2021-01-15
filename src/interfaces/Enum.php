@@ -24,7 +24,6 @@ abstract class Enum {
     /**
      * 在常量文档上添加 "@label 标签内容" 即可标记常量的标签内容
      * @return string[]
-     * @throws ReflectionException
      * @throws EnumException
      */
     public static function labels() {
