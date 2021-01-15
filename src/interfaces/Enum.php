@@ -9,7 +9,6 @@ use cin\extLib\exceptions\EnumException;
 use cin\extLib\utils\EnvUtil;
 use cin\extLib\utils\ValueUtil;
 use ReflectionClass;
-use ReflectionException;
 
 /**
  * Class Enum 枚举基类
@@ -106,7 +105,7 @@ abstract class Enum {
      * 获取常量的标签值
      * @param int|string $value
      * @return string
-     * @throws ReflectionException
+     * @throws EnumException
      */
     public static function label($value) {
         $labels = static::labels();
