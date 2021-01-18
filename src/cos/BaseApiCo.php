@@ -4,13 +4,13 @@
 namespace cin\extLib\cos;
 
 
-use cin\extLib\interfaces\IBaseApiConfVo;
+use cin\extLib\interfaces\IBaseApiCo;
 
 /**
  * Class BaseApiCo
  * @package cin\extLib\cos
  */
-class BaseApiCo extends BaseCo implements IBaseApiConfVo {
+class BaseApiCo extends BaseCo implements IBaseApiCo {
     /**
      * @var string 支付成功后的回调地址
      */

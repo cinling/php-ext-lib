@@ -4,7 +4,9 @@
 namespace cin\extLib\traits;
 
 
+use cin\extLib\utils\EncryptUtil;
 use cin\extLib\utils\StringUtil;
+use cin\extLib\utils\TimeUtil;
 
 trait FileTrait {
     /**
@@ -81,5 +83,23 @@ trait FileTrait {
             }
         }
         return $filename;
+    }
+
+    /**
+     * Gets the 8-bit hash name of the file. Add time and random string as encrypted ciphertext when encrypting
+     * @param string $filename
+     * @return string
+     * @example Input: "worksheet.xlsx", Output: "35cf061a.xlsx"
+     */
+    public static function getHash8Name($filename) {
+        $suffix = static::getFileSuffix($filename);
+        $hasSuffix = !empty($suffix);
+        $name = static::excludeSuffix($filename);
+        $sha512 = EncryptUtil::sha512($name . StringUtil::randStr(128) . TimeUtil::stampMS());
+        $hashName = substr($sha512, 60, 8);
+        if ($hasSuffix) {
+            $hashName .= "." . $suffix;
+        }
+        return $hashName;
     }
 }

@@ -7,7 +7,7 @@ namespace cin\extLib\interfaces;
 /**
  * Interface IBaseApiConfVo api接口服务配置的接口
  * @package cin\extLib\interfaces
- * @deprecated 
+ * @deprecated Remove on 3.0.0 replace with IBaseApiCo
  * @see IBaseApiCo
  */
 interface IBaseApiConfVo {

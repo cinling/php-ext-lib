@@ -3,6 +3,7 @@
 
 namespace cin\extLib\traits;
 
+use cin\extLib\interfaces\IBaseApiCo;
 use cin\extLib\interfaces\IBaseApiConfVo;
 use cin\extLib\services\LogService;
 use cin\extLib\utils\ArrayUtil;
@@ -15,15 +16,24 @@ use cin\extLib\utils\JsonUtil;
 trait ApiTractLogTrait {
 
     /**
-     * @var IBaseApiConfVo
+     * @var IBaseApiCo
      */
-    private $baseApiConfVo;
+    private $baseApiCo;
 
     /**
      * @param IBaseApiConfVo $baseApiConfVo
+     * @deprecated Remove on 3.0.0 . Replace with setBaeApiCo()
+     * @see ApiTractLogTrait::setBaseApiCo()
      */
     private function setBaseApiConfVo(IBaseApiConfVo $baseApiConfVo) {
-        $this->baseApiConfVo = $baseApiConfVo;
+        $this->baseApiCo = $baseApiConfVo;
+    }
+
+    /**
+     * @param IBaseApiCo $baseApiCo
+     */
+    private function setBaseApiCo(IBaseApiCo $baseApiCo) {
+        $this->baseApiCo = $baseApiCo;
     }
 
     /**
@@ -34,7 +44,7 @@ trait ApiTractLogTrait {
      * @param array $ext 额外的记录数据
      */
     protected function apiTractLog($title, $url, $params, $response, $ext = []) {
-        if ($this->baseApiConfVo->isLogTrace()) {
+        if ($this->baseApiCo->isLogTrace()) {
             LogService::getIns()->trace(JsonUtil::encode(ArrayUtil::merge([
                 "url" => $url,
                 "params" => $params,
