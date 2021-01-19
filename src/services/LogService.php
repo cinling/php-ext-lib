@@ -4,63 +4,52 @@
 namespace cin\extLib\services;
 
 
+use cin\extLib\cos\LogCo;
+use cin\extLib\enums\LogLevelEnum;
 use cin\extLib\traits\SingleTrait;
 use cin\extLib\utils\TimeUtil;
 use cin\extLib\vos\LogConfigVo;
 
 /**
- * 日志服务
+ * Class LogService
+ * @package cin\extLib\services
  */
 class LogService {
     use SingleTrait;
 
     /**
-     * 日志等级：追踪
+     * @var LogCo
      */
-    const LogLevelTrace = "TRACE";
-    /**
-     * 日志等级：调试
-     */
-    const LogLevelDebug = "DEBUG";
-    /**
-     * 日志等级：信息
-     */
-    const LogLevelInfo = "INFO ";
-    /**
-     * 日志等级：警告
-     */
-    const LogLevelWarn = "WARN ";
-    /**
-     * 日志等级：错误
-     * 一般错误
-     */
-    const LogLevelError = "ERROR";
-    /**
-     * 日志等级：失败
-     * 严重性的错误
-     */
-    const LogLevelFatal = "FATAL";
-
-    /**
-     * @var LogConfigVo 配置对象
-     */
-    private $confVo;
+    protected $co;
 
     /**
      * LogService constructor.
      */
     protected function __construct() {
         $this->setConfig(new LogConfigVo());
+        $this->setCo(new LogCo());
     }
 
     /**
      * 设置配置
      * @param LogConfigVo $confVo
+     * @deprecated Remove on 3.0.0  Replace with setCo()
      */
     public function setConfig(LogConfigVo $confVo) {
-        $this->confVo = $confVo;
-        if (!file_exists($this->confVo->path)) {
-            mkdir($this->confVo->path, 0755, true);
+        $this->co = $confVo;
+        if (!file_exists($this->co->path)) {
+            mkdir($this->co->path, 0755, true);
+        }
+    }
+
+    /**
+     * Setting LogService configuration
+     * @param LogCo $co
+     */
+    public function setCo(LogCo $co) {
+        $this->co = $co;
+        if (!file_exists($this->co->path)) {
+            mkdir($this->co->path, 0755, true);
         }
     }
 
@@ -70,9 +59,9 @@ class LogService {
      * @param string $content
      */
     protected function base($level, $title, $content) {
-        $filePath = $this->confVo->path . "/cin.log";
-        if (file_exists($filePath) && filesize($filePath) > $this->confVo->fileMaxSize) {
-            $bakFilePath = $this->confVo->path . "/cin_" . date("Ymd_His") . ".log";
+        $filePath = $this->co->path . "/cin.log";
+        if (file_exists($filePath) && filesize($filePath) > $this->co->fileMaxSize) {
+            $bakFilePath = $this->co->path . "/cin_" . date("Ymd_His") . ".log";
             rename($filePath, $bakFilePath);
         }
 
@@ -81,56 +70,50 @@ class LogService {
     }
 
     /**
-     * 追踪日志
      * @param $content
      * @param string $title
      */
     public function trace($content, $title = "cin-trace") {
-        $this->base(self::LogLevelTrace, $title, $content);
+        $this->base(LogLevelEnum::Trace, $title, $content);
     }
 
     /**
-     * 调试日志
      * @param $content
      * @param string $title
      */
     public function debug($content, $title = "cin-debug") {
-        $this->base(self::LogLevelDebug, $title, $content);
+        $this->base(LogLevelEnum::Debug, $title, $content);
     }
 
     /**
-     * 消息日志
      * @param $content
      * @param string $title
      */
     public function info($content, $title = "cin-info") {
-        $this->base(self::LogLevelInfo, $title, $content);
+        $this->base(LogLevelEnum::Info, $title, $content);
     }
 
     /**
-     * 警告日志
      * @param $content
      * @param string $title
      */
     public function warn($content, $title = "cin-warn") {
-        $this->base(self::LogLevelWarn, $title, $content);
+        $this->base(LogLevelEnum::Warn, $title, $content);
     }
 
     /**
-     * 错误日志
      * @param $content
      * @param string $title
      */
     public function error($content, $title = "cin-error") {
-        $this->base(self::LogLevelError, $title, $content);
+        $this->base(LogLevelEnum::Error, $title, $content);
     }
 
     /**
-     * 失败日志
      * @param $content
      * @param string $title
      */
     public function fatal($content, $title = "cin-fatal") {
-        $this->base(self::LogLevelFatal, $title, $content);
+        $this->base(LogLevelEnum::Fatal, $title, $content);
     }
 }
