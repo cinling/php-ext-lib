@@ -4,6 +4,7 @@
 namespace cin\extLib\services;
 
 
+use cin\extLib\cos\FileCacheCo;
 use cin\extLib\traits\SingleTrait;
 use cin\extLib\utils\EncryptUtil;
 use cin\extLib\utils\FileUtil;
@@ -19,19 +20,26 @@ class FileCacheService {
     use SingleTrait;
 
     /**
-     * @var FileCacheConfigVo 服务配置
+     * @var FileCacheCo 服务配置
      */
-    private $config;
+    private $co;
 
     protected function __construct() {
-        $this->config = new FileCacheConfigVo();
+        $this->co = new FileCacheConfigVo();
     }
 
     /**
-     * @param FileCacheConfigVo $config 服务配置
+     * @param FileCacheConfigVo $co 服务配置
      */
-    public function setConfig(FileCacheConfigVo $config) {
-        $this->config = $config;
+    public function setConfig(FileCacheConfigVo $co) {
+        $this->co = $co;
+    }
+
+    /**
+     * @param FileCacheCo $co
+     */
+    public function setCo(FileCacheCo $co) {
+        $this->co = $co;
     }
 
     /**
@@ -87,9 +95,9 @@ class FileCacheService {
      * 清除所有缓存数据
      */
     public function clear() {
-        $files = FileUtil::scanDir($this->config->path);
+        $files = FileUtil::scanDir($this->co->path);
         foreach ($files as $file) {
-            $filename = $this->config->path . "/" . $file;
+            $filename = $this->co->path . "/" . $file;
             FileUtil::delFile($filename);
         }
     }
@@ -98,9 +106,9 @@ class FileCacheService {
      * 释放缓存（将过期的数据删除）
      */
     public function free() {
-        $files = FileUtil::scanDir($this->config->path);
+        $files = FileUtil::scanDir($this->co->path);
         foreach ($files as $file) {
-            $filename = $this->config->path . "/" . $file;
+            $filename = $this->co->path . "/" . $file;
             $this->freeCache($filename);
         }
     }
@@ -152,7 +160,7 @@ class FileCacheService {
      */
     private function getSavePath($key) {
         $filename = EncryptUtil::sha1($key);
-        return $this->config->path . "/" . $this->getRelativeFilename($filename);
+        return $this->co->path . "/" . $this->getRelativeFilename($filename);
     }
 
     /**
@@ -163,15 +171,15 @@ class FileCacheService {
     private function getRelativeFilename($filename) {
         $dir = "";
         $len = strlen($filename);
-        for ($i = 0; $i < $this->config->pathDeeps; $i++) {
+        for ($i = 0; $i < $this->co->pathDeeps; $i++) {
             if (!empty($dir)) {
                 $dir .= "/";
             }
-            $startIndex = $i * $this->config->pathUnitLen;
-            if ($startIndex + $this->config->pathUnitLen >= $len) {
-                $startIndex = $len - $this->config->pathUnitLen - 1;
+            $startIndex = $i * $this->co->pathUnitLen;
+            if ($startIndex + $this->co->pathUnitLen >= $len) {
+                $startIndex = $len - $this->co->pathUnitLen - 1;
             }
-            $dir .= substr($filename, $startIndex, $this->config->pathUnitLen);
+            $dir .= substr($filename, $startIndex, $this->co->pathUnitLen);
         }
 
         return $dir . "/" . $filename . ".cache";
