@@ -23,7 +23,10 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
  */
 trait BaseVoTrait {
     use ErrorTrait;
-    use LabelTrait;
+    use LabelTrait, BaseVoLabelTrait {
+        BaseVoLabelTrait::labels insteadof LabelTrait;
+        BaseVoLabelTrait::label insteadof LabelTrait;
+    }
     use PropSortTrait;
 
     /**

@@ -38,7 +38,7 @@ use cin\extLib\services\LogService;
 LogService::getIns()->info("Content...", "Title");
 ```
 
-output in `runtime/cin-log/cin.log`
+output in `runtime/cin-log/cin.log`:
 > [2021-01-18 14:54:31 INFO Title] Content...
 
 <hr />
