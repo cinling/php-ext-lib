@@ -25,11 +25,12 @@ class FileCacheService {
     private $co;
 
     protected function __construct() {
-        $this->co = new FileCacheConfigVo();
+        $this->co = new FileCacheCo();
     }
 
     /**
      * @param FileCacheConfigVo $co 服务配置
+     * @deprecated Remove on 3.0.0 . Instead by setCo()
      */
     public function setConfig(FileCacheConfigVo $co) {
         $this->co = $co;

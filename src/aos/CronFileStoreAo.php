@@ -4,6 +4,7 @@
 namespace cin\extLib\aos;
 
 
+use cin\extLib\consts\FileCacheKey;
 use cin\extLib\interfaces\CronTaskStorable;
 use cin\extLib\services\FileCacheService;
 use cin\extLib\vos\BaseVo;
@@ -40,7 +41,7 @@ class CronFileStoreAo extends BaseVo implements CronTaskStorable {
      * @return TaskVo[]
      */
     public function getTaskVoList() {
-        $voList = $this->fileCacheSrv->get(self::CacheTaskVoList);
+        $voList = $this->fileCacheSrv->get(FileCacheKey::CronTaskVoList);
         if (empty($voList)) {
             $voList = [];
         }
@@ -65,7 +66,7 @@ class CronFileStoreAo extends BaseVo implements CronTaskStorable {
                 $taskVo->id = $lastId++;
             }
         }
-        $this->fileCacheSrv->set(self::CacheTaskVoList, $taskVoList);
+        $this->fileCacheSrv->set(FileCacheKey::CronTaskVoList, $taskVoList);
     }
 
     /**
@@ -97,14 +98,14 @@ class CronFileStoreAo extends BaseVo implements CronTaskStorable {
         }
         $voList[] = $taskRecordVo;
 
-        $this->fileCacheSrv->set(self::CacheTaskRecordVoList, $voList);
+        $this->fileCacheSrv->set(FileCacheKey::CronTaskRecordVoList, $voList);
     }
 
     /**
      * @return TaskRecordVo[]
      */
     public function getTaskRecordVoList() {
-        $voList = $this->fileCacheSrv->get(self::CacheTaskRecordVoList);
+        $voList = $this->fileCacheSrv->get(FileCacheKey::CronTaskRecordVoList);
         if (empty($voList)) {
             $voList = [];
         }

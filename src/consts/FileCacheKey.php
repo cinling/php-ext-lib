@@ -38,4 +38,13 @@ class FileCacheKey {
      * 微信公众号（js-sdk）-jsapi_ticket
      */
     const OpenidJsapiTicket = "CinOpenidJsapiTicket";
+
+    /**
+     * CronFileStoreAo: store task list
+     */
+    const CronTaskVoList = "CronFileStore_CacheTaskVoList";
+    /**
+     * CronFileStoreAo: store task record
+     */
+    const CronTaskRecordVoList = "CronFileStore_CacheTaskRecordVoList";
 }

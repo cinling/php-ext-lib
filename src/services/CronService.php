@@ -4,6 +4,7 @@
 namespace cin\extLib\services;
 
 
+use cin\extLib\cos\CronCo;
 use cin\extLib\exceptions\CronException;
 use cin\extLib\traits\SingleTrait;
 use cin\extLib\utils\CronParseUtil;
@@ -20,24 +21,41 @@ class CronService {
     use SingleTrait;
 
     /**
-     * @var CronConfigVo 配置
+     * @var CronCo 配置
      */
-    private $configVo;
+    protected $co;
 
+    /**
+     * CronService constructor.
+     */
     protected function __construct() {
-        $this->configVo = new CronConfigVo();
+        $this->co = new CronCo();
     }
 
     /**
      * 设置配置数据
-     * @param CronConfigVo $configVo
+     * @deprecated Remove on 3.0.0 . Instead by setCo()
+     * @param CronConfigVo $co
      * @throws CronException
      */
-    public function setConfigVo(CronConfigVo $configVo) {
-        $this->configVo = $configVo;
-        foreach ($configVo->taskVoList as $taskVo) {
+    public function setConfigVo(CronConfigVo $co) {
+        $this->co = $co;
+        foreach ($co->taskVoList as $taskVo) {
             if (!CronParseUtil::check($taskVo->cronTime)) {
                 throw new CronException("非法 cronTime 格式：" . $taskVo->cronTime);
+            }
+        }
+    }
+
+    /**
+     * @param CronCo $co
+     * @throws CronException
+     */
+    public function setCo(CronCo $co) {
+        $this->co = $co;
+        foreach ($co->taskVoList as $taskVo) {
+            if (!CronParseUtil::check($taskVo->cronTime)) {
+                throw new CronException("Invalid cronTime format：" . $taskVo->cronTime);
             }
         }
     }
@@ -53,7 +71,7 @@ class CronService {
             $newTaskVo->active = TaskVo::ActiveOff;
         }
         // 配置中的任务
-        $newTaskVoList = $this->configVo->taskVoList;
+        $newTaskVoList = $this->co->taskVoList;
         foreach ($newTaskVoList as $newTaskVo) {
             if (!isset($taskVoDict[$newTaskVo->name])) { // 新增
                 $taskVoDict[$newTaskVo->name] = $newTaskVo;
@@ -71,7 +89,7 @@ class CronService {
             }
         }
 
-        $this->configVo->store->setTaskVoList(array_values($taskVoDict));
+        $this->co->store->setTaskVoList(array_values($taskVoDict));
     }
 
     /**
@@ -113,7 +131,7 @@ class CronService {
                     $taskVo->lastRunAt = TimeUtil::stamp();
                     $taskVo->nextRunAt = CronParseUtil::getNextRunAt($taskVo->cronTime);
                     $taskVo->updateAt = TimeUtil::stamp();
-                    $this->configVo->store->setTaskVo($taskVo);
+                    $this->co->store->setTaskVo($taskVo);
 
                     if ($exitCode < 0) {
                         $this->addFailRecord($taskVo, $startMS);
@@ -138,7 +156,7 @@ class CronService {
         $recordVo->taskId = $taskVo->id;
         $recordVo->state = TaskRecordVo::StateFail;
         $recordVo->useMS = TimeUtil::stampMS() - $startMS;
-        $this->configVo->store->addTaskRecordVo($recordVo, 0);
+        $this->co->store->addTaskRecordVo($recordVo, 0);
     }
 
     /**
@@ -152,7 +170,7 @@ class CronService {
         $recordVo->taskId = $taskVo->id;
         $recordVo->state = TaskRecordVo::StateDone;
         $recordVo->useMS = TimeUtil::stampMS() - $startMS;
-        $this->configVo->store->addTaskRecordVo($recordVo, 0);
+        $this->co->store->addTaskRecordVo($recordVo, 0);
     }
 
     /**
@@ -178,7 +196,7 @@ class CronService {
      * @throws CronException
      */
     protected function getTaskVoDict() {
-        $taskVoList = $this->configVo->store->getTaskVoList();
+        $taskVoList = $this->co->store->getTaskVoList();
         $taskVoDict = [];
         foreach ($taskVoList as $taskVo) {
             $taskVoDict[$taskVo->name] = $taskVo;
