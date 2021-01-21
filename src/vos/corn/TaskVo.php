@@ -4,6 +4,8 @@
 namespace cin\extLib\vos\corn;
 
 
+use cin\extLib\enums\ActiveEnum;
+use cin\extLib\enums\TaskStateEnum;
 use cin\extLib\vos\BaseVo;
 
 /**
@@ -13,21 +15,25 @@ use cin\extLib\vos\BaseVo;
 class TaskVo extends BaseVo {
     /**
      * 任务状态：运行中
+     * @deprecated Remove on 3.0.0 . Instead by TaskStateEnum
      */
     const StateRunning = 1;
     /**
      * 运行状态：运行结束
+     * @deprecated Remove on 3.0.0 . Instead by TaskStateEnum
      */
     const StateEnd = 2;
 
     /**
      * 激活状态：激活
      * 每次运行时，都会判断是否需要执行
+     * @deprecated Remove on 3.0.0 . Instead by ActiveEnum
      */
     const ActiveOn = 1;
     /**
      * 激活状态：关闭
      * 运行时不判断是否可执行。相当于被暂停
+     * @deprecated Remove on 3.0.0 . Instead by ActiveEnum
      */
     const ActiveOff = 2;
 
@@ -48,9 +54,8 @@ class TaskVo extends BaseVo {
      */
     public $cronTime;
     /**
-     * @var int 任务状态。1运行中 2运行结束
-     * @see TaskVo::StateRunning
-     * @see TaskVo::StateEnd
+     * @var int task state
+     * @see TaskStateEnum
      */
     public $state;
     /**
@@ -62,9 +67,8 @@ class TaskVo extends BaseVo {
      */
     public $nextRunAt;
     /**
-     * @var int 是否激活。1激活 2关闭
-     * @see TaskVo::ActiveOn
-     * @see TaskVo::ActiveOff
+     * @var int
+     * @see ActiveEnum
      */
     public $active;
     /**
@@ -91,6 +95,9 @@ class TaskVo extends BaseVo {
         return $vo;
     }
 
+    /**
+     * @param array $attrs
+     */
     public function setAttrs($attrs) {
         parent::setAttrs($attrs);
         $this->id = intval($this->id);
@@ -107,6 +114,6 @@ class TaskVo extends BaseVo {
      * @return bool
      */
     public function isRunning() {
-        return $this->state === self::StateRunning;
+        return $this->state === TaskStateEnum::Running;
     }
 }

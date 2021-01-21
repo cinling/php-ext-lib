@@ -35,6 +35,16 @@ abstract class Enum {
     }
 
     /**
+     * Get all values of the constants
+     * @return mixed[]
+     * @throws EnumException
+     */
+    public static function values() {
+        $labels = static::labels();
+        return array_keys($labels);
+    }
+
+    /**
      * 通过反射获取标签
      * @return string[]
      * @throws EnumException

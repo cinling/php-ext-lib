@@ -5,6 +5,9 @@ namespace cin\extLib\services;
 
 
 use cin\extLib\cos\CronCo;
+use cin\extLib\enums\ActiveEnum;
+use cin\extLib\enums\TaskRecordStateEnum;
+use cin\extLib\enums\TaskStateEnum;
 use cin\extLib\exceptions\CronException;
 use cin\extLib\traits\SingleTrait;
 use cin\extLib\utils\CronParseUtil;
@@ -75,7 +78,7 @@ class CronService {
         // 当前系统中存储的任务列表
         $taskVoDict = $this->getTaskVoDict();
         foreach ($taskVoDict as $newTaskVo) {
-            $newTaskVo->active = TaskVo::ActiveOff;
+            $newTaskVo->active = ActiveEnum::Off;
         }
         // 配置中的任务
         $newTaskVoList = $this->co->taskVoList;
@@ -87,16 +90,16 @@ class CronService {
                 $taskVoDict[$newTaskVo->name]->cronTime = $newTaskVo->cronTime;
             }
             $taskVo = $taskVoDict[$newTaskVo->name];
-            $taskVo->active = TaskVo::ActiveOn;
+            $taskVo->active = ActiveEnum::On;
             if (empty($taskVo->state)) {
-                $taskVo->state = TaskVo::StateEnd;
+                $taskVo->state = TaskStateEnum::Ran;
             }
             if (empty($taskVo->nextRunAt)) {
                 $taskVo->nextRunAt = CronParseUtil::getNextRunAt($taskVo->cronTime);
             }
         }
 
-        $this->co->store->setTaskVoList(array_values($taskVoDict));
+        $this->co->getStore()->setTaskVoList(array_values($taskVoDict));
     }
 
     /**
@@ -119,7 +122,7 @@ class CronService {
                 $this->addFailRecord($taskVo, $startMS); // TODO 未测试
                 continue;
             }
-            $taskVo->state = TaskVo::StateRunning;
+            $taskVo->state = TaskStateEnum::Running;
             $procTaskIdDict[$taskVo->id] = $process;
             $pipesDict[$taskVo->id] = $pipes;
         }
@@ -134,11 +137,11 @@ class CronService {
                     unset($procTaskIdDict[$taskId]);
 
                     $taskVo = $taskVoDict[$taskId];
-                    $taskVo->state = TaskVo::StateEnd;
+                    $taskVo->state = TaskStateEnum::Ran;
                     $taskVo->lastRunAt = TimeUtil::stamp();
                     $taskVo->nextRunAt = CronParseUtil::getNextRunAt($taskVo->cronTime);
                     $taskVo->updateAt = TimeUtil::stamp();
-                    $this->co->store->setTaskVo($taskVo);
+                    $this->co->getStore()->setTaskVo($taskVo);
 
                     if ($exitCode < 0) {
                         $this->addFailRecord($taskVo, $startMS);
@@ -161,9 +164,9 @@ class CronService {
     private function addFailRecord(TaskVo $taskVo, $startMS) {
         $recordVo = new TaskRecordVo();
         $recordVo->taskId = $taskVo->id;
-        $recordVo->state = TaskRecordVo::StateFail;
+        $recordVo->state = TaskRecordStateEnum::Fail;
         $recordVo->useMS = TimeUtil::stampMS() - $startMS;
-        $this->co->store->addTaskRecordVo($recordVo, 0);
+        $this->co->getStore()->addTaskRecordVo($recordVo, 0);
     }
 
     /**
@@ -175,9 +178,9 @@ class CronService {
     private function addDoneRecord(TaskVo $taskVo, $startMS) {
         $recordVo = new TaskRecordVo();
         $recordVo->taskId = $taskVo->id;
-        $recordVo->state = TaskRecordVo::StateDone;
+        $recordVo->state = TaskRecordStateEnum::Done;
         $recordVo->useMS = TimeUtil::stampMS() - $startMS;
-        $this->co->store->addTaskRecordVo($recordVo, 0);
+        $this->co->getStore()->addTaskRecordVo($recordVo, 0);
     }
 
     /**
@@ -203,7 +206,7 @@ class CronService {
      * @throws CronException
      */
     protected function getTaskVoDict() {
-        $taskVoList = $this->co->store->getTaskVoList();
+        $taskVoList = $this->co->getStore()->getTaskVoList();
         $taskVoDict = [];
         foreach ($taskVoList as $taskVo) {
             $taskVoDict[$taskVo->name] = $taskVo;

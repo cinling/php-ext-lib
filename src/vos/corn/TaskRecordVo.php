@@ -14,10 +14,12 @@ use cin\extLib\vos\BaseVo;
 class TaskRecordVo extends BaseVo {
     /**
      * 运行状态：成功
+     * @deprecated Remove on 3.0.0
      */
     const StateDone = 1;
     /**
      * 运行状态：失败
+     * @deprecated Remove on 3.0.0
      */
     const StateFail = -1;
 

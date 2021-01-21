@@ -4,13 +4,11 @@
 namespace cin\extLib\enums;
 
 
-use cin\extLib\interfaces\Enum;
-
 /**
  * Class LogLevelEnum
  * @package cin\extLib\enums
  */
-class LogLevelEnum extends Enum {
+class LogLevelEnum extends BaseEnum {
     /**
      * @label trace
      * @note General log, generally used to record the input and output of the third-party interface
@@ -22,20 +20,20 @@ class LogLevelEnum extends Enum {
      */
     const Debug = "DEBUG";
     /**
-     * @label trace
+     * @label info
      */
     const Info = "INFO ";
     /**
-     * @label trace
+     * @label warn
      */
     const Warn = "WARN ";
     /**
-     * @label trace
+     * @label error
      * @note Non fatal error
      */
     const Error = "ERROR";
     /**
-     * @label trace
+     * @label fatal
      * @note Fatal error
      */
     const Fatal = "FATAL";

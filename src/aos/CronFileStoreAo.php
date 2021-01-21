@@ -6,6 +6,7 @@ namespace cin\extLib\aos;
 
 use cin\extLib\consts\FileCacheKey;
 use cin\extLib\interfaces\CronTaskStorable;
+use cin\extLib\interfaces\ICronStore;
 use cin\extLib\services\FileCacheService;
 use cin\extLib\vos\BaseVo;
 use cin\extLib\vos\corn\TaskRecordVo;
@@ -15,15 +16,15 @@ use cin\extLib\vos\corn\TaskVo;
  * Class CronFileStoreAo 定时任务 文件存取 实现
  * @package cin\extLib\aos
  */
-class CronFileStoreAo extends BaseVo implements CronTaskStorable {
+class CronFileStoreAo extends BaseVo implements ICronStore {
     /**
      * 文件缓存的key
-     * @deprecated 将使用 FileCacheKey 中的常量代替
+     * @deprecated Remove on 3.0.0 将使用 FileCacheKey 中的常量代替
      */
     const CacheTaskVoList = "CronFileStore_CacheTaskVoList";
     /**
      * 运行记录保存的数据
-     * @deprecated 将使用 FileCacheKey 中的常量代替
+     * @deprecated Remove on 3.0.0 将使用 FileCacheKey 中的常量代替
      */
     const CacheTaskRecordVoList = "CronFileStore_CacheTaskRecordVoList";
 
