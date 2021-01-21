@@ -36,7 +36,14 @@ class WechatPayService {
      */
     protected function __construct() {
         $this->co = new WechatPayCo();
-        $this->setBaseApiConfVo($this->co);
+        $this->setBaseApiCo($this->co);
+    }
+
+    /**
+     * @return WechatPayCo
+     */
+    public function getCo() {
+        return $this->co;
     }
 
     /**

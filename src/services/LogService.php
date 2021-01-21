@@ -54,6 +54,13 @@ class LogService {
     }
 
     /**
+     * @return LogCo
+     */
+    public function getCo() {
+        return $this->co;
+    }
+
+    /**
      * @param string $level
      * @param string $title
      * @param string $content

@@ -129,12 +129,28 @@ trait ArrayTrait {
 
     /**
      * 合并数组
-     * @param array $aArray
-     * @param array $bArray
+     * @param mixed ...$array
      * @return array
      */
-    public static function merge(array $aArray, array $bArray) {
-        return array_merge($aArray, $bArray);
+    public static function merge(...$array) {
+        $res = array_shift($array);
+        while (!empty($array)) {
+            foreach (array_shift($array) as $key => $value) {
+                if (is_int($key)) {
+                    if (array_key_exists($key, $res)) {
+                        $res[] = $value;
+                    } else {
+                        $res[$key] = $value;
+                    }
+                } elseif (is_array($value) && isset($res[$key]) && is_array($res[$key])) {
+                    $res[$key] = static::merge($res[$key], $value);
+                } else {
+                    $res[$key] = $value;
+                }
+            }
+        }
+
+        return $res;
     }
 
     /**

@@ -44,6 +44,13 @@ class FileCacheService {
     }
 
     /**
+     * @return FileCacheCo
+     */
+    public function getCo() {
+        return $this->co;
+    }
+
+    /**
      * 设置缓存
      * @param string $key
      * @param mixed $value

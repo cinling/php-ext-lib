@@ -61,6 +61,13 @@ class CronService {
     }
 
     /**
+     * @return CronCo
+     */
+    public function getCo() {
+        return $this->co;
+    }
+
+    /**
      * 初始化（重置任务列表）
      * @throws CronException
      */
