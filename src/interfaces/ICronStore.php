@@ -28,10 +28,19 @@ interface ICronStore {
 
     /**
      * save cron task
+     * @deprecated Remove on 3.0.0 . Instead by modTaskVo()
+     * @see ICronStore::modTaskVo()
      * @param TaskVo $taskVo
      * @throws CronException
      */
     public function setTaskVo(TaskVo $taskVo);
+
+    /**
+     * Update/Modify cron task
+     * @param TaskVo $taskVo
+     * @return void
+     */
+    public function modTaskVo(TaskVo $taskVo);
 
     /**
      * add task run record

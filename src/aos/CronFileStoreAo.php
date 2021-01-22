@@ -74,18 +74,7 @@ class CronFileStoreAo extends BaseVo implements ICronStore {
      * @param TaskVo $taskVo
      */
     public function setTaskVo(TaskVo $taskVo) {
-        $taskVoList = $this->getTaskVoList();
-        foreach ($taskVoList as $key => $tmpTaskVo) {
-            if ($tmpTaskVo->name === $taskVo->name) {
-                $taskVoList[$key] = $taskVo;
-                $this->setTaskVoList($taskVoList);
-                return;
-            }
-        }
-
-        // 如果没有找到相同的任务，则新写入一个数据
-        $taskVoList[] = $taskVo;
-        $this->setTaskVoList($taskVoList);
+        $this->modTaskVo($taskVo);
     }
 
     /**
@@ -111,5 +100,24 @@ class CronFileStoreAo extends BaseVo implements ICronStore {
             $voList = [];
         }
         return $voList;
+    }
+
+    /**
+     * @param TaskVo $taskVo
+     * @return mixed|void
+     */
+    public function modTaskVo(TaskVo $taskVo) {
+        $taskVoList = $this->getTaskVoList();
+        foreach ($taskVoList as $key => $tmpTaskVo) {
+            if ($tmpTaskVo->name === $taskVo->name) {
+                $taskVoList[$key] = $taskVo;
+                $this->setTaskVoList($taskVoList);
+                return;
+            }
+        }
+
+        // 如果没有找到相同的任务，则新写入一个数据
+        $taskVoList[] = $taskVo;
+        $this->setTaskVoList($taskVoList);
     }
 }

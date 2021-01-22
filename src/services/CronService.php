@@ -141,7 +141,7 @@ class CronService {
                     $taskVo->lastRunAt = TimeUtil::stamp();
                     $taskVo->nextRunAt = CronParseUtil::getNextRunAt($taskVo->cronTime);
                     $taskVo->updateAt = TimeUtil::stamp();
-                    $this->co->getStore()->setTaskVo($taskVo);
+                    $this->co->getStore()->modTaskVo($taskVo);
 
                     if ($exitCode < 0) {
                         $this->addFailRecord($taskVo, $startMS);
