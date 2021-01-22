@@ -56,4 +56,15 @@ class StringTraitTest extends TestCase {
         $str = "mmm.abc.abc";
         $this->assertEquals("mmm", StringTrait::trimRight($str, ".abc"));
     }
+
+    /**
+     * @test
+     */
+    public function fillZero() {
+        $this->assertEquals("0001", StringTrait::fillZero(1, 4));
+        $this->assertEquals("10000", StringTrait::fillZero(10000, 4));
+        $this->assertEquals("01", StringTrait::fillZero(1));
+        $this->assertEquals("0012", StringTrait::fillZero(12, 4));
+        $this->assertEquals("12", StringTrait::fillZero(12, 2));
+    }
 }

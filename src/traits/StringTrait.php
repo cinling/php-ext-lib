@@ -150,4 +150,19 @@ trait StringTrait {
         }
         return $string;
     }
+
+    /**
+     * Fill 0 before number
+     * @param int $num
+     * @param int $digit The number of characters to output a number
+     * @return string
+     */
+    public static function fillZero($num, $digit = 2) {
+        $numStr = strval($num);
+        $fillNum = $digit - strlen($numStr);
+        while ($fillNum-- > 0) {
+            $numStr = "0" . $numStr;
+        }
+        return $numStr;
+    }
 }
