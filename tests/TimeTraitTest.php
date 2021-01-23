@@ -118,4 +118,35 @@ class TimeTraitTest extends TestCase {
         $this->assertEquals("2020-12-12 23:59:59", TimeTrait::toDatetime(TimeTrait::getDateEnd("2020-12-12 12:11:22")));
     }
 
+    /**
+     * @test
+     */
+    public function prevYear() {
+        $this->assertEquals(strtotime("2019-01-01"), TimeTrait::prevYear("2020-01-01"));
+        $this->assertEquals(strtotime("2019-02-28"), TimeTrait::prevYear("2020-02-29"));
+        $this->assertEquals(strtotime("2020-03-01"), TimeTrait::prevYear("2021-03-01"));
+    }
+
+    /**
+     * @test
+     */
+    public function nextYear() {
+        $this->assertEquals(strtotime("2020-03-01"), TimeTrait::nextYear("2019-03-01"));
+        $this->assertEquals(strtotime("2021-02-28"), TimeTrait::nextYear("2020-02-29"));
+    }
+
+    /**
+     * @test
+     */
+    public function getYearStart() {
+        $this->assertEquals(strtotime("2020-01-01"), TimeTrait::getYearStart("2020-12-22 12:12:12"));
+    }
+
+    /**
+     * @test
+     */
+    public function getYearEnd() {
+        $this->assertEquals(strtotime("2020-12-31 23:59:59"), TimeTrait::getYearEnd("2020-12-22 12:12:12"));
+    }
+
 }

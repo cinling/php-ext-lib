@@ -4,6 +4,7 @@
 namespace cin\extLib\traits;
 
 
+use cin\extLib\utils\TimeUtil;
 use Closure;
 
 /**
@@ -27,10 +28,10 @@ trait TimeTrait {
     }
 
     /**
-     * @deprecated 在 3.0.0 后删除。该方法没有太多的意义
-     * 判断时间是不是时间戳。仅支持 秒 和 毫秒 的时间戳类型。
      * @param $time
      * @return bool
+     * @deprecated 在 3.0.0 后删除。该方法没有太多的意义
+     * 判断时间是不是时间戳。仅支持 秒 和 毫秒 的时间戳类型。
      */
     public static function isStamp($time) {
         return is_numeric($time);
@@ -57,20 +58,20 @@ trait TimeTrait {
 
     /**
      * 时间戳转日期
-     * @deprecated 已更名。在 3.0.0 后删除
-     * @see TimeTrait::toDate()
      * @param int $stamp
      * @return string
+     * @deprecated 已更名。在 3.0.0 后删除
+     * @see TimeTrait::toDate()
      */
     public static function stampToDate($stamp) {
         return self::date("Y-m-d", $stamp);
     }
 
     /**
-     * @deprecated 已更名。在 3.0.0 后删除
-     * @see TimeTrait::toDatetime()
      * @param int $stamp 时间戳转日期时间
      * @return string
+     * @deprecated 已更名。在 3.0.0 后删除
+     * @see TimeTrait::toDatetime()
      */
     public static function stampToDatetime($stamp) {
         return self::datetime("Y-m-d H:i:s", $stamp);
@@ -78,12 +79,12 @@ trait TimeTrait {
 
     /**
      * 获取多少天后的时间戳
-     * @deprecated 在 3.0.0 后删除
-     * @see TimeTrait::nextDay() 替代方法
      * @param int $stamp 时间戳
      * @param int $days 多少天后
      * @param bool $roundToDateStart 是否将时间转为今天的0点
      * @return int
+     * @deprecated 在 3.0.0 后删除
+     * @see TimeTrait::nextDay() 替代方法
      */
     public static function nextDateStamp($stamp, $days = 1, $roundToDateStart = false) {
         $stamp += 86400 * $days;
@@ -93,12 +94,12 @@ trait TimeTrait {
     /**
      *
      * 获取多少天后的时间戳
-     * @deprecated 在 3.0.0 后删除
-     * @see TimeTrait::prevDay() 替代方法
      * @param int $stamp 时间戳
      * @param int $days 多少天后
      * @param bool $roundToDateStart 是否将时间转为今天的0点
      * @return int
+     * @deprecated 在 3.0.0 后删除
+     * @see TimeTrait::prevDay() 替代方法
      */
     public static function prevDateStamp($stamp, $days = 1, $roundToDateStart = false) {
         $stamp -= 86400 * $days;
@@ -107,11 +108,11 @@ trait TimeTrait {
 
     /**
      * 获取下一周的时间戳
-     * @deprecated 在 3.0.0 后删除
-     * @see TimeTrait::nextWeek() 替代方法
      * @param $stamp
      * @param int $weeks
      * @return int
+     * @see TimeTrait::nextWeek() 替代方法
+     * @deprecated 在 3.0.0 后删除
      */
     public static function nextWeekStamp($stamp, $weeks = 1) {
         return $stamp + 604800 * $weeks;
@@ -119,11 +120,11 @@ trait TimeTrait {
 
     /**
      * 获取上一周的时间戳
-     * @deprecated 在 3.0.0 后删除
-     * @see TimeTrait::prevWeek() 替代方法
      * @param $stamp
      * @param int $weeks
      * @return int
+     * @see TimeTrait::prevWeek() 替代方法
+     * @deprecated 在 3.0.0 后删除
      */
     public static function prevWeekStamp($stamp, $weeks = 1) {
         return $stamp - 604800 * $weeks;
@@ -343,6 +344,69 @@ trait TimeTrait {
     }
 
     /**
+     * Gets the timestamp of the previous year
+     * @param null $stamp
+     * @param int $years
+     * @return false|int
+     */
+    public static function prevYear($stamp = null, $years = 1) {
+        $stamp = static::parseStamp($stamp);
+        return static::nextYear($stamp, -$years);
+    }
+
+    /**
+     * Gets the timestamp of the next year
+     * @param null $stamp
+     * @param int $years
+     * @return false|int
+     */
+    public static function nextYear($stamp = null, $years = 1) {
+        $stamp = static::parseStamp($stamp);
+        $Y = date("Y", $stamp);
+        $m = date("m", $stamp);
+        $Y += $years;
+
+        $targetStamp = strtotime(date($Y . "-m-d H:i:s", $stamp));
+        $targetM = date("m", $targetStamp);
+        if ($m !== $targetM) {
+            $H_i_s = date("H:i:s", $targetStamp);
+
+            if ($m < $targetM) {
+                $prevMonthStamp = TimeUtil::getMonthEnd(strtotime(date("Y-{$m}-d", $targetStamp)));
+                $d = date("d", $prevMonthStamp);
+                $targetStamp = strtotime("{$Y}-{$m}-{$d} {$H_i_s}");
+            } else {
+                $d = "01";
+                $targetStamp = strtotime("{$Y}-{$m}-{$d} {$H_i_s}");
+            }
+        }
+
+        return $targetStamp;
+    }
+
+    /**
+     * Gets the timestamp of the start/begin of a year
+     * @param null $stamp
+     * @return false|int
+     */
+    public static function getYearStart($stamp = null) {
+        $stamp = static::parseStamp($stamp);
+        $Y = date("Y", $stamp);
+        return strtotime($Y . "-01-01");
+    }
+
+    /**
+     * Gets the timestamp of the end of a year
+     * @param null $stamp
+     * @return false|int
+     */
+    public static function getYearEnd($stamp = null) {
+        $stamp = static::parseStamp($stamp);
+        $nextYearStartAt = static::getYearStart(static::nextYear($stamp));
+        return $nextYearStartAt - 1;
+    }
+
+    /**
      * 计算方法的运行时间
      * @param Closure $func
      * @return int 运行用时。单位：ms
@@ -356,19 +420,20 @@ trait TimeTrait {
 
     /**
      * 获取日期
-     * @deprecated 多余的方法 在 3.0.0 后删除
      * @param string $format
      * @param int|null $stamp
      * @return string 今天的日期
+     * @deprecated 多余的方法 在 3.0.0 后删除
      */
-    public static function date($format = "Y-m-d", $stamp = null) {$stamp = static::parseStamp($stamp);
+    public static function date($format = "Y-m-d", $stamp = null) {
+        $stamp = static::parseStamp($stamp);
         return date($format, $stamp);
     }
 
     /**
      * 获取今天的日期
-     * @deprecated 多余的方法 在 3.0.0 后删除
      * @return string
+     * @deprecated 多余的方法 在 3.0.0 后删除
      */
     public static function todayDate() {
         return self::date();
@@ -385,20 +450,21 @@ trait TimeTrait {
 
     /**
      * 获取现在的日期时间
-     * @deprecated 多余的方法 在 3.0.0 后删除
      * @param string $format
      * @param int $stamp
      * @return string 当前日期时间
+     * @deprecated 多余的方法 在 3.0.0 后删除
      */
-    public static function datetime($format = "Y-m-d", $stamp = null) {$stamp = static::parseStamp($stamp);
+    public static function datetime($format = "Y-m-d", $stamp = null) {
+        $stamp = static::parseStamp($stamp);
         return date($format, $stamp);
     }
 
     /**
      * 将 日期-时间 转为时间戳
-     * @deprecated 多余的方法 在 3.0.0 后删除
      * @param $datetime
      * @return int
+     * @deprecated 多余的方法 在 3.0.0 后删除
      */
     public static function datetimeToStamp($datetime) {
         return strtotime($datetime);
@@ -406,9 +472,9 @@ trait TimeTrait {
 
     /**
      * 时间取整分钟
-     * @deprecated 多余的方法（可以用 date() 方法简单实现） 在 3.0.0 后删除
      * @param string $datetime
      * @return false|string
+     * @deprecated 多余的方法（可以用 date() 方法简单实现） 在 3.0.0 后删除
      */
     public static function floorMinute($datetime) {
         return date("Y-m-d H:i:s", strtotime($datetime));
