@@ -80,8 +80,6 @@ abstract class Enum {
             }
         }
 
-        // 唯一性检测
-
         return $labels;
     }
 

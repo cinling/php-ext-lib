@@ -4,8 +4,10 @@
 use cin\extLib\traits\TimeTrait;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class TimeTraitTest
+ */
 class TimeTraitTest extends TestCase {
-
 
     /**
      * @test
@@ -140,6 +142,7 @@ class TimeTraitTest extends TestCase {
      */
     public function getYearStart() {
         $this->assertEquals(strtotime("2020-01-01"), TimeTrait::getYearStart("2020-12-22 12:12:12"));
+        $this->assertEquals(strtotime("2020-01-01"), TimeTrait::getYearStart("2020-01"));
     }
 
     /**
@@ -149,4 +152,26 @@ class TimeTraitTest extends TestCase {
         $this->assertEquals(strtotime("2020-12-31 23:59:59"), TimeTrait::getYearEnd("2020-12-22 12:12:12"));
     }
 
+    /**
+     * @test
+     */
+    public function yesterday() {
+        $this->assertEquals(strtotime(date("Y-m-d", time() - 86400)), TimeTrait::yesterday());
+    }
+
+    /**
+     * @test
+     */
+    public function tomorrow() {
+        $this->assertEquals(strtotime(date("Y-m-d", time() + 86400)), TimeTrait::tomorrow());
+    }
+
+    /**
+     * @test
+     */
+    public function comSpaceDays() {
+        $this->assertEquals(10, TimeTrait::comSpaceDays("2020-01-01", "2020-01-11"));
+        $this->assertEquals(10, TimeTrait::comSpaceDays("2020-01-11", "2020-01-01"));
+        $this->assertEquals(0, TimeTrait::comSpaceDays("2020-01-01", "2020-01-01"));
+    }
 }

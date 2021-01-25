@@ -4,21 +4,21 @@
 namespace cin\extLib\traits;
 
 
-use cin\extLib\utils\TimeUtil;
 use Closure;
 
 /**
- * Trait TimeTrait 时间工具插件。本插件所有方法都是基于时间戳进行操作。 $stamp 兼容日期格式。如果是日期，将自动转为时间戳
+ * Trait TimeTrait Time tool plug-in. All methods of this plug-in are based on timestamp. $stamp is compatible with date format. If it is a date, it will be automatically converted to a timestamp
  * @package cin\extLib\traits
+ * @see \TimeTraitTest
  */
 trait TimeTrait {
 
     /**
      * 处理时间戳输入参数。如果是 null 则转为当前时间，如果不是数字，则尝试使用 strtotime() 方法转换为时间戳
-     * @param int|null $stamp
+     * @param int|string|null $stamp
      * @return int
      */
-    protected static function parseStamp($stamp) {
+    public static function parseStamp($stamp) {
         if ($stamp === null) {
             $stamp = time();
         } else if (!is_numeric($stamp)) {
@@ -372,7 +372,7 @@ trait TimeTrait {
             $H_i_s = date("H:i:s", $targetStamp);
 
             if ($m < $targetM) {
-                $prevMonthStamp = TimeUtil::getMonthEnd(strtotime(date("Y-{$m}-d", $targetStamp)));
+                $prevMonthStamp = static::getMonthEnd(strtotime(date("Y-{$m}-d", $targetStamp)));
                 $d = date("d", $prevMonthStamp);
                 $targetStamp = strtotime("{$Y}-{$m}-{$d} {$H_i_s}");
             } else {
@@ -431,6 +431,27 @@ trait TimeTrait {
     }
 
     /**
+     * @return int Today 0:00 timestamp
+     */
+    public static function today() {
+        return static::getDateStart();
+    }
+
+    /**
+     * @return int Yesterday 0:00 timestamp
+     */
+    public static function yesterday() {
+        return static::getDateStart(static::prevDay());
+    }
+
+    /**
+     * @return int Tomorrow 0:00 timestamp
+     */
+    public static function tomorrow() {
+        return static::getDateStart(static::nextDay());
+    }
+
+    /**
      * 获取今天的日期
      * @return string
      * @deprecated 多余的方法 在 3.0.0 后删除
@@ -478,5 +499,17 @@ trait TimeTrait {
      */
     public static function floorMinute($datetime) {
         return date("Y-m-d H:i:s", strtotime($datetime));
+    }
+
+    /**
+     * Gets the number of days between two dates
+     * @param int|string $stamp1
+     * @param int|string $stamp2
+     * @return int
+     */
+    public static function comSpaceDays($stamp1, $stamp2) {
+        $stamp1StartAt = static::getDateStart($stamp1);
+        $stamp2StartAt = static::getDateStart($stamp2);
+        return floor(abs($stamp1StartAt - $stamp2StartAt) / 86400);
     }
 }
