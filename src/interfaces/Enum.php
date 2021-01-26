@@ -63,7 +63,7 @@ abstract class Enum {
                     $label = $name;
                 }
                 static::uniqueCheck($labels, $value, $name);
-                $labels[$value] = $label;
+                $labels[$value] = trim($label);
             }
         } else { // php 7.0 及 php 5.6 版本 。使用自定义的反射对象辅助反射出文档内容
             $rAo = new ReflectConstAo(static::class);
@@ -76,7 +76,7 @@ abstract class Enum {
                     $label = $name;
                 }
                 static::uniqueCheck($labels, $value, $name);
-                $labels[$value] = $label;
+                $labels[$value] = trim($label);
             }
         }
 
