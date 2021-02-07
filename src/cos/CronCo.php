@@ -27,6 +27,11 @@ class CronCo extends BaseCo {
      * @var int The number of running records saved. If set to - 1, it means infinite. (since the default file cache cannot be too large, a limit needs to be set.)
      */
     public $recordLimit = 10000;
+    /**
+     * @var bool disabled record run log
+     * @deprecated waiting for develop
+     */
+    public $disabledRecord = false;
 
     /**
      * init

@@ -16,7 +16,8 @@ composer require "cinling/ext-lib"
    - [FileCacheService](#FileCacheService)
    - [LogService](#LogService)
  - [Util](#Util)
- - Application Object (ao)...
+   - [ArrayUtil](#ArrayUtil)
+ - Value Object(vo)...  
  - Enums...
     
 
@@ -108,9 +109,18 @@ output in `runtime/cin-log/cin.log`:
 
 <hr />
 
-### Util
+## Util
 
  - Provides encapsulation of static methods
  - It can be inserted by `trait`
 
 <hr />
+
+### ArrayUtil
+
+
+##### toArray($attrs): array
+
+Convert `$attrs` to an array。
+`$attrs` can be an `array`, an `object`, a `BaseVo` derived class, or any collation of the above
+ 
