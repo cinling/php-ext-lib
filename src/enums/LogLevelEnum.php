@@ -37,4 +37,18 @@ class LogLevelEnum extends BaseEnum {
      * @note Fatal error
      */
     const Fatal = "FATAL";
+
+    /**
+     * @return array
+     */
+    public static function sort() {
+        return [
+            LogLevelEnum::Debug,
+            LogLevelEnum::Trace,
+            LogLevelEnum::Info,
+            LogLevelEnum::Warn,
+            LogLevelEnum::Error,
+            LogLevelEnum::Fatal
+        ];
+    }
 }

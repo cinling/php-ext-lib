@@ -5,6 +5,7 @@ namespace cin\extLib\interfaces;
 
 
 use cin\extLib\aos\ReflectConstAo;
+use cin\extLib\enums\LogLevelEnum;
 use cin\extLib\exceptions\EnumException;
 use cin\extLib\utils\EnvUtil;
 use cin\extLib\utils\ValueUtil;
@@ -21,15 +22,35 @@ abstract class Enum {
     private static $enumLabels = [];
 
     /**
-     * 在常量文档上添加 "@label 标签内容" 即可标记常量的标签内容
+     * Add "@label label content" to constant document to mark constant label content
+     * @param bool $sort
      * @return string[]
      * @throws EnumException
      */
-    public static function labels() {
+    public static function labels($sort = true) {
         $labels = ValueUtil::getValue(self::$enumLabels, static::class, null);
         if ($labels === null) {
             $labels = static::getLabelsByRef();
         }
+
+        if ($sort) {
+            $keys = static::sort();
+            $sortLabels = [];
+            foreach ($keys as $key) {
+                if (!isset($labels[$key])) {
+                    continue;
+                }
+                $sortLabels[$key] = $labels[$key];
+            }
+            foreach ($labels as $key => $value) {
+                if (!isset($sortLabels[$key])) {
+                    $sortLabels[$key] = $value;
+                }
+            }
+            $labels = $sortLabels;
+            unset($sortLabels);
+        }
+
         self::$enumLabels[static::class] = $labels;
         return $labels;
     }
@@ -42,6 +63,17 @@ abstract class Enum {
     public static function values() {
         $labels = static::labels();
         return array_keys($labels);
+    }
+
+    /**
+     * Sort the array of Enum::labels()
+     *  If the field does not appear in the array, it is sorted to the end by the original order
+     * @see Enum::labels() Use in this function
+     * @see LogLevelEnum::sort() Example
+     * @return string[]
+     */
+    public static function sort() {
+        return [];
     }
 
     /**
