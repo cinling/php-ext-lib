@@ -173,5 +173,18 @@ class TimeTraitTest extends TestCase {
         $this->assertEquals(10, TimeTrait::comSpaceDays("2020-01-01", "2020-01-11"));
         $this->assertEquals(10, TimeTrait::comSpaceDays("2020-01-11", "2020-01-01"));
         $this->assertEquals(0, TimeTrait::comSpaceDays("2020-01-01", "2020-01-01"));
+        $this->assertEquals(0, TimeTrait::comSpaceDays("2020-01-01", "2020-01-01"));
+        $this->assertEquals(2, TimeTrait::comSpaceDays("2021-01-01", "2021-01-03"));
+    }
+
+    /**
+     * @test
+     */
+    public function getWeeks() {
+        $this->assertEquals(1, TimeTrait::getWeeks("2000-01-01"));
+        $this->assertEquals(1, TimeTrait::getWeeks("2021-01-01"));
+        $this->assertEquals(1, TimeTrait::getWeeks("2021-01-03"));
+        $this->assertEquals(2, TimeTrait::getWeeks("2021-01-04"));
+        $this->assertEquals(2, TimeTrait::getWeeks("2021-01-10"));
     }
 }

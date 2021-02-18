@@ -512,4 +512,21 @@ trait TimeTrait {
         $stamp2StartAt = static::getDateStart($stamp2);
         return floor(abs($stamp1StartAt - $stamp2StartAt) / 86400);
     }
+
+    /**
+     * Get the number of weeks in this year by timestamp
+     * 获取时间戳是这一年的第几周
+     * @param $stamp
+     * @return int
+     */
+    public static function getWeeks($stamp = null) {
+        $stamp = static::parseStamp($stamp);
+        $startAt = static::getDateStart($stamp);
+        $yearStartAt = static::getYearStart($stamp);
+        $sundayAt = static::getSunday($yearStartAt);
+
+        $firstWeekDays = static::comSpaceDays($yearStartAt, $sundayAt) + 1; // days of the first week
+        $days = static::comSpaceDays($yearStartAt, $startAt) + 1;
+        return floor(($days + 6 - $firstWeekDays) / 7) + 1;
+    }
 }
