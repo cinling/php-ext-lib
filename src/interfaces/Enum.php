@@ -20,6 +20,10 @@ abstract class Enum {
      * @var mixed[] 类名 => 标签数组: string[]
      */
     private static $enumLabels = [];
+    /**
+     * @var bool[] 枚举是否排序
+     */
+    private static $enumIsSortDict = [];
 
     /**
      * Add "@label label content" to constant document to mark constant label content
@@ -28,6 +32,10 @@ abstract class Enum {
      * @throws EnumException
      */
     public static function labels($sort = true) {
+        if (isset(self::$enumIsSortDict[static::class]) && $sort !== self::$enumIsSortDict[static::class]) {
+            unset(self::$enumLabels[static::class]);
+        }
+
         $labels = ValueUtil::getValue(self::$enumLabels, static::class, null);
         if ($labels === null) {
             $labels = static::getLabelsByRef();
@@ -52,6 +60,7 @@ abstract class Enum {
         }
 
         self::$enumLabels[static::class] = $labels;
+        self::$enumIsSortDict[static::class] = $sort;
         return $labels;
     }
 

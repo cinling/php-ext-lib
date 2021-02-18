@@ -20,11 +20,9 @@ class EnumTest extends TestCase {
      * @throws EnumException
      */
     public function sort() {
-//        $this->assertTrue([1 => "A=>1", 2  => "abc eee"] === AEnum::labels(false));
-//        $this->assertTrue([2  => "abc eee", 1 => "A=>1"] === AEnum::labels(true));
-//        $this->assertTrue([2  => "abc eee", 1 => "A=>1"] === AEnum::labels());
-
-        print_r(AEnum::labels());
+        $this->assertTrue([1 => "A=>1", 2  => "abc eee"] === AEnum::labels(false));
+        $this->assertTrue([2  => "abc eee", 1 => "A=>1"] === AEnum::labels(true));
+        $this->assertTrue([2  => "abc eee", 1 => "A=>1"] === AEnum::labels());
     }
 }
 
