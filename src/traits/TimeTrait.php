@@ -287,39 +287,53 @@ trait TimeTrait {
     }
 
     /**
+     * Get previous month
      * 获取上一个月的时间戳
      * @param null $stamp
+     * @param int $months the number of previous months
      * @return int
      */
-    public static function prevMonth($stamp = null) {
+    public static function prevMonth($stamp = null, $months = 1) {
         $stamp = static::parseStamp($stamp);
-        $prevStamp = strtotime('-1 month', $stamp);
-        if (date("m", $stamp) === date("m", $prevStamp)) { // 还是同一个月份。说明上一个月没有这一天，使用这个月最后一天。 如：3月 的 上一个月 2月 没有 30 31 号
-            $His = date("H:i:s", $stamp);
-            $prevStamp = static::prevMonth($prevStamp); // 获取上一个月的时间戳
-            $prevEndAt = static::getMonthEnd($prevStamp); // 获取这个月结束的时间戳
-            $datetime = date("Y-m-d " . $His, $prevEndAt); // 获取这个月最后一天，并补上时间戳
-            $prevStamp = strtotime($datetime); // 将日期转回时间戳
+        if ($months === 1) {
+            $prevStamp = strtotime('-1 month', $stamp);
+            if (date("m", $stamp) === date("m", $prevStamp)) { // 还是同一个月份。说明上一个月没有这一天，使用这个月最后一天。 如：3月 的 上一个月 2月 没有 30 31 号
+                $His = date("H:i:s", $stamp);
+                $prevStamp = static::prevMonth($prevStamp); // 获取上一个月的时间戳
+                $prevEndAt = static::getMonthEnd($prevStamp); // 获取这个月结束的时间戳
+                $datetime = date("Y-m-d " . $His, $prevEndAt); // 获取这个月最后一天，并补上时间戳
+                $prevStamp = strtotime($datetime); // 将日期转回时间戳
+            }
+        } else {
+            $prevStamp = static::nextMonth($stamp, -$months);
         }
+
         return $prevStamp;
     }
 
     /**
+     * Get next month stamp
      * 获取下一个月的时间戳
      * @param null $stamp
+     * @param int $months the number of next months
      * @return int
      */
-    public static function nextMonth($stamp = null) {
+    public static function nextMonth($stamp = null, $months = 1) {
         $stamp = static::parseStamp($stamp);
-        $nextStamp = strtotime('+1 month', $stamp);
-        $nextStartAt = static::getMonthEnd($stamp) + 1;
-        if (date("m", $nextStartAt) !== date("m", $nextStamp)) { // 不是同一个月，说明下一个月没有这一天。如 1月 的下一个月 2月 没有 30 31 号
-            $His = date("H:i:s", $stamp); // 保存时分秒
-            $nextEndAt = static::getMonthEnd($nextStartAt); // 下一个月最后的时间戳
-            $datetime = date("Y-m-d " . $His, $nextEndAt); // 下个月最后一天和时间的组合
-            $nextStamp = strtotime($datetime);
+        $months = intval($months);
+        if ($months === 0) {
+            return $stamp;
         }
-        return $nextStamp;
+        $monthsFlag = $months > 0 ? "+" . $months : strval($months);
+
+        $nextAt = strtotime($monthsFlag . " month", $stamp);
+        if (date("d", $nextAt) !== date("d", $stamp)) {
+            $His = date("H:i:s", $stamp); // 保存时分秒
+            $prevAt = static::prevMonth($nextAt);
+            $Ymd = date("Y-m-d", static::getMonthEnd($prevAt));
+            $nextAt = strtotime($Ymd . " " . $His);
+        }
+        return $nextAt;
     }
 
     /**

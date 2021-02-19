@@ -80,6 +80,8 @@ class TimeTraitTest extends TestCase {
         $this->assertEquals(strtotime("2021-02-28 10:00:00"), TimeTrait::prevMonth(strtotime("2021-03-31 10:00:00")));
         $this->assertEquals(strtotime("2020-02-29 10:00:00"), TimeTrait::prevMonth(strtotime("2020-03-31 10:00:00")));
         $this->assertEquals(strtotime("2020-05-30 19:23:51"), TimeTrait::prevMonth(strtotime("2020-06-30 19:23:51")));
+        $this->assertEquals(strtotime("2020-04-30 19:23:51"), TimeTrait::prevMonth(strtotime("2020-06-30 19:23:51"), 2));
+        $this->assertEquals(strtotime("2020-02-29 19:23:51"), TimeTrait::prevMonth(strtotime("2020-07-31 19:23:51"), 5));
     }
 
     /**
@@ -91,6 +93,9 @@ class TimeTraitTest extends TestCase {
         $this->assertEquals($exp, $act);
         $this->assertEquals(strtotime("2020-02-29 10:00:00"), TimeTrait::nextMonth(strtotime("2020-01-31 10:00:00")));
         $this->assertEquals(strtotime("2020-07-30 19:23:51"), TimeTrait::nextMonth(strtotime("2020-06-30 19:23:51")));
+        $this->assertEquals(strtotime("2020-02-29 19:23:51"), TimeTrait::nextMonth(strtotime("2020-01-31 19:23:51")));
+        $this->assertEquals(strtotime("2021-02-28 19:23:51"), TimeTrait::nextMonth(strtotime("2020-02-29 19:23:51"), 12));
+        $this->assertEquals(strtotime("2020-08-30 19:23:51"), TimeTrait::nextMonth(strtotime("2020-06-30 19:23:51"), 2));
     }
 
     /**
