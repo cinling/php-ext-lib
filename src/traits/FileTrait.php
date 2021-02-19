@@ -10,7 +10,7 @@ use cin\extLib\utils\TimeUtil;
 
 trait FileTrait {
     /**
-     * 删除文件夹及下面所有的问题金，或删除文件
+     * 删除文件夹及下面所有的文件，或删除文件
      * @param string $dirOrFile 目录或文件
      */
     public static function delFile($dirOrFile) {
@@ -55,7 +55,7 @@ trait FileTrait {
                 }
             }
         }
-        return $files;
+        return array_values($files);
     }
 
     /**

@@ -3,4 +3,5 @@
 /examples/test/
 /src/test/*
 runtime
+/tests/runtime
 *.log
