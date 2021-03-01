@@ -29,7 +29,7 @@ trait GeoUtilTrait {
      */
     public static function isRightLongitude($longitude) {
         $longitudeFloat = floatval($longitude);
-        return $longitude !== "" && ($longitudeFloat >= -180 || $longitudeFloat <= 180);
+        return $longitude !== "" && ($longitudeFloat >= -180 && $longitudeFloat <= 180);
     }
 
     /**
@@ -39,7 +39,7 @@ trait GeoUtilTrait {
      */
     public static function isRightLatitude($latitude) {
         $latitudeFloat = floatval($latitude);
-        return $latitude !== "" && ($latitudeFloat >= -90 || $latitudeFloat <= 90);
+        return $latitude !== "" && ($latitudeFloat >= -90 && $latitudeFloat <= 90);
     }
 
     /**

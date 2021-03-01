@@ -84,6 +84,21 @@ class ArrayTraitTest extends TestCase {
         $this->assertEquals($expArr, $resArr);// 对比键值映射关系（无须）
         $this->assertEquals(array_keys($expArr), array_keys($resArr)); // 确认key的排序是否一致
     }
+
+    /**
+     * @test
+     */
+    public function in() {
+        $this->assertTrue(ArrayTrait::in(["a", "b", "c"], "a"));
+    }
+
+    /**
+     * @test
+     */
+    public function sort() {
+        $arr1 = ["a" => "1", "c" => "3", "b" => 2];
+        // TODO
+    }
 }
 
 /**

@@ -4,6 +4,8 @@
 namespace cin\extLib\traits;
 
 
+use cin\extLib\utils\JsonUtil;
+
 /**
  * Trait StringTrait 字符串工具插件
  * @package cin\extLib\traits
@@ -164,5 +166,20 @@ trait StringTrait {
             $numStr = "0" . $numStr;
         }
         return $numStr;
+    }
+
+    /**
+     * @param mixed $value
+     * @return string
+     */
+    public static function toString($value) {
+        if (is_object($value) || is_array($value)) {
+            $value = JsonUtil::encode($value);
+        } else if (is_bool($value)) {
+            $value = $value ? "true" : "false";
+        } else if (is_numeric($value)) {
+            $value = $value . "";
+        }
+        return $value;
     }
 }

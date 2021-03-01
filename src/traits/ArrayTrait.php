@@ -75,11 +75,11 @@ trait ArrayTrait {
     /**
      * 是否在数组里
      * @param array $array
-     * @param int|string $key
+     * @param int|string $value
      * @return bool
      */
-    public static function in(array $array, $key) {
-        return in_array($key, $array);
+    public static function in(array $array, $value) {
+        return in_array($value, $array);
     }
 
     /**
