@@ -27,6 +27,8 @@ trait HttpTrait {
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true); // Allow redirect
+        curl_setopt($curl, CURLOPT_MAXREDIRS, 20); // Redirect max num
         $output = curl_exec($curl);
         curl_close($curl);
         return $output;
@@ -50,6 +52,8 @@ trait HttpTrait {
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true); // Allow redirect
+        curl_setopt($curl, CURLOPT_MAXREDIRS, 20); // Redirect max num
         $output = curl_exec($curl);
         curl_close($curl);
         return $output;
@@ -71,6 +75,8 @@ trait HttpTrait {
         curl_setopt($curl, CURLOPT_POSTFIELDS, $xml);
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true); // Allow redirect
+        curl_setopt($curl, CURLOPT_MAXREDIRS, 20); // Redirect max num
         $output = curl_exec($curl);
         if ($error = curl_errno($curl)) {
             throw new HideException($error);
