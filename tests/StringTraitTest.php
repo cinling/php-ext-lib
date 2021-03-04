@@ -67,4 +67,14 @@ class StringTraitTest extends TestCase {
         $this->assertEquals("0012", StringTrait::fillZero(12, 4));
         $this->assertEquals("12", StringTrait::fillZero(12, 2));
     }
+
+    /**
+     * @test
+     */
+    public function numToChinese() {
+        $this->assertEquals("一万", StringTrait::numToChinese(10000));
+        $this->assertEquals("壹萬", StringTrait::numToChinese(10000, true));
+        $this->assertEquals("一万五千六百二十三", StringTrait::numToChinese(15623));
+        $this->assertEquals("一", StringTrait::numToChinese(1));
+    }
 }

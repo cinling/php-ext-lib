@@ -182,4 +182,111 @@ trait StringTrait {
         }
         return $value;
     }
+
+    /**
+     * Arabic numerals to Chinese
+     * 阿拉伯数据转汉字写法（即汉字读写）
+     * @param $originalNum
+     * @param bool $isUpper 是否转为中文的大写形式
+     * @return string
+     */
+    public static function numToChinese($originalNum, $isUpper = false)
+    {
+        if ($isUpper) {
+            $chineseNum = [
+                ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'],
+                ['', '拾', '佰', '仟'],
+                ['', '萬', '億', '萬億']
+            ];
+        } else {
+            $chineseNum = [
+                ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'],
+                ['', '十', '百', '千'],
+                ['', '万', '亿', '万亿']
+            ];
+        }
+
+        $num = (string)$originalNum;
+        if (is_numeric($originalNum)) {
+            $originalNum = explode('.', (string)floatval($originalNum));
+            $num = $originalNum[0];
+            $fl = isset($originalNum[1]) ? $originalNum[1] : false;
+        }
+
+        // 长度
+        $len = strlen($num);
+        $chinese = [];
+        $str = strrev($num);
+
+        for ($i = 0; $i < $len; $i += 4) {
+            $s = [];
+            $s[0] = $str[$i];
+            if (isset($str[$i + 1])) {
+                $s[1] = $str[$i + 1];
+            }
+            if (isset($str[$i + 2])) {
+                $s[2] = $str[$i + 2];
+            }
+            if (isset($str[$i + 3])) {
+                $s[3] = $str[$i + 3];
+            }
+
+            $j = '';
+            // 千位
+            if (isset($s[3])) {
+                $s[3] = (int)$s[3];
+                if ($s[3] !== 0) {
+                    $j .= $chineseNum[0][$s[3]] . $chineseNum[1][3];
+                } else {
+                    if ($s[2] != 0 || $s[1] != 0 || $s[0] != 0) {
+                        $j .= $chineseNum[0][0];
+                    }
+                }
+            }
+            // 百位
+            if (isset($s[2])) {
+                $s[2] = (int)$s[2];
+                if ($s[2] !== 0) {
+                    $j .= $chineseNum[0][$s[2]] . $chineseNum[1][2];
+                } else {
+                    if ($s[3] != 0 && ($s[1] != 0 || $s[0] != 0)) {
+                        $j .= $chineseNum[0][0];
+                    }
+                }
+            }
+            // 十位
+            if (isset($s[1])) {
+                $s[1] = (int)$s[1];
+                if ($s[1] !== 0) {
+                    $j .= $chineseNum[0][$s[1]] . $chineseNum[1][1];
+                } else {
+                    if ($s[0] != 0 && !empty($s[2])) {
+                        $j .= $chineseNum[0][$s[1]];
+                    }
+                }
+            }
+            // 个位
+            if ($s[0] !== '') {
+                $s[0] = (int)$s[0];
+                if ($s[0] !== 0) {
+                    $j .= $chineseNum[0][$s[0]] . $chineseNum[1][0];
+                }
+            }
+
+            $j .= $chineseNum[2][$i / 4];
+            array_unshift($chinese, $j);
+        }
+
+        $chs = implode('', $chinese);
+
+        if (!empty($fl)) {
+            $chs .= '点';
+            for ($i = 0, $j = strlen($fl); $i < $j; $i++) {
+                $t = (int)$fl[$i];
+                $chs .= $str[0][$t];
+            }
+        }
+
+        return $chs;
+    }
 }

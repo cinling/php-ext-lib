@@ -40,6 +40,9 @@ trait BaseVoTrait {
      * @return static[]
      */
     public static function initList($rows) {
+        if (!is_array($rows)) {
+            return [];
+        }
         $voList = [];
         foreach ($rows as $key => $row) {
             $vo = new static();
