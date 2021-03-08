@@ -24,7 +24,7 @@ class BaseWxResponse extends BaseVo {
      * @return bool
      */
     public function hasError() {
-        if (!empty($this->errmsg)) {
+        if (!empty($this->errmsg) && $this->errmsg != "ok") {
             $this->addError($this->errmsg);
         }
         return parent::hasError();
