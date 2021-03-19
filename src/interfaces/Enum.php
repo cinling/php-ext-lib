@@ -24,6 +24,13 @@ abstract class Enum {
      * @var bool[] 枚举是否排序
      */
     private static $enumIsSortDict = [];
+    /**
+     * @var string
+     * @note 使用方法获取标签时，如果没有对应的常量值时的默认值
+     * @note When using the method to get the label, the default value if there is no corresponding constant value
+     * @see Enum::label()
+     */
+    protected static $defaultValue = "";
 
     /**
      * Add "@label label content" to constant document to mark constant label content
@@ -161,6 +168,6 @@ abstract class Enum {
      */
     public static function label($value) {
         $labels = static::labels();
-        return ValueUtil::getValue($labels, $value, "");
+        return ValueUtil::getValue($labels, $value, static::$defaultValue);
     }
 }

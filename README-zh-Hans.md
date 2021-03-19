@@ -3,6 +3,9 @@
 ![Packagist license](https://img.shields.io/github/license/cinling/php-ext-lib)
 ![Packagist version](https://img.shields.io/packagist/v/cinling/ext-lib)
 ![GitHub last commit](https://img.shields.io/github/last-commit/cinling/php-ext-lib)
+![Php version](https://img.shields.io/packagist/php-v/cinling/ext-lib)
+
+![File size](https://img.shields.io/github/languages/code-size/cinling/php-ext-lib)
 
 # 安装
 
