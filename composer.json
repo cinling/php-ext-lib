@@ -1,5 +1,6 @@
 {
     "name": "cinling/ext-lib",
+    "description": "General code base for work.",
     "license": "MIT",
     "authors": [
         {
@@ -7,7 +8,7 @@
             "email": "1105412681@qq.com"
         }
     ],
-    "version": "2.2.8",
+    "version": "2.2.9",
     "require": {
         "php": ">=5.6",
         "ext-ftp": "*",

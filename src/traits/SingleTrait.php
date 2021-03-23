@@ -20,7 +20,7 @@ trait SingleTrait {
         if (static::$ins === null) {
             static::$ins = new static();
         }
-        return self::$ins;
+        return static::$ins;
     }
 
     /**
