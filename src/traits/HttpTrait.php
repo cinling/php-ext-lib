@@ -13,6 +13,22 @@ use cin\extLib\utils\StringUtil;
  */
 trait HttpTrait {
     /**
+     * Get request headers
+     * 获取请求头
+     * @return string[]
+     */
+    public static function getHeaders() {
+        $headers = [];
+        foreach ($_SERVER as $key => $value) {
+            if (StringUtil::startWith($key, "HTTP_")) {
+                $headerKey = StringUtil::trimLeft("HTTP_");
+                $headers[$headerKey] = $value;
+            }
+        }
+        return $headers;
+    }
+
+    /**
      * 发送post请求
      * @param $url
      * @param $values

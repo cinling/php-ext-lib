@@ -14,7 +14,10 @@ use cin\extLib\vos\corn\TaskVo;
  */
 class CronCo extends BaseCo {
     /**
-     * @var ICronStore Save and get object instance
+     * 读写 实例。默认提供文件缓存的实例
+     * Save and get object instance. Here provide the File Store's instance
+     * @var ICronStore
+     * @var CronFileStoreAo Default instance
      * @deprecated make protected in 3.0.0 . use function getStore() instead it
      * @see CronCo
      */

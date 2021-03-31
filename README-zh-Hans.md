@@ -19,7 +19,7 @@ composer require "cinling/ext-lib"
 
  - [Enum](#) 枚举
  - [Service](#Service) 服务
-   - [CronService](#) 定时任务管理服务
+   - [CronService](#CronService) 定时任务管理服务
    - [FileCacheService](#FileCacheService) 文件缓存服务
    - [FtpClientService](#) FTP客户端服务
    - [LogService](#LogService) 日志服务
@@ -52,6 +52,49 @@ composer require "cinling/ext-lib"
 ## Service
 
  - 提供一些服务性的功能
+
+<hr />
+
+### CronService
+
+ - 定时任务服务
+ - 目前进支持 命令行 形式的定时任务。计划于 v3.2.0 添加可触发执行指定方法
+
+#### 配置
+
+##### 参数
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| ~~store~~ | ICronStore | 存取应用对象。不推荐直接设置，v3.0.0 后将设置为 protected |
+| taskVoList | TaskVo[] | 任务对象 |
+| recordLimit | int | 任务运行记录最大存储条数（文件缓存不建议太多）。默认：10000，设置为 -1 代表不限制 |
+
+##### 方法
+
+| 方法 | 说明 |
+| --- | --- |
+| getStore(): ICronStore | 获取存取应用实例 |
+| setStore(ICronStore) | 设置存取应用实例 |
+| setTaskVoList(array $taskVoList) | 设置任务列表 |
+
+##### 案例
+
+```injectablephp
+use cin\extLib\services\CronService;
+use cin\extLib\traits\SingleTrait;
+
+/**
+ * 定时任务入口（单例）
+ */
+class CronEnter {
+    use SingleTrait;
+
+    protected function __construct() {
+        CronService::getIns();
+    }
+}
+```
 
 <hr />
 
