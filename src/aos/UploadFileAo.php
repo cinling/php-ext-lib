@@ -17,6 +17,10 @@ class UploadFileAo extends BaseAo {
      * @var array 文件信息
      */
     protected $fileInfo;
+    /**
+     * @var string 保存的文件名字
+     */
+    protected $saveFilename;
 
     /**
      * @param string $name
@@ -75,6 +79,14 @@ class UploadFileAo extends BaseAo {
     }
 
     /**
+     * 获取保存后的文件名字
+     * @return string
+     */
+    public function getSaveFilename() {
+        return $this->saveFilename;
+    }
+
+    /**
      * 获取文件类型
      * @return string
      */
@@ -105,16 +117,22 @@ class UploadFileAo extends BaseAo {
      * @return string save full name of file
      */
     public function save($path, $saveFilename = "") {
-        if (empty($saveFilename)) {
-            $saveFilename = FileUtil::getHash8Name($this->getFilename());
-        }
-        $saveFullName = str_replace("//", "/", $path . "/" . $saveFilename);
-        $dirName = dirname($saveFullName);
+        $this->saveFilename = !empty($saveFilename) ? $saveFilename : $this->getHash8Name();
+        $savePath = str_replace("//", "/", $path . "/" . $this->saveFilename);
+        $dirName = dirname($savePath);
         if (!file_exists($dirName)) {
             mkdir($dirName, 0755, true);
         }
 
-        copy($this->getTmpName(), $saveFullName);
-        return $saveFullName;
+        copy($this->getTmpName(), $savePath);
+        return $savePath;
+    }
+
+    /**
+     * 获取文件的8位哈希名字
+     * @return string
+     */
+    protected function getHash8Name() {
+        return FileUtil::getHash8Name($this->getFilename());
     }
 }
