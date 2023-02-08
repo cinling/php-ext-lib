@@ -5,6 +5,7 @@ namespace cin\extLib\traits;
 
 
 use cin\extLib\aos\RuleAo;
+use cin\extLib\interfaces\Arrayable;
 use cin\extLib\services\ValidFactoryService;
 use cin\extLib\utils\ArrayUtil;
 use cin\extLib\utils\ExcelUtil;
@@ -36,7 +37,8 @@ trait BaseVoTrait {
      * @param mixed[] $rows
      * @return static[]
      */
-    public static function initList($rows) {
+    public static function initList($rows): array
+    {
         if (!is_array($rows)) {
             return [];
         }
@@ -53,16 +55,18 @@ trait BaseVoTrait {
      * @param $json
      * @return static[]
      */
-    public static function initListByJson($json) {
+    public static function initListByJson($json): array
+    {
         $rows = JsonUtil::decode($json);
         return static::initList($rows);
     }
 
     /**
      * @param $xml
-     * @return BaseVo|static
+     * @return static
      */
-    public static function initByXml($xml) {
+    public static function initByXml($xml)
+    {
         $vo = new static();
         $vo->loadByXml($xml);
         return $vo;
@@ -274,12 +278,17 @@ trait BaseVoTrait {
 
     /**
      * 使用关系数组初始化对象数据
+     * @deprecated remove on 4.0.0. instead by setByArray()
      * @param array $attrs
      */
     public function setAttrs($attrs) {
         foreach ($attrs as $key => $value) {
             if (property_exists($this, $key)) {
-                $this->$key = $value;
+                if ($this->$key instanceof Arrayable) {
+                    $this->$key->setAttrs($value);
+                } else {
+                    $this->$key = $value;
+                }
             }
         }
     }
@@ -302,12 +311,13 @@ trait BaseVoTrait {
      * 转换为数组
      * @return array
      */
-    public function toArray() {
+    public function toArray(): array
+    {
         $attrs = get_object_vars($this);
 
         // 排除 __ 开头的变量
         foreach ($attrs as $prop => $value) {
-            if (StringUtil::startWidth($prop, "__")) {
+            if (StringUtil::startWith($prop, "__")) {
                 unset($attrs[$prop]);
             }
         }
@@ -319,14 +329,16 @@ trait BaseVoTrait {
     /**
      * @return string
      */
-    public function toJson() {
+    public function toJson(): string
+    {
         return JsonUtil::encode($this->toArray());
     }
 
     /**
      * @return string
      */
-    public function toXml() {
+    public function toXml(): string
+    {
         return XmlUtil::toXml($this->toArray());
     }
 
@@ -335,7 +347,8 @@ trait BaseVoTrait {
      * @param $prop
      * @return bool
      */
-    public function hasProp($prop) {
+    public function hasProp($prop): bool
+    {
         return property_exists($this, $prop);
     }
 
@@ -343,7 +356,8 @@ trait BaseVoTrait {
      * 验证是否合法
      * @return bool
      */
-    public function valid() {
+    public function valid(): bool
+    {
         $rules = $this->rules();
         foreach ($rules as $ruleVo) {
             foreach ($ruleVo->props as $prop) {
@@ -364,7 +378,8 @@ trait BaseVoTrait {
     /**
      * @return RuleAo[]
      */
-    public function rules() {
+    public function rules(): array
+    {
         return [];
     }
 }

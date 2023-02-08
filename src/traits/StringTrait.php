@@ -18,7 +18,8 @@ trait StringTrait {
      * @param string $start 字符串开头的部分
      * @return bool
      */
-    public static function startWith($origin, $start) {
+    public static function startWith(string $origin, string $start): bool
+    {
         return strpos($origin, $start) === 0;
 
     }
@@ -26,35 +27,14 @@ trait StringTrait {
     /**
      * 字符串是否以某串结束
      * @param string $origin 原字符串
-     * @param $end $start 字符串结尾的部分
+     * @param string $end 字符串结尾的部分
      * @return bool
      */
-    public static function endWith($origin, $end) {
+    public static function endWith(string $origin, string $end): bool
+    {
         $originLen = mb_strlen($origin);
         $endLen = mb_strlen($end);
         return substr($origin, $originLen - $endLen) === $end;
-    }
-
-    /**
-     * @deprecated 命名错误。将在 v3.0.0 后移除
-     * @see StringTrait::endWith() 替代方法
-     *
-     * @param string $origin 原字符串
-     * @param string $start 字符串开头的部分
-     * @return bool
-     */
-    public static function startWidth($origin, $start) {
-        return static::startWith($origin, $start);
-    }
-
-    /**
-     * @deprecated 命名错误。将在 v3.0.0 后移除
-     * @param string $origin 原字符串
-     * @param $end $start 字符串结尾的部分
-     * @return bool
-     */
-    public static function endWidth($origin, $end) {
-        return static::endWith($origin, $end);
     }
 
     /**
@@ -63,8 +43,9 @@ trait StringTrait {
      * @param bool $isFirstBig 首字母是否大写
      * @return string 驼峰命名。如：userType
      */
-    public static function underlineToHump($underline, $isFirstBig = false) {
-        $hump = preg_replace_callback('/([-_]+([a-z]{1}))/i', function ($matches) {
+    public static function underlineToHump(string $underline, bool $isFirstBig = false): string
+    {
+        $hump = preg_replace_callback('/([-_]+([a-z]))/i', function ($matches) {
             return strtoupper($matches[2]);
         }, $underline);
         if ($isFirstBig) {
@@ -78,8 +59,9 @@ trait StringTrait {
      * @param string $hump
      * @return string 下划线命名
      */
-    public static function humpToUnderline($hump) {
-        $underline = preg_replace_callback('/([A-Z]{1})/', function ($matches) {
+    public static function humpToUnderline(string $hump): string
+    {
+        $underline = preg_replace_callback('/([A-Z])/', function ($matches) {
             return '_' . strtolower($matches[0]);
         }, $hump);
         return ltrim($underline, "_");
@@ -90,7 +72,8 @@ trait StringTrait {
      * @param string $str
      * @return bool
      */
-    public static function isBase64($str) {
+    public static function isBase64(string $str): bool
+    {
         return $str == base64_encode(base64_decode($str));
     }
 
@@ -100,17 +83,19 @@ trait StringTrait {
      * @param string $search 搜索的字符串
      * @return bool
      */
-    public static function has($origin, $search) {
+    public static function has(string $origin, string $search): bool
+    {
         return strpos($origin, $search) !== false;
     }
 
     /**
      * 获取随机字符串
-     * @param $length
+     * @param int $length
      * @param string $charts
      * @return string
      */
-    public static function randStr($length, $charts = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLOMNOPQRSTUVWXYZ") {
+    public static function randStr(int $length, string $charts = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLOMNOPQRSTUVWXYZ"): string
+    {
         $chartsMaxIndex = strlen($charts) - 1;
         $str = "";
         for ($i = 0; $i < $length; $i++) {
@@ -126,7 +111,8 @@ trait StringTrait {
      * @param bool $recursive
      * @return string
      */
-    public static function trimLeft($string, $trim = " ", $recursive = true) {
+    public static function trimLeft(string $string, string $trim = " ", bool $recursive = true): string
+    {
         if (static::startWith($string, $trim)) {
             $string = mb_substr($string, mb_strlen($trim));
             if ($recursive) {
@@ -143,7 +129,8 @@ trait StringTrait {
      * @param bool $recursive
      * @return string
      */
-    public static function trimRight($string, $trim = " ", $recursive = true) {
+    public static function trimRight(string $string, string $trim = " ", bool $recursive = true): string
+    {
         if (static::endWith($string, $trim)) {
             $string = mb_substr($string, 0, mb_strlen($string) - mb_strlen($trim));
             if ($recursive) {
@@ -159,7 +146,8 @@ trait StringTrait {
      * @param int $digit The number of characters to output a number
      * @return string
      */
-    public static function fillZero($num, $digit = 2) {
+    public static function fillZero(int $num, int $digit = 2): string
+    {
         $numStr = strval($num);
         $fillNum = $digit - strlen($numStr);
         while ($fillNum-- > 0) {
@@ -172,7 +160,8 @@ trait StringTrait {
      * @param mixed $value
      * @return string
      */
-    public static function toString($value) {
+    public static function toString($value): string
+    {
         if (is_object($value) || is_array($value)) {
             $value = JsonUtil::encode($value);
         } else if (is_bool($value)) {
@@ -190,7 +179,7 @@ trait StringTrait {
      * @param bool $isUpper 是否转为中文的大写形式
      * @return string
      */
-    public static function numToChinese($originalNum, $isUpper = false)
+    public static function numToChinese($originalNum, bool $isUpper = false): string
     {
         if ($isUpper) {
             $chineseNum = [
@@ -210,7 +199,7 @@ trait StringTrait {
         if (is_numeric($originalNum)) {
             $originalNum = explode('.', (string)floatval($originalNum));
             $num = $originalNum[0];
-            $fl = isset($originalNum[1]) ? $originalNum[1] : false;
+            $fl = $originalNum[1] ?? false;
         }
 
         // 长度

@@ -9,7 +9,6 @@ use cin\extLib\traits\SingleTrait;
 use cin\extLib\utils\EncryptUtil;
 use cin\extLib\utils\FileUtil;
 use cin\extLib\utils\TimeUtil;
-use cin\extLib\vos\FileCacheConfigVo;
 use cin\extLib\vos\FileCacheContentVo;
 
 /**
@@ -26,14 +25,6 @@ class FileCacheService {
 
     protected function __construct() {
         $this->co = new FileCacheCo();
-    }
-
-    /**
-     * @param FileCacheConfigVo $co 服务配置
-     * @deprecated Remove on 3.0.0 . Instead by setCo()
-     */
-    public function setConfig(FileCacheConfigVo $co) {
-        $this->co = $co;
     }
 
     /**

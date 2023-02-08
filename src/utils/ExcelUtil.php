@@ -58,7 +58,7 @@ class ExcelUtil
      * @return Color
      */
     public static function getColorObject($color) {
-        if (StringUtil::startWidth($color, "#")) {
+        if (StringUtil::startWith($color, "#")) {
             $color = str_replace("#", "", $color);
         }
 

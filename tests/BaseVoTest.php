@@ -1,6 +1,7 @@
 <?php
 
 
+use cin\extLib\traits\BaseVoTrait;
 use cin\extLib\vos\BaseVo;
 use PHPUnit\Framework\TestCase;
 
@@ -32,4 +33,44 @@ class SortTestVo extends BaseVo {
     public function sortSequence() {
         return ["a", "b"];
     }
+}
+
+class Clazz {
+    use BaseVoTrait;
+
+    public $name;
+
+    /**
+     * @var Teacher
+     */
+    public $teacher;
+
+    /**
+     * @var Group[]
+     */
+    public $groups;
+}
+
+class Group {
+    use BaseVoTrait;
+
+    public $name;
+
+    /**
+     * @var Student[]
+     */
+    public $students;
+}
+
+class Teacher {
+    use BaseVoTrait;
+
+    public $name;
+
+}
+
+class Student {
+    use BaseVoTrait;
+
+    public $name;
 }

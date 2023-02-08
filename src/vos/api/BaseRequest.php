@@ -28,10 +28,10 @@ class BaseRequest extends BaseVo {
     /**
      * @return array
      */
-    public function toArray() {
+    public function toArray(): array
+    {
         $attrs = parent::toArray();
-        $attrs = ArrayUtil::merge($attrs, $this->__extParams);
-        return $attrs;
+        return ArrayUtil::merge($attrs, $this->__extParams);
     }
 
     /**

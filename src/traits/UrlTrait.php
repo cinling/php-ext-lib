@@ -17,7 +17,7 @@ trait UrlTrait {
      * @return string
      */
     public static function withDomain($url) {
-        if (StringUtil::startWidth($url, "http")) {
+        if (StringUtil::startWith($url, "http")) {
             return $url;
         }
         return self::getDomain() . $url;

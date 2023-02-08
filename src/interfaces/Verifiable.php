@@ -3,8 +3,7 @@
 
 namespace cin\extLib\interfaces;
 
-use cin\extLib\traits\ErrorTrait;
-use cin\extLib\vos\RuleVo;
+use cin\extLib\aos\RuleAo;
 
 /**
  * Class Verifiable 可验证接口
@@ -12,7 +11,7 @@ use cin\extLib\vos\RuleVo;
  */
 interface Verifiable {
     /**
-     * @return RuleVo[]
+     * @return RuleAo[]
      */
     public function rules();
 
