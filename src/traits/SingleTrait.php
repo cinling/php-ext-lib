@@ -42,7 +42,7 @@ trait SingleTrait {
      * 防止序列化获取对象
      * @return array
      */
-    protected function __sleep() {
+    public function __sleep() {
        return [];
     }
 }

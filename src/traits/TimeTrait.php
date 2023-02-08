@@ -193,10 +193,11 @@ trait TimeTrait {
 
     /**
      * 获取今日起始时间戳
-     * @param int $stamp
+     * @param int|string|null $stamp
      * @return int
      */
-    public static function getDateStart($stamp = null) {
+    public static function getDateStart($stamp = null): int
+    {
         $stamp = static::parseStamp($stamp);
         $date = self::toDate($stamp);
         return strtotime($date);

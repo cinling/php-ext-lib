@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
  */
 class LogServiceTest extends TestCase {
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         parent::setUpBeforeClass();
         $co = new LogCo();
         $co->path = __DIR__ . "/runtime/log";

@@ -1,6 +1,7 @@
 <?php
 
 use cin\extLib\traits\FileTrait;
+use cin\extLib\utils\FileUtil;
 use PHPUnit\Framework\TestCase;
 
 
@@ -27,13 +28,13 @@ class FileTraitTest extends TestCase {
         $this->assertEquals($content1, file_get_contents($filename1));
 
         // remove file1
-        FileTrait::delFile($filename1);
-        $this->assertFileNotExists($filename1);
+        FileUtil::delFile($filename1);
+        $this->assertFileDoesNotExist($filename1);
         $this->assertDirectoryExists($path);
 
         // remove path
-        FileTrait::delFile($path);
-        $this->assertDirectoryNotExists($path);
+        FileUtil::delFile($path);
+        $this->assertDirectoryDoesNotExist($path);
     }
 
     /**
@@ -43,7 +44,7 @@ class FileTraitTest extends TestCase {
         // clear and make test dir
         $path = __DIR__ . "/runtime/file-trait/scan-dir";
         if (file_exists($path)) {
-            FileTrait::delFile($path);
+            FileUtil::delFile($path);
         }
         mkdir($path, 0755, true);
         $this->assertDirectoryExists($path);
@@ -53,18 +54,18 @@ class FileTraitTest extends TestCase {
         mkdir($aDir, 0755, true);
         $a1Filename = $aDir . "/a1.txt";
         file_put_contents($a1Filename, "a1");
-        $this->assertEquals(["a"], FileTrait::scanDir($path));
-        $this->assertEquals(["a1.txt"], FileTrait::scanDir($aDir));
+        $this->assertEquals(["a"], FileUtil::scanDir($path));
+        $this->assertEquals(["a1.txt"], FileUtil::scanDir($aDir));
     }
 
     /**
      * @test
      */
     public function getFileSuffix() {
-        $this->assertEquals("ad", FileTrait::getFileSuffix("www.abc.ad"));
-        $this->assertEquals("pdf", FileTrait::getFileSuffix("123123123sxdfa.pdf"));
-        $this->assertEquals("jpg", FileTrait::getFileSuffix("9202212938.jpg"));
-        $this->assertEquals("", FileTrait::getFileSuffix("9202212938"));
+        $this->assertEquals("ad", FileUtil::getFileSuffix("www.abc.ad"));
+        $this->assertEquals("pdf", FileUtil::getFileSuffix("123123123sxdfa.pdf"));
+        $this->assertEquals("jpg", FileUtil::getFileSuffix("9202212938.jpg"));
+        $this->assertEquals("", FileUtil::getFileSuffix("9202212938"));
     }
 
     /**
@@ -72,10 +73,10 @@ class FileTraitTest extends TestCase {
      */
     public function getHash8Name() {
         for ($i = 0; $i < 100; $i++) {
-            $this->assertTrue(FileTrait::getHash8Name("my.psd") != FileTrait::getHash8Name("222.cc"));
-            $this->assertTrue(FileTrait::getHash8Name("123.pdf") != FileTrait::getHash8Name("123.pdf"));
+            $this->assertTrue(FileUtil::getHash8Name("my.psd") != FileUtil::getHash8Name("222.cc"));
+            $this->assertTrue(FileUtil::getHash8Name("123.pdf") != FileUtil::getHash8Name("123.pdf"));
         }
-        $this->assertTrue(strlen(FileTrait::getHash8Name("mysldjfk")) === 8);
-        $this->assertTrue(strlen(FileTrait::getHash8Name("akjksdf.data")) === 13);
+        $this->assertTrue(strlen(FileUtil::getHash8Name("mysldjfk")) === 8);
+        $this->assertTrue(strlen(FileUtil::getHash8Name("akjksdf.data")) === 13);
     }
 }
