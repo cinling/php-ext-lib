@@ -84,12 +84,13 @@ trait ArrayTrait {
 
     /**
      * 根据二位数组中子项的属性值进行排序。并保留数组 key => value 映射关系
+     * 子项是对象或数组类型
      * @param array $array
      * @param string|int $prop
      * @param int $sort
      * @return array
      */
-    public static function sort(array $array, $prop, $sort = SORT_ASC) {
+    public static function sort(array $array, $prop, int $sort = SORT_ASC) {
         $sortArray = []; // 排序专用数组
         foreach ($array as $key => $item) {
             if (is_object($item) && property_exists($item, $prop)) {
