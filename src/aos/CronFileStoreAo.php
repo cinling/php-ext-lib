@@ -5,7 +5,6 @@ namespace cin\extLib\aos;
 
 
 use cin\extLib\consts\FileCacheKey;
-use cin\extLib\interfaces\CronTaskStorable;
 use cin\extLib\interfaces\ICronStore;
 use cin\extLib\services\FileCacheService;
 use cin\extLib\vos\BaseVo;

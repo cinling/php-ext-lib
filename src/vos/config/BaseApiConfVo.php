@@ -4,7 +4,7 @@
 namespace cin\extLib\vos\config;
 
 
-use cin\extLib\interfaces\IBaseApiConfVo;
+use cin\extLib\interfaces\IBaseApiCo;
 use cin\extLib\vos\BaseVo;
 
 /**
@@ -12,7 +12,7 @@ use cin\extLib\vos\BaseVo;
  * @deprecated 
  * @package cin\extLib\vos\config
  */
-class BaseApiConfVo extends BaseVo implements IBaseApiConfVo {
+class BaseApiConfVo extends BaseVo implements IBaseApiCo {
     /**
      * @var string 支付成功后的回调地址
      */

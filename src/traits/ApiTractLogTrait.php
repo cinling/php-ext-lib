@@ -4,7 +4,6 @@
 namespace cin\extLib\traits;
 
 use cin\extLib\interfaces\IBaseApiCo;
-use cin\extLib\interfaces\IBaseApiConfVo;
 use cin\extLib\services\LogService;
 use cin\extLib\utils\ArrayUtil;
 use cin\extLib\utils\JsonUtil;
@@ -21,11 +20,11 @@ trait ApiTractLogTrait {
     private $baseApiCo;
 
     /**
-     * @param IBaseApiConfVo $baseApiConfVo
+     * @param IBaseApiCo $baseApiConfVo
      * @deprecated Remove on 3.0.0 . Replace with setBaeApiCo()
      * @see ApiTractLogTrait::setBaseApiCo()
      */
-    private function setBaseApiConfVo(IBaseApiConfVo $baseApiConfVo) {
+    private function setBaseApiConfVo(IBaseApiCo $baseApiConfVo) {
         $this->baseApiCo = $baseApiConfVo;
     }
 
